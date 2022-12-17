@@ -6,6 +6,7 @@ slug: picoctf
 #image: cover.jpg
 categories:
     - CTF
+    - crypto
     - 数学
 tags:
 ---

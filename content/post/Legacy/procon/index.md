@@ -6,6 +6,7 @@ slug: procon32
 categories:
     - 日記
 tags:
+    - 高専プロコン
 ---
 
 
