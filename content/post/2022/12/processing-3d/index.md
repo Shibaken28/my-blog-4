@@ -2,16 +2,17 @@
 ---
 title: 2D画面になんちゃって3Dを書く
 description: 行列を使ってProcessingの2D画面に3Dっぽい描画をします
-slug: processing-3d
+slug: processing-
 date: 2022-12-06 02:00:00+0000
 #image: cover.jpg
 categories:
     - Processing
     - 数学
 tags:
+    - 行列
 ---
 
-
+この記事は[Zennに投稿したもの](https://zenn.dev/shibak3n/articles/d3d212157e0a0a)と同じです．
 
 ## はじめに
 　2Dの画面に3Dを描画することにロマンを感じませんか．私は感じます．描きましょう．
