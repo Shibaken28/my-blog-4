@@ -1,7 +1,7 @@
 ---
 title: LSB Decryption Oracle Attackの実装
-description: 
-slug: 何度も復元でき，下位ビットが得られるときに使える攻撃
+description: 何度も復元でき，下位ビットが得られるときに使える攻撃
+slug: lsb-attack
 #image: cover.jpg
 categories:
     - CTF
