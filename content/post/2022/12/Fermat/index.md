@@ -2,6 +2,7 @@
 title: フェルマーの小定理に関する暗号の問題まとめ
 description: 数論でごにょごにょするタイプの問題
 slug: Fermat
+date: 2022-12-19 00:00:00+0000
 #image: cover.jpg
 categories:
     - CTF
@@ -12,12 +13,52 @@ tags:
     - オイラーの定理
 ---
 
-フェルマーの小定理やオイラーの定理を使った問題は，Crypto問題でよく出る(そして一番楽しい)．
-それらを使った解いた問題のまとめ．難易度は独断と偏見でつけました．
+フェルマーの小定理やオイラーの定理を使った問題は，CTFのCrypto問題でよく出ます(当社調べ)(そしてこのタイプの問題が一番楽しい)．
+それらを使った解いた問題の列挙です．難易度は独断と偏見でつけました．
+
+## 基本
+フェルマーの小定理(Fermat's little theorem)は素数$p$，整数$a$で
+$$
+a^p \equiv a \pmod p \quad (pは素数)
+$$
+が成り立つことを言います．
+$a$が$p$と互いに素なことを条件に加えると，両辺を$a$で割った
+$$
+a^{p-1} \equiv 1 \pmod p \quad (pは素数，aはpと互いに素)
+$$
+が成り立ちます．さらに両辺を$a$で割ると
+$$ 
+a^{p-2} \equiv a^{-1} \pmod p \quad (pは素数，aはpと互いに素)
+$$
+となり，逆元になります．どの形もよく使います．
+
+オイラーの定理(Euler's theorem)は先程の$p$を合成数$n$に拡張したもので，
+
+$$
+a^{\phi(n)} \equiv 1 \pmod n \quad (nは合成数，aとnは互いに素)
+$$
+
+ただし，$\phi(n)$はオイラーのトーシェント関数(Euler's totient function)と呼ばれる関数で，$1$以上$n$以下の数のうち$n$と互いに素な個数を表します．
+式で表すと，合成数$n$の素因数分解が
+$$
+n = \prod\_{i=1}^k p\_i^{e\_i} \\\\
+$$
+のとき
+$$
+\phi(n) = \prod\_{i=1}^k (p_{i}^{e_{i}} - p_{i}^{e_{i}-1})
+$$
+で定義されます．
+
+なお，注意として，フェルマーの小定理の指数$p-1$やオイラーの定理の$\phi(n)$は$a$を$1$にする最小の数とは限りません．最小の数についてのカーマイケルの定理というものが存在します．
+
+ちなみに，フェルマーの小定理ですが，フェルマーさんではなくゴットフリート・ライプニッツさんによって証明されたらしいです．
+また，フェルマーの最終定理と区別するために，「小」ついています．
+
 
 ## CakeCTF2022 frozen cake 難易度★★
 ### 問題
 [問題ファイル](https://github.com/theoremoon/cakectf2022-public/tree/master/crypto/frozen_cake/distfiles)
+
 素数$p,q$と平文$m$，$n=pq$から次の$a,b,c$の値が与えられる．$n$の値も与えられる．
 $$
 \begin{align}
@@ -196,9 +237,9 @@ $$
 
 $$
 \begin{align}
-c^{\phi(N)} &= g^{f\phi(N)} r^{N\phi(N)} \pmod {N^2} \\\\
-&= g^{f\phi(N)} r^{\phi(N^2)} \pmod {N^2} \\\\
-&= g^{f\phi(N)} \pmod {N^2}
+c^{\phi(N)} &\equiv g^{f\phi(N)} r^{N\phi(N)} \pmod {N^2} \\\\
+&\equiv g^{f\phi(N)} r^{\phi(N^2)} \pmod {N^2} \\\\
+&\equiv g^{f\phi(N)} \pmod {N^2}
 \end{align}
 $$
 
@@ -228,3 +269,7 @@ f = discrete_log(gf,Mod(g,N*N))
 f = f//phi
 print(long_to_bytes(f))
 ```
+
+## 続く
+良い問題を見つけ次第追加していきます．
+

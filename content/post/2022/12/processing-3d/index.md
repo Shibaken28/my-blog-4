@@ -3,7 +3,6 @@ title: 2D画面になんちゃって3Dを書く
 description: 行列を使ってProcessingの2D画面に3Dっぽい描画をします
 slug: processing
 date: 2022-12-06 02:00:00+0000
-#image: cover.jpg
 categories:
     - Processing
     - 数学
