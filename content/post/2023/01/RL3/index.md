@@ -7,15 +7,14 @@ categories:
     - 強化学習
 tags:
 image: 
-draft : true
+hidden: true
 ---
-# 注：この記事は完成していません
 
 ## 動的計画法のアルゴリズム
 　動的計画法は，状態数が少ない場合に有効な手法である．
 
 ### 反復方策評価
-　ベルマン方程式を使って実際に各$s$における状態価値関数$v(s)$の値を求めることは，状態数が増えていくにつれ，難しくなる．そのため，$v(s)$の値をより正確な値に近づけていくような，値を**更新**させていくよな，手法を考える．
+　ベルマン方程式を使って実際に各$s$における状態価値関数$v(s)$の値を求めることは，状態数が増えていくにつれ，難しくなる．そのため，$v(s)$の値をより正確な値に近づけていくような，値を**更新**させていくような，手法を考える．
 
 もう一度，式$(1)$の行動価値関数のベルマン方程式を振り返る．
 $$
@@ -68,7 +67,7 @@ $$
 今回は，この価値反復法を用いて実装を行う．
 
 ## 実装
-言語はC++を使う．また，`include <hoge>`や`using namespace std;`などの記述を省略している．詳しいコンパイルについてはMakefileと一緒にソースコードをGitHubに置いているので，そちらを参照してほしい．
+　言語はC++を使う．また，`include <hoge>`や`using namespace std;`などの記述を省略している．詳しいコンパイルについてはMakefileと一緒にソースコードをGitHubに置いているので，そちらを参照してほしい．
 ### ルールの確認
 - 盤面は$3\times 3$のマスで構成される
 - 先手はマル，後手はバツ
@@ -76,12 +75,14 @@ $$
 - 縦横斜めのいずれかのラインに$3$つ自分の記号が並んだ時点で勝ち
 - 盤面が埋まっていても勝敗がつかない場合は引き分け
 
+また，今回は，先手を学習することにする．
+
 ### アルゴリズムの確認
-各変数を三目並べに適用すると，次のようになる．
+　各変数を三目並べに適用すると，次のようになる．
 - 環境$s$ : 盤面
 - 行動$a$ : 手
 - 報酬$r(s,a,s')$ : 勝敗
-- 遷移確率$p$ : 三目並べは決定的な挙動を取るので，使わない．
+- 遷移確率$p$ : ?
 
 状態$s$は，丸かバツか空白の$3$通りが$9$マス分あるので高々$3^9=19683$通りある(この中には全てが丸で埋め尽くされた盤面などが存在し，実際はもっと少ない)．この程度なら，全ての状態の価値をメモリに乗せておくことができる．よって，動的計画法が適用そうである．
 
@@ -93,7 +94,7 @@ $$
     1. その中で最も価値の高いものを新しい価値$V(s)$とする．
 
 ### 状態の表現
-$3\times 3$の$9$マスの情報を，整数で表現する．具体的には，
+　$3\times 3$の$9$マスの情報を，整数で表現する．具体的には，
 - 空白 : 0
 - マル : 1
 - バツ : 2
@@ -138,7 +139,7 @@ void print_board(const Board &board)
 ```
 
 ### 盤面の判定
-ゲームの進行状況を判定する関数を作る．
+　ゲームの進行状況を判定する関数を作る．
 `win`という変数に，勝利条件を表す配列を用意しておく(この配列は盤面の`width`と`height`を変えたときに一緒に変えなければならない．謝罪)．
 ```cpp
 int judge(const Board &board)
@@ -182,7 +183,7 @@ int judge(const Board &board)
 }
 ```
 一緒に報酬を返す関数も作っておく．引き分けでも正の報酬を与える．
-簡単のために，コンピュータはマルのみを打つことにする．ちなみに，後述するように，コンピュータがバツを打つ場合は，盤面のマルとバツを入れ替えることで同じコードで実装できる．
+簡単のために，コンピュータはマルのみを打つことにする．ちなみに，コンピュータがバツを打つ場合は，盤面のマルとバツを入れ替えることで同じコードで実装できる．
 
 ```cpp
 // 報酬
@@ -199,8 +200,8 @@ double reward(const Board &board)
 ```
 
 ### 盤面の生成
-さて，$3^9$通りの盤面を全て生成すると，全てのマスがマルで埋まっているような盤面であったり，マルとバツが両方揃っているような盤面であったり，そもそも存在しない盤面まで生成されてしまう．そんな盤面を除外するために，`is_valid`という関数を作る(残しておいても問題がないのかもしれないが，なんとなく)．
-マルとバツの個数を数え，マルの個数がバツの個数より1個多いか，同じ個数のときには`true`を返す．
+　さて，$3^9$通りの盤面を全て生成すると，全てのマスがマルで埋まっているような盤面であったり，マルとバツが両方揃っているような盤面であったり，そもそも存在しない盤面まで生成されてしまう．そんな盤面を除外するために，`is_valid`という関数を作る(残しておいても問題がないのかもしれないが，なんとなく)．また，`judge(board) != 0`のときは，その盤面は終了盤面であるので，その盤面は除外する．
+今回は，先手を学習するため，マルとバツの個数が同じ盤面のみ考える．
 ```cpp
 // 盤面が有効かどうか
 bool isVaild(const Board &board)
@@ -217,55 +218,56 @@ bool isVaild(const Board &board)
             cnt--;
         }
     }
-    return 0 <= cnt && cnt <= 1;
+    return cnt == 0;
 }
 ```
 
 状態価値関数$v$は，`std::map`を用いて実装する．
 `map<Board, double>`とすると，`Board`をキーとして，`double`を値として扱うことができる．全ての有効な状態で，$v(s) = 0$としておく．
-この酷いコードは再帰関数を使って後で直す．
+全ての盤面の生成にはカッコよく再帰関数を用いる．
 ```cpp
-int main(){
+void initAllBoard(Board &board, vector<Board> &allBoard,int depth=0)
+{
+    if (depth == cells)
+    {
+        if (isVaild(board))
+        {
+            allBoard.push_back(board);
+        }
+        return;
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        board[depth] = i;
+        initAllBoard(board, allBoard, depth + 1);
+    }
+}
+
+
+int main(void)
+{
     // コンピュータは常にoとする
     //  V[s] := 状態sにおける価値
     map<Board, double> V;
     // 全ての状態を生成
-    for (int i = 0; i < 3; i++)
+    vector<Board> allBoard;
+    Board empty = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    initAllBoard(empty, allBoard);
+    for (const auto &b : allBoard)
     {
-        for (int j = 0; j < 3; j++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                for (int l = 0; l < 3; l++)
-                {
-                    for (int m = 0; m < 3; m++)
-                    {
-                        for (int n = 0; n < 3; n++)
-                        {
-                            for (int o = 0; o < 3; o++)
-                            {
-                                for (int p = 0; p < 3; p++)
-                                {
-                                    for (int q = 0; q < 3; q++)
-                                    {
-                                        Board board = {i, j, k, l, m, n, o, p, q};
-                                        if (isVaild(board))
-                                        {
-                                            V[board] = 0.0;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        V[b] = 0.0;
     }
 ```
 
 ### 学習
-学習フェーズの雛形は以下のようになる．完全に値の更新がしなくなるまで回すというのは，浮動小数点型の精度の問題から難しいため，ある程度の差分が出なくなったら終了するということにする．
+　学習フェーズの雛形は以下のようになる．完全に値の更新がしなくなるまで回すというのは，浮動小数点型の精度の問題から難しいため，ある程度の差分が出なくなったら終了するということにする．
+式$(6)$の通りに，`maxAction`関数で，$\sum \_{s'} p(s'|s,a) \left\\{ r(s,a,s') + \gamma V\_{k} (s') \right\\}$が最大になる行動$a$を選択する．
+
+$$
+\begin{align}
+V\_{k+1}(s) = \max_{a} \sum \_{s'} p(s'|s,a) \left\\{ r(s,a,s') + \gamma V\_{k} (s') \right\\}
+\end{align}
+$$
 ```cpp
     double gamma = 0.8;
     double threshold = 1e-5; // 閾値;更新したときの差分がこの値以下になったら終了
@@ -274,6 +276,14 @@ int main(){
         /*
         全ての状態sについて，価値を更新する
         */
+        for (auto &[prevS, prevV] : V)
+        {
+            auto [act, nextV] = maxAction(prevS, V, gamma);
+            //maxActionは最も収益の高い行動とそのときの価値を返す
+            double diff = abs(prevV - nextV);
+            max_diff = max(max_diff, diff);
+            V[prevS] = nextV;
+        }
         if (max_diff < threshold)
         {
             break;
@@ -282,205 +292,137 @@ int main(){
 ```
 
 ### 状態価値関数の更新
-式$(6)$の通りに実装すると，以下のようになるが，このままだと問題がある．
+　`maxAction`関数を作る．ここで，注意するのは，相手の行動を考慮する必要があることである．
+行動$a$を選択し，さらに相手ターンが終了したときの盤面が$s'$となる．そこで，相手の行動を全て試して，それらの状態価値の平均を取る．
+
+少し複雑なので，言語化すると以下のようになる．
+
+1. 最大の価値とそのときの行動を$v_{max} = -\infty$，$a_{max} = -1$で初期化する．
+1. 現在の状態$s$からできる全ての行動$a$について次を行う．
+    1. 行動$a$を選択したときの盤面を$t$とする．
+    1. $V_{k+1} = 0$と初期化する．
+    1. $t$からできる全ての相手の行動について次を行う．行動の数を$n$とする．
+        1. 相手の行動を選択したときの盤面を$s'$とする．
+        1. $V_{k+1}$に$r(s,a,s') + \gamma V(s')$を加算する
+    1. $V_{k+1}$を$n$で割って平均にする．
+    1. $V_{k+1}$が$v_{max}$より大きければ$v_{max} = V_{k+1}$，$a_{max} = a$とする．
+
+ただし，相手の置く場所がなかった場合はその時点の状態の報酬をそのまま返す．
+
+数式で表現すると，`maxAction`関数は，それぞれ式$(7)(8)$を返していることになる．
 $$
 \begin{align}
-V\_{k+1}(s) = \max_{a} \sum \_{s'} p(s'|s,a) \left\\{ r(s,a,s') + \gamma V\_{k} (s') \right\\}
+\text{argmax}_{a} \sum \_{s'} p(s'|s,a) \left\\{ r(s,a,s') + \gamma V\_{k} (s') \right\\} \\\\
+\max\_{a} \sum \_{s'} p(s'|s,a) \left\\{ r(s,a,s') + \gamma V\_{k} (s') \right\\}
 \end{align}
 $$
-```cpp
-        double max_diff = 0.0;
-        for (auto &[prevS, prevV] : V)
-        {
-            // cout<<"prevS:"<<endl;
-            // print_board(prevS);
-            double maxV = -1e9;
-            if (judge(prevS) != 0)
-            {
-                // 終了状態
-                maxV = reward(prevS);
-            }
-            for (int i = 0; i < cells; i++)
-            {
-                if (prevS[i] != 0)
-                    continue;
-                
-                // 置いたときの盤面
-                Board nextS = prevS;
-                nextS[i] = 1;
-
-                double nextV = reward(nextS) + gamma * V[nextS];
-                if (nextV > maxV)
-                {
-                    maxV = nextV;
-                }
-            }
-            double diff = abs(prevV - maxV);
-            if (diff > max_diff)
-            {
-                max_diff = diff;
-            }
-            V[prevS] = maxV;
-        }
-```
-問題は，$v(s)$を更新するときに，次の状態$s'$における$v(s')$を使っていることである．
-この，$v(s')$というのは，相手の手番である．相手の手番の価値関数は求めていない．
-そもそも，$s$が相手の手番の場合にもマルを置いてしまっていて，色々破綻している．
-
-$v(s)$を更新するときに使う$v(s')$は，自分がマルを置いて，更に相手がバツを置いた状態の$s'$である必要がある．
-
-状況を整理する．実装したいのは次のことだ．
-
-- 状態$s$が，次マルを置く盤面の場合
-    - マルを置いた後，相手がバツを置く
-    - その状態の報酬と価値を使って，$v(s)$を更新する
-- 状態$s$が，次バツを置く盤面の場合
-    - バツを置いた後，相手がマルを置く
-    - その状態の報酬と価値を使って，$v(s)$を更新する
-
-問題は，
-- 相手がバツを置くとき，どこに置かれるかがわからない
-- バツを置く盤面の価値が必要
-
-相手の状態価値関数を用意したくなるが，今回はコンピュータ自身の分身を使うことにする．つまり，状態価値観数は$1$つだけのままにする．
-
-コンピュータはマルを置く体で実装をしてきたので，コンピュータがバツの場合の実装をしなければならない．これは，盤面の状態を反転させるだけで実装できる．バツの置き場所は，マルとバツを入れ替えた盤面で，マルを置いたときに最も価値関数の高い場所に置くことにする．
 
 ```cpp
-Board inverse(const Board &board)
+pair<int,double> maxAction(const Board &prevS,const map<Board, double> &V,const double gamma)
 {
-    Board ret = board;
+    double maxV = -1e9;
+    int act = -1;
     for (int i = 0; i < cells; i++)
     {
-        if (ret[i] == 1)
-        {
-            ret[i] = 2;
+        if (prevS[i] != 0) continue;
+        // 置いたときの盤面
+        Board nextS = prevS;
+        nextS[i] = 1;
+
+        double nextV = 0;
+
+        vector<int> put;//相手の置ける場所
+        for(int j=0;j<cells;j++){
+            if(nextS[j]==0){
+                put.push_back(j);
+            }
         }
-        else if (ret[i] == 2)
+        for(const auto &p : put){
+            nextS[p] = 2;
+            nextV += reward(nextS) + gamma * V.at(nextS);
+            nextS[p] = 0;
+        }
+        if(put.empty()){//相手の置ける場所がないとき
+            nextV = reward(nextS);   
+        }else{
+            nextV /= put.size();
+        }
+
+        if (nextV > maxV)
         {
-            ret[i] = 1;
+            maxV = nextV;
+            act = i;
         }
     }
-    return ret;
-}
-```
-また，その次の手番がどちらなのかを判定する関数も必要になる．
-```cpp
-bool isFirst(const Board &board)
-{
-    int cnt = 0;
-    for (int i = 0; i < cells; i++)
-    {
-        if (board[i] != 0)
-            cnt++;
-    }
-    return cnt % 2 == 0;
+    return {act,maxV};
 }
 ```
 
-これらを用いると，次を実装すれば良いことになる．
-
-- 状態$s$が，次マルを置く盤面の場合
-    1. マルを置く
-    1. 盤面のマルとバツを反転させる
-    1. 最も価値の高い状態になるような場所に，マルを置く
-    1. 盤面のマルとバツを反転させる
-    1. その状態の報酬と価値を使って，$v(s)$を更新する
-- 状態$s$が，次バツを置く盤面の場合
-    1. 盤面のマルとバツを反転させる
-    1. 「状態$s$が，次マルを置く盤面の場合」を実行する
-    
-バツの手番である場合には，盤面を反転させることで，マルの手番と考えることができる．
-なお，プログラムでは反転のタイミングがちょっと異なることに注意する(ごめんなさい)．
-
-注意深く実装すると，次のようになる．
+### 最適方策の取得
+　以上のプログラムによって，状態価値関数が求まったので，最適方策を取得する．
+これは，`maxAction`関数の戻り値を使えば実装できる．
 ```cpp
-
-    double gamma = 0.8;
-    double threshold = 1e-5; // 閾値;更新したときの差分がこの値以下になったら終了
-    // 価値反復法
-    while (true)
+    map<Board, int> mu;
+    for (auto &[prevS, prevV] : V)
     {
-        double max_diff = 0.0;
-        for (auto &[prevS, prevV] : V)
-        {
-            // cout<<"prevS:"<<endl;
-            // print_board(prevS);
-            double maxV = -1e9;
-            if (judge(prevS) != 0)
-            {
-                // 終了状態
-                maxV = reward(prevS);
-            }
-            for (int i = 0; i < cells; i++)
-            {
-                if (prevS[i] != 0)
-                    continue;
-                // 置いたときの盤面
-                Board nextS = prevS;
-
-                if (!isFirst(prevS))
-                {
-                    nextS = inverse(nextS);
-                }
-
-                nextS[i] = 1;
-                if (judge(nextS) == 0)
-                {
-                    // 相手の番
-                    Board nextinvS = inverse(nextS);
-                    double maxoppV = -1e9;
-                    int put = -1;
-                    for (int j = 0; j < cells; j++)
-                    {
-                        // 0のときに置ける
-                        if (nextinvS[j] != 0)
-                            continue;
-                        // bに置いたときの盤面
-                        Board nextnextS = nextinvS;
-                        nextnextS[j] = 1;
-                        // 価値が最大のものを選ぶ
-                        if (V[nextnextS] > maxoppV)
-                        {
-                            maxoppV = V[nextnextS];
-                            put = j;
-                        }
-                    }
-                    // 相手の番で価値が最大になる手を打ったときの盤面
-                    nextS[put] = 2;
-                }
-
-                if (!isFirst(prevS))
-                {
-                    nextS = inverse(nextS);
-                }
-
-                double nextV = reward(nextS) + gamma * V[nextS];
-                if (nextV > maxV)
-                {
-                    maxV = nextV;
-                }
-            }
-            double diff = abs(prevV - maxV);
-            if (diff > max_diff)
-            {
-                max_diff = diff;
-            }
-            V[prevS] = maxV;
-        }
-        if (max_diff < threshold)
-        {
-            break;
-        }
+        auto [act, nextV] = maxAction(prevS, V, gamma);
+        mu[prevS] = act;
     }
 ```
 
+適当なコードで出力してみる．
+```cpp
+    for(auto &[prevS, prevV] : V){
+        cout<<"mu ["<<endl;
+        print_board(prevS);
+        cout<<"] = "<<mu[prevS]<<endl<<endl;
+    }
+```
 
-### 対戦する
-これにて学習部分の実装は終わりである．
-適当な対話型の対戦プログラムを書いて遊ぶことができる．
+出力結果(抜粋)は以下の通り．
+```cpp
+mu [
+ | | 
+ |o| 
+x|o|x
+] = 1
 
-先手がコンピュータでマル，後手が人間でバツである．
+mu [
+ | | 
+ |o| 
+x|x|o
+] = 0
+
+mu [
+ | | 
+ |o|o
+ |x|x
+] = 3
+
+mu [
+ | | 
+ |o|o
+x| |x
+] = 3
+```
+次に置くべき場所が出力されている．
+
+こういう感じの，次に相手の置く場所を阻止しないと行けない場合もしっかりと出力されている．
+```cpp
+mu [
+ |x| 
+x|o|o
+x|o| 
+] = 0
+
+mu [
+ | |x
+ |x|o
+ |o| 
+] = 6
+```
+
+対戦してみると普通に賢い．
 ```cpp
  | | 
  | | 
@@ -489,37 +431,33 @@ bool isFirst(const Board &board)
 o| | 
  | | 
  | | 
+put:8
+
+o| | 
+ | | 
+ | |x
+
+o| |o
+ | | 
+ | |x
 put:1
 
-o|x| 
+o|x|o
  | | 
+ | |x
+
+o|x|o
  | | 
+o| |x
+put:3
 
-o|x| 
-o| | 
- | | 
-put:6
-
-o|x| 
-o| | 
+o|x|o
 x| | 
+o| |x
 
-o|x| 
-o|o| 
-x| | 
-put:5
-
-o|x| 
-o|o|x
-x| | 
-
-o|x| 
-o|o|x
-x| |o
+o|x|o
+x|o| 
+o| |x
 ```
-なかなか賢いんじゃないかと思う．
-初手に真ん中に置かないところが不思議ではあるが．
 
-
-# うまくいきません助けてください
 

@@ -8,7 +8,7 @@ categories:
     - 数学
 tags:
 image: 
-draft : true
+hidden: true
 ---
 
 # ベルマン方程式
