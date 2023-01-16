@@ -52,6 +52,38 @@ hidden: true
 - 求めている途中の関数(真の値ではない)は，大文字で表す．
     - $V,Q$など
 
+### 英単語
+　英語の記事を読むときに，よく出てくる単語をまとめておく．出てくる単語はだいたい限られているため，適当に単語を押さえておけば意外と読める(本当？)．
+|英単語|意味|
+|---|---|
+|proof|証明|
+|formula|式|
+|equation|方程式|
+|law|法則|
+|distribution|分布|
+|discrete|離散|
+|continuous|連続|
+|expectation|期待(値)|
+|variance|分散|
+|probability|確率|
+|stochastic|確率的|
+|approximate|近似する|
+|trajectory|軌道(エピソードの一連の流れ)|
+|observation|観測|
+|optimazation|最適化|
+|gradient|勾配|
+|comulative|累積|
+|loss|損失|
+|exploration|探索|
+|exploitation|活用|
+|pseudocode|擬似コード|
+|represent|表現する|
+|depend on|依存する|
+|objective|目的|
+|constraint|制約|
+
+
+
 
 ## ベクトル解析
 ### 偏微分
@@ -114,13 +146,20 @@ E[X] &= \int_{-\infty}^{\infty} P(X=x) dx
 $$
 
 ### 線形性
-　期待値の和は和の期待値と等しい．
+　期待値の和は和の期待値と等しい．また，期待値の定数倍は定数倍の期待値と等しい．
 $$
-E[X+Y] = E[X] + E[Y]
+\begin{align*}
+E[X+Y] &= E[X] + E[Y] \\\\
+E[X] \times a &= E[aX]
+\end{align*}
 $$
+直感的な例で言えば，サイコロを$2$つ振ったときに，出た目の合計の期待値は，$1$つのサイコロを振ったときの出る目の期待値の$2$倍に等しい．
 
-https://manabitimes.jp/math/698 に面白い例が載っていました．
+https://manabitimes.jp/math/698 に面白い例を見つけた．
 > 　各桁が独立に確率 $\frac{1}{2}$ で 1か2 であるような 9 桁の数字の並びがある。このとき「 $111$ 」と並ぶ部分の個数の期待値を求めよ。例えば「$111221111$」は1〜3，6〜8，7〜9番目の三箇所とみなす。
 
+ストレートに考えると難しいが，線形性を考えると簡単になる．
 
-# *todo: 続きを書く*
+> ある連続する$3$桁が$111$である確率は$\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}$である．それが$9$桁のうち$7$箇所に起こるので，期待値は$\frac{1}{8} + \frac{1}{8} + \cdots + \frac{1}{8} = \frac{7}{8}$である．
+
+このような非直感的な例もある．
