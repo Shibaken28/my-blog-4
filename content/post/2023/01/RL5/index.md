@@ -87,4 +87,30 @@ $$
 重点サンプリングを用いることで，挙動方策とターゲット方策を別々にできて便利なことが多いが，残念ながら，$\pi$と$b$の違いが大きいほど誤差が大きくなってしまう．
 
 ## Q学習
+　状態価値関数のベルマン方程式(式$(8)$)は，全ての次の行動に関して計算をしている．SARSAは，その全ての行動の中から方策(例えば$\varepsilon$-greedy)でサンプリングをし，$Q$値の更新をする(式$(9)$)手法であった．
+$$
+\begin{align}
+q_\pi(s,a) &= \sum_{s'} p(s'|s,a) \left\\{ r(s,a,s') + \gamma \sum_{a'} \pi(a'|s') q_\pi(s',a') \right\\} \\\\
+\end{align}
+$$
+
+$$
+\begin{align}
+Q(S_t,A_t) &\leftarrow Q(S_t,A_t) + \alpha \left( R_t + \gamma Q\_\pi(S\_{t+1},A_{t+1}) -Q\_\pi(S_t,A_t) \right)
+\end{align}
+$$
+
+　これと同様に，ベルマン最適方程式(式$(10)$)からは式$(11)$の$Q$学習が得られる．$Q$学習は方策オフ型である．
+
+$$
+\begin{align}
+q\_\* (s,a) &= \sum \_{s'} p(s'|s,a) \left\\{ r(s,a,s') + \gamma \max \_{a'} q\_\* (s',a') \right\\} \\\\
+\end{align}
+$$
+
+$$
+\begin{align}
+Q(S_t,A_t) &\leftarrow Q(S_t,A_t) + \alpha \left( R_t + \gamma \max\_{a} Q(S\_{t+1},a) -Q(S_t,A_t) \right)
+\end{align}
+$$
 
