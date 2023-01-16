@@ -280,4 +280,3 @@ $\Phi\_\tau$は，手法によって異なる．
 - $\Phi\_\tau = G\_t$の場合
 - $\Phi\_\tau = G(\tau) - V\_w(S\_t)$の場合
 - $\Phi\_\tau = G(\tau) + \gamma V\_w(S\_{t+1})-V\_w(S\_t)$の場合
-

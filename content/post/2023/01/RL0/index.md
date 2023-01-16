@@ -25,7 +25,7 @@ hidden: false
 1. 　[ニューラルネットワーク(実装編)](/my-blog-4/contents/rl-7/)
 1. 　[DQN (WIP)](/my-blog-4/contents/rl-8/)
 1. 　[方策勾配法 (WIP)](/my-blog-4/contents/rl-9/)
-1. 　[タイトル未定](/my-blog-4/contents/rl-10/)
+1. 　[タイトル未定(ケーススタディ的なやつを書く)](/my-blog-4/contents/rl-10/)
 1. 　[Extra Material](/my-blog-4/contents/rl-ex/)
 
 最後のExtra Materialには，記号や慣習のまとめや，数学に関する知識などが書いてある．
