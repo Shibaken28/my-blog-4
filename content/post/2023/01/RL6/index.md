@@ -18,7 +18,7 @@ $$
 $z=x^2+y^2$のグラフの形が[こちら](https://www.geogebra.org/3d/dfrzwv6g)であるため，
 これを$x$軸正の方向に$2$，$y$軸正の方向に$3$だけ平行移動させたものがこのグラフの形である．
 
-次のコードで，$x$と$y$の初期値を$0$として，$z.backward()$をしたあとに，$x.grad$と$y.grad$を表示する．これは何を表しているのか．
+次のコードで，$x$と$y$の初期値を$0$として，`z.backward()`をしたあとに，`x.grad`と`y.grad`を表示する．これは何を表しているのか．
 ```python
 import numpy as np
 from dezero import Variable
@@ -46,7 +46,7 @@ $$
 $$
 \frac{\partial z}{\partial y} = 2(y-3) = 2y-6
 $$
-そして，$grad$は，変数がその値であるときの偏微分を表している．
+そして，gradは，変数がその値であるときの偏微分を表している．
 $$
 \frac{\partial z}{\partial x} (0,0) = -4 
 $$

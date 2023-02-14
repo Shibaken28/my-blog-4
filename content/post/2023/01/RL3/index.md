@@ -75,7 +75,14 @@ $$
 今回は，この価値反復法を用いて実装を行う．
 
 ## 三目並べの実装
-　言語はC++を使う．また，`include <hoge>`や`using namespace std;`などの記述を省略している．詳しいコンパイルについてはMakefileと一緒にソースコードをGitHubに置いているので，そちらを参照してほしい．
+　言語はC++を使う．また，`include <hoge>`や`using namespace std;`などの記述を省略している．全体のソースコードは[gist](https://gist.github.com/Shibaken28/41d44940567dac6dd8721e549af46d46)に公開している．
+
+コンパイルは，`g++ -std=c++17 hoge.cpp`で行う．Makefileを適当に作っておくと便利．
+```
+# g++ の c++17でコンパイル
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -Wpedantic
+```
 ### ルールの確認
 - 盤面は$3\times 3$のマスで構成される
 - 先手はマル，後手はバツ
