@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>競プロ on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/categories/%E7%AB%B6%E3%83%97%E3%83%AD/</link><description>Recent content in 競プロ on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Tue, 06 Dec 2022 02:00:00 +0000</lastBuildDate><atom:link href="https://shibaken28.github.io/my-blog-4/categories/%E7%AB%B6%E3%83%97%E3%83%AD/index.xml" rel="self" type="application/rss+xml"/><item><title>行列累乗まとめ</title><link>https://shibaken28.github.io/my-blog-4/contents/matrix-pow/</link><pubDate>Tue, 06 Dec 2022 02:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/matrix-pow/</guid><description>&lt;p>この記事は&lt;a class="link" href="https://zenn.dev/shibak3n/articles/f08a8ad67a7d14" target="_blank" rel="noopener"
+>Zennに投稿したもの&lt;/a>と同じです．&lt;/p>
+&lt;h2 id="これはなに">これはなに&lt;/h2>
+&lt;p>　行列累乗と呼ばれる競プロのテクニックの概要と，それを用いる例をひたすら挙げていきます．競プロチックな話題ではありますが，行列が役立つ場面の例の紹介として，非競プロerでも楽しめると思います．ただし，数列と行列に関する用語がある程度わかっている人向けです．&lt;/p>
+&lt;p>なお，この記事は&lt;a class="link" href="https://qiita.com/advent-calendar/2022/nnct" target="_blank" rel="noopener"
+>長野高専 Advent Calender 2022&lt;/a>の2日目の記事です。&lt;/p>
+&lt;h2 id="原理フィボナッチ数列の例">原理(フィボナッチ数列の例)&lt;/h2>
+&lt;p>次の式で表される数列を考えます．&lt;/p>
+&lt;p>$$
+\begin{align}
+F_1 &amp;amp;= 1 \\
+F_2 &amp;amp;= 1 \\
+F_n &amp;amp;= F_{n-1} + F_{n-2} \quad　(n \geq 3)
+\end{align}
+$$&lt;/p>
+&lt;p>これはフィボナッチ数列という名で知られている，$F=(1,1,2,3,5,8,13,21,34,\cdots)$という前の$2$項の和が次の項になる数列です．これの第$n$項目をプログラミングで求めることにします．第$1$項目から第$n$項目までを求めるのではなく，第$n$項目のみ求めれば良いことに注意です．それっぽいコードを次に示します．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//F[i]:=フィボナッチ数列のi項目
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>for&lt;/code>文を$n$回くらい回すので計算量は$O(n)$です(計算量についてこちら&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>を参照してください)．&lt;/p>
+&lt;p>では，$n=10^{15}$項目を求めたい場合はどうでしょうか．このコードでは，実行が終わりません．&lt;/p>
+&lt;h4 id="行列で表現する">行列で表現する&lt;/h4>
+&lt;p>　ここで，行列です．フィボナッチ数列の定義より，次の式は成り立ちます．&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+F_{n} \\
+F_{n-1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+F_{n-1} \\
+F_{n-2}
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>具体的に計算してみます．&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+5 \\
+3
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>前の$2$項から次の項が生成されていることがわかりますね．
+これらの結果を使って次のような変形を考えます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+5 \\
+3
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+^3
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>始めの$2$項に同じ行列を$3$回掛け算することで3つ後の項が出てきました．これを繰り返すと次が成り立つことがわかります．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+F_n \\
+F_{n-1}
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+^{n-2}
+\begin{pmatrix}
+F_2 \\
+F_1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>第$10$項目を求めたいときは次のように計算できます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+F_{10} \\
+F_{9}
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+^{8}
+\begin{pmatrix}
+F_2 \\
+F_1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+89 &amp;amp; 55 \\
+55 &amp;amp; 34
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+144 \\
+89
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>フィボナッチ数列は$1,1,2,3,5,8,13,21,34,55,89,144,\cdots$であるため，確かにあっています．
+便利そうな式が行列によって完成しました．漸化式の悪いところは前の項の値がわかっていないと次の項が計算できないことですが，この式は特定の項をダイレクトに表すことに成功しています．行列の$n$乗が高速に計算できればフィボナッチ数列の第$n$項が高速に計算できそうです．&lt;/p>
+&lt;h4 id="累乗の高速計算">累乗の高速計算&lt;/h4>
+&lt;p>行列$A$の$n$乗である$A^n$を計算するのに，ナイーブな方法だと$n-1$回の行列同士の掛け算が発生します．この行列同士の掛け算の回数が少なくなることを高速化と呼ぶことにします．
+$A^{128}$を考えてみましょう．&lt;/p>
+&lt;ul>
+&lt;li>$A$に$A$をかけて$A^2$&lt;/li>
+&lt;li>$A^2$に$A$をかけて$A^3$
+$\cdots$&lt;/li>
+&lt;li>$A^{127}$に$A$をかけて$A^{128}$&lt;/li>
+&lt;/ul>
+&lt;p>全部で$127$回の掛け算が必要ですね．では，$128$という特徴的な数に注目して次のように計算したらどうでしょうか．&lt;/p>
+&lt;ul>
+&lt;li>$A$に$A$をかけて$A^2$&lt;/li>
+&lt;li>$A^2$に$A^2$をかけて$A^4$&lt;/li>
+&lt;li>$A^4$に$A^4$をかけて$A^8$&lt;/li>
+&lt;li>$A^{8}$に$A^{8}$をかけて$A^{16}$&lt;/li>
+&lt;li>$A^{16}$に$A^{16}$をかけて$A^{32}$&lt;/li>
+&lt;li>$A^{32}$に$A^{32}$をかけて$A^{64}$&lt;/li>
+&lt;li>$A^{64}$に$A^{64}$をかけて$A^{128}$&lt;/li>
+&lt;/ul>
+&lt;p>全部で，$7$回の掛け算で$A^{128}$が計算できました．$127$回から$7$回という驚異の回数削減です．
+実は，これは$128$のような$2$の冪数に限った話ではありません．先程，$A^1,A^2,A^4,A^8,A^{16},\cdots$を求めましたが，これらを掛け合わせることで任意の$A^n$が計算できます(指数法則$A^aA^b=A^{a+b}$が成り立つことに注意)．&lt;/p>
+&lt;ul>
+&lt;li>$A^{12} = A^{8} A^{4}$&lt;/li>
+&lt;li>$A^{39} = A^{32} A^{4} A^{2} A^{1}$&lt;/li>
+&lt;li>$A^{127} = A^{64}A^{32}A^{16}A^{8}A^{4}A^{2}A^{1}$&lt;/li>
+&lt;/ul>
+&lt;p>これらは，$Aの(2進数表記したとき，1である位)乗$を掛け算したものになっています．
+上の例では，$12_{(10)}=1100_{(2)}$であり，$1$である位は$4$の位と$8$の位なので$12=8+4$と$12$を$2$の冪数の和で表すことができます．
+このような手法をダブリングや繰り返し二乗法と呼びます．&lt;/p>
+&lt;p>それっぽいコードを次に示します．計算量は$O(\log N)$です．$O(N)$に比べて非常に高速です&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// AのB乗の計算結果をCの格納
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">I&lt;/span> &lt;span class="c1">//Iは単位行列
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">tmp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">A&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">C&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">tmp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">B&lt;/span>&lt;span class="o">/=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tmp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">tmp&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">tmp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Pythonでの汚い実装例も示します．&lt;/p>
+&lt;h5 id="愚直パターン">愚直パターン&lt;/h5>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">10000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;第&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">項目は&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">です&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h5 id="高速化">高速化&lt;/h5>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">I&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">J&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">K&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]),&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">J&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">I&lt;/span>&lt;span class="p">)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">I&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">j&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">J&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">k&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">K&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">mat_pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">))]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">&amp;amp;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n&lt;/span> &lt;span class="o">//=&lt;/span> &lt;span class="mi">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">y&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">],[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">],[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">10000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mat_pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mat&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">ret&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;第&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">項目は&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">ret&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">です&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="線形漸化式">線形漸化式&lt;/h2>
+&lt;p>フィボナッチ数列は$2$項間の漸化式でしたが，$k$項間の線形漸化式でも可能です．&lt;/p>
+&lt;h4 id="3項の場合">3項の場合&lt;/h4>
+&lt;blockquote>
+&lt;p>次で定義される数列$a$の$n$項目を求めよ．&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+\begin{align}
+a_1 &amp;amp;= a_2 = a_3 = 1 \\
+a_n &amp;amp;= 2a_{n-1} - 4a_{n-2} + 3a_{n-3}\quad　(n \geq 4)
+\end{align}
+$$&lt;/p>
+&lt;p>この漸化式は次のような行列で表されます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+a_{n-1} \\
+a_{n-2}
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+2 &amp;amp; -4 &amp;amp; 3\\
+1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0
+\end{pmatrix}
+^{n-3}
+\begin{pmatrix}
+a_3 \\
+a_2 \\
+a_1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>実際に行列を計算すると確かに成立していることがわかります．&lt;/p>
+&lt;p>一般に，$k+1$項間の漸化式は$k\times k$の行列を使って表され，$k\times k$の行列同士の掛け算は$k^3$回の掛け算が必要であるため，第$n$項を求めるのに$O(k^3\log n)$かかります．&lt;/p>
+&lt;p>なお，$k+1$項間の線形漸化式の第$n$項はkitamasa法と呼ばれる手法で$(k^2\log n)$で求めることが可能です．こちらもダブリングを使った手法です．&lt;/p>
+&lt;h4 id="定数項がある場合">定数項がある場合&lt;/h4>
+&lt;blockquote>
+&lt;p>$a,b,m,x_0$を使って線形合同法で乱数を生成する．このときの$n$番目の乱数$x_n$を求めよ
+ただし，線形合同法とは，&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+x_{i+1} = ax_i + b \pmod m
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>の漸化式で疑似乱数を生成する手法である．&lt;/p>
+&lt;/blockquote>
+&lt;p>定数項がある場合は$1$の行を付け足して次のように作ることができます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+x_n \\
+1 \\
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+a &amp;amp; b\\
+0 &amp;amp; 1
+\end{pmatrix}
+^{n}
+\begin{pmatrix}
+x_0 \\
+1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;h2 id="複数変数の線形漸化式">複数変数の線形漸化式&lt;/h2>
+&lt;p>複数の変数で表される漸化式にも応用できます&lt;/p>
+&lt;h4 id="平方根を含む数の累乗">平方根を含む数の累乗&lt;/h4>
+&lt;p>次の問題を考えます．&lt;/p>
+&lt;blockquote>
+&lt;p>$(2+\sqrt{3})^n$はいくつか？$a+b\sqrt{3}$の形式になるので$a,b$を求めよ．&lt;/p>
+&lt;/blockquote>
+&lt;p>$n$が大きいと展開が厄介になりそうなことが想像できますね．
+とりあえず，$2+\sqrt{3}$の累乗を次のように文字で置きます．&lt;/p>
+&lt;p>$$
+X_n = (a_n + b_n\sqrt{3})
+$$&lt;/p>
+&lt;p>$X_n$から$X_{n+1}$を計算してみます．&lt;/p>
+&lt;p>$$
+\begin{align}
+X_{n+1} &amp;amp;= X_n (2 + \sqrt{3}) \\
+&amp;amp;= (a_n + b_n \sqrt{3})(2 + \sqrt{3}) \\
+&amp;amp;= 2a_n + a_n \sqrt{3} + 2b_n \sqrt{3} + 3b_n \\
+&amp;amp;= (2a_n + 3b_n) + (a_n + 2b_n)\sqrt{3} \\
+&amp;amp;= a_{n+1} + b_{n+1} \sqrt{3}
+\end{align}
+$$&lt;/p>
+&lt;p>最後の二行の係数を比較して，次の漸化式が立ちます．&lt;/p>
+&lt;p>$$&lt;/p>
+&lt;p>\begin{align}
+a_1&amp;amp;=b_1=1 \\
+a_{n+1} &amp;amp;= 2a_{n} + 3b_n \\
+b_{n+1} &amp;amp;= a_n + 2b_n
+\end{align}&lt;/p>
+&lt;p>$$&lt;/p>
+&lt;p>これを行列にすると次のようになります．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+b_n
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+2 &amp;amp; 3\\
+1 &amp;amp; 2
+\end{pmatrix}
+^{n-1}
+\begin{pmatrix}
+a_1 \\
+b_1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;h4 id="確率">確率&lt;/h4>
+&lt;p>次の問題を考えます．&lt;/p>
+&lt;blockquote>
+&lt;p>エアコンのスイッチの状態は$OFF$である．遠隔操作を1回行うと確率$p$でエアコンの$ON$と$OFF$が入れ替わる．$n$回遠隔操作をしたときエアコンが$ON$である確率を求めよ．($N\leq 10^{18}$)　出典 &lt;a class="link" href="https://atcoder.jp/contests/code-festival-2014-morning-middle/tasks/code_festival_morning_med_c" target="_blank" rel="noopener"
+>CODE FESTIVAL 2014 Middle C - eject&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>次のように変数を設定します．
+$a_i = i$回目の遠隔操作をしたときにエアコンが$ON$である確率
+$b_i = i$回目の遠隔操作をしたときにエアコンが$OFF$である確率
+漸化式は次のように立ちます．&lt;/p>
+&lt;p>$$
+a_i = p b_{i-1} + (1-p)a_{i-1} \\
+b_i = p a_{i-1} + (1-p)b_{i-1} \\
+$$&lt;/p>
+&lt;p>行列にします．ただし，$a_0=0,b_0=1$です．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+b_n
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1-p &amp;amp; p\\
+p &amp;amp; 1-p
+\end{pmatrix}
+^{n}
+\begin{pmatrix}
+a_0 \\
+b_0
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>今までのものは全て，小さな問題の答えから大きな問題の答えを導くdp(dynamic programming:動的計画法)に分類されます．dpの漸化式が立ったときに，それが線形であり，同じ遷移をする場合に行列累乗が有効なことが多いです．&lt;/p>
+&lt;h2 id="グラフのパス数">グラフのパス数&lt;/h2>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/dp/tasks/dp_r" target="_blank" rel="noopener"
+>EDPC R - Walk&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>$N$頂点の単調有効グラフ$G$で，長さ$1$の有向辺が長さ$K$のパスは何通りありますか．ただし同じ頂点を複数回通っても良い&lt;/p>
+&lt;/blockquote>
+&lt;p>$N$次の正方行列で，頂点$i$から頂点$j$までの有向辺があれば$A_{ij}=1$，なければ$A_{ij}=0$となるような隣接行列を考えます．&lt;/p>
+&lt;p>例えば，次の$4$頂点のグラフを隣接行列にすると次のようになります．&lt;/p>
+&lt;p>&lt;img src="https://storage.googleapis.com/zenn-user-upload/1c6bfa766abe-20221107.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+0 &amp;amp;1 &amp;amp;0 &amp;amp;1 \\
+0 &amp;amp;0 &amp;amp;1 &amp;amp;0 \\
+0 &amp;amp;1 &amp;amp;0 &amp;amp;0 \\
+0 &amp;amp;0 &amp;amp;0 &amp;amp;1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>このとき，頂点$i$から頂点$j$へのパス数は次のように計算できます．&lt;/p>
+&lt;p>$$
+(頂点iから頂点jへのパス数) = \sum &lt;em>{k=1}^4 A&lt;/em>{ik} A_{kj}
+$$&lt;/p>
+&lt;p>これは，行列の積の定義とよく似ていて，$A^2$の$(i,j)$成分は，頂点$i$から頂点$j$への長さ$2$のパス数を表します．よって，$A^n$の$i,j$成分から頂点$i$から$j$までの長さ$n$のパス数を求めることができます．&lt;/p>
+&lt;p>なお，無向グラフの場合は双方向に有向辺が張っていると考え，$A_{ij}=A_{ji}$とすることで同様に処理できます．&lt;/p>
+&lt;h2 id="行列の級数">行列の級数&lt;/h2>
+&lt;blockquote>
+&lt;p>正方行列$A$がある．$A+A^2+A^3+A^4+A^5+\cdots+A^N$を求めよ．&lt;/p>
+&lt;/blockquote>
+&lt;p>次のように$X_n$を定義します．&lt;/p>
+&lt;p>$$
+X_n = A^1 + A^2 + A^3 + \cdots + A^n
+$$&lt;/p>
+&lt;p>漸化式は次のように作れます．&lt;/p>
+&lt;p>$$
+\begin{align}
+X_1 &amp;amp;= A\\
+X_n &amp;amp;= A+AX_{n-1} \quad (n\geq 2)
+\end{align}
+$$&lt;/p>
+&lt;p>よって，&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+X_n \\ \hline
+I
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+\begin{array}{c|c}
+A &amp;amp; A\\ \hline
+O &amp;amp; I
+\end{array}
+\end{pmatrix}
+^{n-1}
+\begin{pmatrix}
+A \\ \hline
+I
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>です．&lt;/p>
+&lt;h2 id="半環">半環&lt;/h2>
+&lt;p>普通，行列の掛け算は次のように定義されています．&lt;/p>
+&lt;p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+a_{11} &amp;amp; a_{12} \\
+a_{21} &amp;amp; a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11} &amp;amp; b_{12} \\
+b_{21} &amp;amp; b_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11}\cdot b_{11}+a_{12}\cdot b_{21} &amp;amp; a_{11}\cdot b_{12}+a_{12}\cdot b_{22} \\
+a_{21}\cdot b_{11}+a_{22}\cdot b_{21} &amp;amp; a_{21}\cdot b_{12}+a_{22}\cdot b_{22}
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>それぞれ要素の積を計算し，和を計算しています．ここで，「和」と「積」を別のものに置き換えることを考えます．例えば次のように$\max$と$+$に変えるとどうなるでしょうか．ここで，$\max(a_1,a_2,a_3,\cdots)$は，$a_1,a_2,a_3,\cdots$のうちの最大値を表します．&lt;/p>
+&lt;p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+a_{11} &amp;amp; a_{12} \\
+a_{21} &amp;amp; a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11} &amp;amp; b_{12} \\
+b_{21} &amp;amp; b_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\max(a_{11}+b_{11},a_{12}+b_{21}) &amp;amp; \max(a_{11}+b_{12},a_{12}+b_{22}) \\
+\max(a_{21}+b_{11},a_{22}+b_{21}) &amp;amp; \max(a_{21}+b_{12},a_{22}+b_{22})
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>この$\max,+$で計算される行列ですが，実はこの行列においても高速な行列累乗の計算が可能です．こんな変な演算の世界で行列累乗をしてどうするんだと思いますが，例は後述します．もちろん，演算子を好き勝手変えていいわけではありません．いくつか条件があります．次に示す条件を満たす，集合と加法$+$と乗法 $\cdot$ の$2$つの二項演算，である必要があります．この性質を満たす集合と$+$と$\cdot$の組を半環と言います．また，集合の要素を元と言います．&lt;/p>
+&lt;ul>
+&lt;li>加法において，結合法則が成り立ち，可換であり，単位元$0$を持つ．
+&lt;ul>
+&lt;li>$(a + b) + c = a + (b + c)$&lt;/li>
+&lt;li>$a+b = b+a$&lt;/li>
+&lt;li>$0 + a = a + 0 = 0$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>乗法において，結合法則が成り立ち，単位元$1$を持つ．
+&lt;ul>
+&lt;li>$(a \cdot b) \cdot c = a \cdot (b \cdot c)$&lt;/li>
+&lt;li>$1 \cdot a = a \cdot 1 = a$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>分配法則が成り立つ．
+&lt;ul>
+&lt;li>$a \cdot (b+c) = (a\cdot b) + (a\cdot c)$&lt;/li>
+&lt;li>$(a+b)\cdot c = (a\cdot c) + (b\cdot c)$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>乗法で，$0$(加法の単位元)と任意の元の積は$0$になる．
+&lt;ul>
+&lt;li>$0\cdot a = a\cdot 0 = 0$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>例えば，有理数の集合を$\mathbb{R}$とすると，$(\mathbb{R},+,\cdot)$は半環をなす，という言い方をします．&lt;/p>
+&lt;p>では，先程の$\max$と$+$の例は本当に半環をなしているかを確認してみましょう．この場合の集合も$\mathbb{R}$(有理数全体)としておきます．先述した半環の定義だと，加法が$\max$で，乗法が$+$に対応しています．
+まずは加法$\max$について見ていきます．&lt;/p>
+&lt;ul>
+&lt;li>$\max(\max(a,b),c) = \max(a,\max(b,c))$&lt;/li>
+&lt;li>$\max(a,b) = \max(b,a)$&lt;/li>
+&lt;li>$\max(\infty,a) = \max(a,\infty) = \infty$&lt;/li>
+&lt;/ul>
+&lt;p>$\max$は単位元を$\infty$にすることで成立します．次に乗法$+$です．&lt;/p>
+&lt;ul>
+&lt;li>$(a + b) + c = a + ( b+c)$&lt;/li>
+&lt;li>$0 + a = a + 0 = a$&lt;/li>
+&lt;/ul>
+&lt;p>$+$の単位元は$0$です．
+次に分配法則の確認です．ややこしいですが，次の式が成り立つことがわかります．&lt;/p>
+&lt;ul>
+&lt;li>$a+\max(b,c) = \max(a+b,a+c)$&lt;/li>
+&lt;li>$\max(a,b)+c = \max(a+c,b+c)$&lt;/li>
+&lt;/ul>
+&lt;p>最後に加法$\max$の単位元$\infty$を乗算$+$すると$\infty$になることを確認します．&lt;/p>
+&lt;ul>
+&lt;li>$\infty +a = a + \infty = \infty$&lt;/li>
+&lt;/ul>
+&lt;p>以上，厳密性には欠けますが$(\mathbb{R},\max,+)$が半環をなしていることがわかりました．さて，次の節からは，いつもと違う半環の世界での行列累乗の例を見ていきます．&lt;/p>
+&lt;h3 id="andとxor">ANDとXOR&lt;/h3>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc009/tasks/abc009_4" target="_blank" rel="noopener"
+>ABC009 D - 漸化式&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>定数$C_1,C_2,C_3,\cdots,C_K$があり，$K$項間の漸化式が次のように定まる
+$A_i \quad (1\leq i\leq K)$は与えられる．&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+A_{K+1} = (C_1 \mathrm{AND} A_{K}) \mathrm{XOR} (C_2 \mathrm{AND} A_{K-1}) \mathrm{XOR} \cdots \mathrm{XOR} (C_K \mathrm{AND} A_{1})
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>このとき，$A_N$を求めよ($1\leq M\leq 10^{9}$)．
+なお，$\mathrm{AND}$はビットごとの論理積，$\mathrm{XOR}$はビットごとの排他的論理和を表す．&lt;/p>
+&lt;/blockquote>
+&lt;p>この問題は$(\mathbb{N},\mathrm{AND},\mathrm{XOR})$が半環をなすことを利用して，ただの線形漸化式と見ることができます．なお，$\mathrm{AND}$と$\mathrm{XOR}$はビットごとで独立した演算であるため，各bitで$\mod 2$の掛け算とたし算をしていると見ることでも解くことができます．&lt;/p>
+&lt;h3 id="ワーシャルフロイド法">ワーシャルフロイド法&lt;/h3>
+&lt;p>ワーシャルフロイド法は，$(\mathbb{R},\min,+)$の世界での行列累乗だと捉えることができます．&lt;/p>
+&lt;p>MojaCoderで類題を見つけました．
+&lt;a class="link" href="https://mojacoder.app/users/magurofly/problems/dungeon-attack" target="_blank" rel="noopener"
+>Dungeon Attack (Hard)&lt;/a>&lt;/p>
+&lt;h2 id="関連問題">関連問題&lt;/h2>
+&lt;p>行列累乗がストレートに出ることは珍しく，考察の末に最後の一捻りとして出てくることが多い印象があります．全体的に難しいです．&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://yukicoder.me/problems/no/526" target="_blank" rel="noopener"
+>フィボナッチ数列の第N項をMで割った余りを求める&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc204/tasks/abc204_f" target="_blank" rel="noopener"
+>ABC204 F - Hanjo 2&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc199/tasks/abc199_f" target="_blank" rel="noopener"
+>ABC199 F - Graph Smoothing&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc256/tasks/abc256_g" target="_blank" rel="noopener"
+>ABC256 G - Blakc and Whte Stones&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc129/tasks/abc129_f" target="_blank" rel="noopener"
+>ABC129 F - Takahashi&amp;rsquo;s Basics in Education and Learning&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc271/tasks/abc271_g" target="_blank" rel="noopener"
+>ABC271 G - Access Counter &lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc212/tasks/abc212_h" target="_blank" rel="noopener"
+>ABC212 H - Nim Counting&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/arc025/tasks/arc025_4" target="_blank" rel="noopener"
+>ARC025 D - コンセント&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b" target="_blank" rel="noopener"
+>DISCO2020 B - Hawker on Graph&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>APG4b 計算量 &lt;a class="link" href="https://atcoder.jp/contests/APG4b/tasks/APG4b_w" target="_blank" rel="noopener"
+>https://atcoder.jp/contests/APG4b/tasks/APG4b_w&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>実はこの計算量解析はあまり意味のあるものではありません．なぜなら，フィボナッチ数列は後の項に行けば行くほど桁数が増えるからです．後の項に行くほど，かけ算やたし算の計算コストは上がっていきます．ですので，$O(\log N)$といっても$N=10^7$の時点で結構時間がかかってしまいます．競プロでは$10^9+7$では割ったあまりを求めなさい，のように桁数を気にせずに計算できる場合が多いため，今回は考えないことにしています(競プロに限った話ではなく，大きな数を求めるときに異なる素数で割ったあまりを求めておいて，中国剰余原理で復元する，等の手法が使われる)．&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item></channel></rss>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RSA on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/tags/rsa/</link><description>Recent content in RSA on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><atom:link href="https://shibaken28.github.io/my-blog-4/tags/rsa/index.xml" rel="self" type="application/rss+xml"/><item><title>LSB Decryption Oracle Attackの実装</title><link>https://shibaken28.github.io/my-blog-4/contents/lsb-attack/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/lsb-attack/</guid><description>&lt;h2 id="lsb-decryption-oracle-attack">LSB Decryption Oracle Attack&lt;/h2>
+&lt;p>RSA暗号において，何度も暗号文を復元してくれて，その最も下のビットがわかっている場合，LSB Decryption Oracle Attackが使える．
+ここでは，入力$x$に対して，$x^d\mod n$が出力されるものとする．
+(RSAの各パラメータの説明については省略する．)&lt;/p>
+&lt;h3 id="理論">理論&lt;/h3>
+&lt;p>$$(2m)^e = 2^em^e = 2^ec\mod n$$
+が成り立つため，$2^ec\mod n$を入力として与えると，$(2m)^e\mod n$を復元することになるため，$2m \mod n$が返ってくる．
+この値の偶奇で$m$の範囲がわかる．&lt;/p>
+&lt;ul>
+&lt;li>もし，$0\leq2m&amp;lt;n$の場合，$2m\mod n$と$2m$は等しいため，$2m \mod n$は必ず偶数になる．&lt;/li>
+&lt;li>もし，$n\leq2m&amp;lt;2n$の場合，$2m\mod n$は$2m-n$と等しいため，$n$が奇数であることから$2m\mod n$は必ず奇数になる．&lt;/li>
+&lt;/ul>
+&lt;p>$0&amp;lt;m&amp;lt;n$であるから，$2m$がこれ以外の値の範囲をとることはない．
+これにより，$2m\mod n$が偶数なら$0\leq m&amp;lt;\frac{1}{2}n$，奇数なら$\frac{1}{2}n\leq m&amp;lt;n$であることがわかる．&lt;/p>
+&lt;p>次に，$4^ec\mod n$を入力に与えることについて考える．同様に，$4^ec = (4m)^c\mod n$が成り立つから，$4m\mod n$の値が返ってくる．
+例えば，$2m\mod n$の出力が偶数で，$0\leq m&amp;lt;\frac{1}{2}n$であることが，わかっていたとする．このとき，$4m\mod n$の偶奇は次のように決まっている．&lt;/p>
+&lt;ul>
+&lt;li>$0\leq4m&amp;lt;n$の場合，$4m\mod n$は$4m$と等しいため，$4m\mod n$は必ず偶数になる．&lt;/li>
+&lt;li>$n\leq4m&amp;lt;2n$の場合，$4m\mod n$は$4m-n$と等しいため，$4m\mod n$は必ず奇数になる．&lt;/li>
+&lt;/ul>
+&lt;p>よって，$2m\mod n$が偶数で，
+かつ$4m\mod n$が偶数のときは，$0\leq m&amp;lt;\frac{1}{4}n$，奇数のときは$\frac{1}{4}n\leq m&amp;lt;\frac{1}{2}n$であることがわかる．&lt;/p>
+&lt;p>同様に，$2m\mod n$の出力が奇数で，$\frac{1}{2}n\leq m&amp;lt;n$であることが，わかっていたとする．このとき，$4m\mod n$の偶奇は次のように決まっている．&lt;/p>
+&lt;ul>
+&lt;li>$2n\leq4m&amp;lt;3n$の場合，$4m\mod n$は$4m-2n$と等しいため，$4m\mod n$は必ず偶数になる．&lt;/li>
+&lt;li>$3n\leq4m&amp;lt;4n$の場合，$4m\mod n$は$4m-3n$と等しいため，$4m\mod n$は必ず奇数になる．&lt;/li>
+&lt;/ul>
+&lt;p>よって，$2m\mod n$が奇数で，
+かつ$4m\mod n$が偶数のときは，$\frac{1}{2}n\leq m&amp;lt;\frac{3}{4}n$，奇数のときは$\frac{3}{4}n\leq m&amp;lt;n$であることがわかる．&lt;/p>
+&lt;p>これを繰り返していくと，二分探索の要領でどんどん$m$の取りうる値が半分になっていき，最終的に$m$の値が求まる．&lt;/p>
+&lt;h3 id="実装例">実装例&lt;/h3>
+&lt;p>整数で&lt;code>l,r&lt;/code>を動かすと誤差が出てしまうため，有理数を使っている．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">Crypto.Util.number&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="o">*&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">fractions&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Fraction&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">math&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">ceil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">getPrime&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">256&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">q&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">getPrime&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">256&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">q&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">bytes_to_long&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">b&lt;/span>&lt;span class="s2">&amp;#34;flag&lt;/span>&lt;span class="si">{this_is_flag}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">e&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mh">0x10001&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">d&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">assert&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">n&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">assert&lt;/span> &lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">dec&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">l&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">r&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">n&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">while&lt;/span> &lt;span class="nb">abs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">b&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">n&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">de&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">dec&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Fraction&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">de&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">r&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">l&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span>&lt;span class="o">+=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ceil&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="参考サイト">参考サイト&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://inaz2.hatenablog.com/entry/2016/11/09/220529" target="_blank" rel="noopener"
+>plain RSAに対するLSB decryption oracle attackをやってみる&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://kmyk.github.io/blog/blog/2017/06/24/lsb-leak-attack/" target="_blank" rel="noopener"
+>LSB Leak Attackを実装した&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>を参考にさせて頂きました．&lt;/p></description></item></channel></rss>

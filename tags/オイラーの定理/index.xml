@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>オイラーの定理 on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/tags/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E3%81%AE%E5%AE%9A%E7%90%86/</link><description>Recent content in オイラーの定理 on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Mon, 19 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://shibaken28.github.io/my-blog-4/tags/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E3%81%AE%E5%AE%9A%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>フェルマーの小定理に関する暗号の問題まとめ</title><link>https://shibaken28.github.io/my-blog-4/contents/fermat/</link><pubDate>Mon, 19 Dec 2022 00:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/fermat/</guid><description>&lt;p>フェルマーの小定理やオイラーの定理を使った問題は，CTFのCrypto問題でよく出ます(当社調べ)(そしてこのタイプの問題が一番楽しい)．
+それらを使った解いた問題の列挙です．難易度は独断と偏見でつけました．&lt;/p>
+&lt;h2 id="基本">基本&lt;/h2>
+&lt;p>フェルマーの小定理(Fermat&amp;rsquo;s little theorem)は素数$p$，整数$a$で
+$$
+a^p \equiv a \pmod p \quad (pは素数)
+$$
+が成り立つことを言います．
+$a$が$p$と互いに素なことを条件に加えると，両辺を$a$で割った
+$$
+a^{p-1} \equiv 1 \pmod p \quad (pは素数，aはpと互いに素)
+$$
+が成り立ちます．さらに両辺を$a$で割ると
+$$
+a^{p-2} \equiv a^{-1} \pmod p \quad (pは素数，aはpと互いに素)
+$$
+となり，逆元になります．どの形もよく使います．&lt;/p>
+&lt;p>オイラーの定理(Euler&amp;rsquo;s theorem)は先程の$p$を合成数$n$に拡張したもので，&lt;/p>
+&lt;p>$$
+a^{\phi(n)} \equiv 1 \pmod n \quad (nは合成数，aとnは互いに素)
+$$&lt;/p>
+&lt;p>ただし，$\phi(n)$はオイラーのトーシェント関数(Euler&amp;rsquo;s totient function)と呼ばれる関数で，$1$以上$n$以下の数のうち$n$と互いに素な個数を表します．
+式で表すと，合成数$n$の素因数分解が
+$$
+n = \prod_{i=1}^k p_i^{e_i} \\
+$$
+のとき
+$$
+\phi(n) = \prod_{i=1}^k (p_{i}^{e_{i}} - p_{i}^{e_{i}-1})
+$$
+で定義されます．&lt;/p>
+&lt;p>なお，注意として，フェルマーの小定理の指数$p-1$やオイラーの定理の$\phi(n)$は$a$を$1$にする最小の数とは限りません．最小の数についてのカーマイケルの定理というものが存在します．&lt;/p>
+&lt;p>ちなみに，フェルマーの小定理ですが，フェルマーさんではなくゴットフリート・ライプニッツさんによって証明されたらしいです．
+また，フェルマーの最終定理と区別するために，「小」ついています．&lt;/p>
+&lt;h2 id="cakectf2022-frozen-cake-難易度">CakeCTF2022 frozen cake 難易度★★&lt;/h2>
+&lt;h3 id="問題">問題&lt;/h3>
+&lt;p>&lt;a class="link" href="https://github.com/theoremoon/cakectf2022-public/tree/master/crypto/frozen_cake/distfiles" target="_blank" rel="noopener"
+>問題ファイル&lt;/a>&lt;/p>
+&lt;p>素数$p,q$と平文$m$，$n=pq$から次の$a,b,c$の値が与えられる．$n$の値も与えられる．
+$$
+\begin{align}
+a &amp;amp;\equiv m^p \mod n \\
+b &amp;amp;\equiv m^q \mod n \\
+c &amp;amp;\equiv m^n \mod n
+\end{align}
+$$&lt;/p>
+&lt;h3 id="解法">解法&lt;/h3>
+&lt;p>$px+qy=1 \pmod{\phi(n)}$となるような$x,y$が存在すれば，$m$を復元することができるが，
+$p$と$q$は$\phi(n)$と互いに素ではないため，この手法は使えない．&lt;/p>
+&lt;p>$c$を変形してみる．&lt;/p>
+&lt;p>$$
+n = (p-1)(q-1) + p+q-1 = \phi(n) + p+q-1 \\
+c \equiv m^n \equiv m^{\phi(n) +p+q-1} \equiv m^{p+q-1} \equiv m^p m^q m^{-1}\pmod n
+$$&lt;/p>
+&lt;p>ここで，$m^p,m^q\pmod n$の値はわかっているので，
+$$
+c a^{-1} b^{-1} \equiv m^{-1} \pmod n
+$$
+これで$m^{-1}\mod n$が求まり，これの逆数がフラグである．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">Crypto.Util.number&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">inverse&lt;/span> &lt;span class="p">,&lt;/span> &lt;span class="n">long_to_bytes&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">101205131618457490641888226172378900782027938652382007193297646066245321085334424928920128567827889452079884571045344711457176257019858157287424646000972526730522884040459357134430948940886663606586037466289300864147185085616790054121654786459639161527509024925015109654917697542322418538800304501255357308131&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">38686943509950033726712042913718602015746270494794620817845630744834821038141855935687477445507431250618882887343417719366326751444481151632966047740583539454488232216388308299503129892656814962238386222995387787074530151173515835774172341113153924268653274210010830431617266231895651198976989796620254642528&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">83977895709438322981595417453453058400465353471362634652936475655371158094363869813512319678334779139681172477729044378942906546785697439730712057649619691929500952253818768414839548038664187232924265128952392200845425064991075296143440829148415481807496095010301335416711112897000382336725454278461965303477&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">21459707600930866066419234194792759634183685313775248277484460333960658047171300820279668556014320938220170794027117386852057041210320434076253459389230704653466300429747719579911728990434338588576613885658479123772761552010662234507298817973164062457755456249314287213795660922615911433075228241429771610549&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ainv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">inverse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">binv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">inverse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">minv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">ainv&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">binv&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">n&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">long_to_bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">inverse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">minv&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">CakeCTF{oh_you_got_a_tepid_cake_sorry}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="cakectf2021-together-as-one-難易度">CakeCTF2021 together as one 難易度★★★&lt;/h2>
+&lt;h3 id="問題概要">問題概要&lt;/h3>
+&lt;p>&lt;a class="link" href="https://github.com/theoremoon/cakectf-2021-public/tree/master/crypto/together_as_one/distfiles" target="_blank" rel="noopener"
+>問題リンクファイル&lt;/a>&lt;/p>
+&lt;p>素数$p,q,r$があり，$e\equiv65537$，フラグを$m$とし，次の値が与えられる．
+$$
+n \equiv pqr \\
+c \equiv m^e \\
+x \equiv (p+q)^r \mod n \\
+y \equiv (p+qr)^r \mod n
+$$&lt;/p>
+&lt;h3 id="解法-1">解法&lt;/h3>
+&lt;p>二項定理により，$x$の値について次の計算ができる．
+$n=pqr$であり，$0&amp;lt;x&amp;lt;r$のとき${}_r\textrm{C}_x$が$r$の倍数であることを使っている．
+$$
+\begin{align}
+x &amp;amp;\equiv (p+q)^r \mod n \\
+&amp;amp;\equiv {}_r\textrm{C}_0 p^rq^0 + {}_r\textrm{C}_1 p^{r-1}q^1 + {}_r \textrm{C}_2 p^{r-2}q^2 + \cdots + {}_r\textrm{C}_{r-1} p^1q^{r-1} + {}_r\textrm{C}_{r} p^0q^{r-1} \mod n \\
+&amp;amp;\equiv p^r + q^r \mod n
+\end{align}
+$$
+$y$も同様に，展開をして$n$の倍数になる項を削除する．
+$$
+\begin{align}
+y &amp;amp;\equiv (p+qr)^r \mod n \\
+&amp;amp;\equiv p^r + q^rr^r \mod n
+\end{align}
+$$
+法$q$の世界で考える．すると，
+$$
+\begin{align}
+x &amp;amp;\equiv p^r \mod q\\
+y &amp;amp;\equiv p^r \mod q
+\end{align}
+$$
+よって，整数$k$を用いると次が成り立つ
+$$
+\begin{align}
+x &amp;amp;\equiv y \mod q\\
+x &amp;amp;\equiv y + kq \\
+x - y &amp;amp;\equiv kq
+\end{align}
+$$&lt;/p>
+&lt;p>$x-y$は$q$の倍数であり，$n$も素因数$q$を持っているため，$q\equiv\textrm{GCD}(x-y,n)$である．&lt;/p>
+&lt;p>次に，$x$と$y$を法$r$で考える．フェルマーの小定理により，$p^r \mod r\equiv p$が成り立つ(他の変数も同様)．&lt;/p>
+&lt;p>$$
+\begin{align}
+x \equiv p + q \mod r\\
+y \equiv p \mod r
+\end{align}
+$$
+$q$が邪魔だが既知であるため，$r$について合同な式ができる．
+$$
+\begin{align}
+x - q \equiv y \mod r\\
+\end{align}
+$$
+よって，$r\equiv\textrm{GCD}(x-q-y,n/q)$である．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">Crypto.Util.number&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">long_to_bytes&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">inverse&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">GCD&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">b&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">GCD&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">LCM&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">GCD&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">b&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="c1"># 長いので省略&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">e&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mh">0x10001&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">q&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GCD&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">r&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GCD&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">q&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">q&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="si">= :&lt;/span>&lt;span class="s1">#&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">q&lt;/span> &lt;span class="si">= :&lt;/span>&lt;span class="s1">#&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">r&lt;/span> &lt;span class="si">= :&lt;/span>&lt;span class="s1">#&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">assert&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">r&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">n&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">phi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">d&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">phi&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">long_to_bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">CakeCTF{This_chall_is_inspired_by_this_music__Check_out!__https://www.youtube.com/watch?v=vLadkYLi8YE_cf49dcb6a31f}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="imaginaryctf-october-2022-more-pale-難易度">ImaginaryCTF October 2022 More pale 難易度★★&lt;/h2>
+&lt;h3 id="問題-1">問題&lt;/h3>
+&lt;p>$N$と互いに素な$g,r$とフラグ$f$を使って$c$が計算される．
+$$
+c = g^f\times r^N \pmod{N^2}
+$$&lt;/p>
+&lt;p>ただし，$N$は$32$ビット程度の素数を$32$個掛け算したものである(簡単のため，それぞれの素数は異なると考える)．&lt;/p>
+&lt;p>$$
+N = \prod^{32}_{i=1} p_i \quad (p_iは素数)
+$$&lt;/p>
+&lt;h3 id="解答">解答&lt;/h3>
+&lt;p>$r^N$が邪魔なのでどうにかして消したい．
+$\pmod{N^2}$で$1$にするには，$\phi(N^2)$乗する必要がある．$\phi(N^2)$を計算してみると，$N$が出てくる．&lt;/p>
+&lt;p>$$
+\begin{align}
+\phi(N^2) &amp;amp;= \prod^{32}_{i=1} (p_i^2 - p_i) \\
+&amp;amp;= \prod^{32}_{i=1} p_i(p_i-1) \\
+&amp;amp;= \prod^{32}_{i=1} p_i \prod^{32}_{i=1} (p_i -1) \\
+&amp;amp;= N \cdot \phi(N)
+\end{align}
+$$
+そのまま$c$を$\phi(N^2)$乗すると$1$になってしまうが，既に$r$の$N$乗がかかっていることに注目すると，&lt;/p>
+&lt;p>$$
+\begin{align}
+c^{\phi(N)} &amp;amp;\equiv g^{f\phi(N)} r^{N\phi(N)} \pmod {N^2} \\
+&amp;amp;\equiv g^{f\phi(N)} r^{\phi(N^2)} \pmod {N^2} \\
+&amp;amp;\equiv g^{f\phi(N)} \pmod {N^2}
+\end{align}
+$$&lt;/p>
+&lt;p>これで，あとは$f\phi(N)$が求められれば良いが，これは$N^2$が小さな素数の積であることから，Pohlig–Hellman法が使える．&lt;/p>
+&lt;p>以下&lt;code>sage&lt;/code>での実装&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">Crypto.Util.number&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="o">*&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">math&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">prod&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">gcd&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">N&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">11426418812422762280036571700606763567947231773425157536629183225870745966201878199993626829615844927248091186921905998387334803393170756953004161976126607998422555566085789763646344981574364094148009230033109930017512774396115010409334288433850791978891238028784308896039614097042863945347168542666985383&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">g&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">102370043738570361147512561430113690669375642568113520628837722692535092928991996894608072640673225251693957175347411184948751047776938223584014537703671208333116611432564769157326548350590167502807755716922970968951558696873031064519102939250266955847456094728415069300661910400192469539174495731756070447257875542560705682612568014282820199452851866020583046932239921789544226454615507571093721529079064029065323857243515917042869595396534609090834939823155439780919449771486541020286445222568415793241204876414692960607993360820654693596638939971884431900128125455066876042896836557800131056640691313737106&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">103068079671149839873789585083110486503075572741609832823748309905209629934629965848822090939508870383106139073177857845426077799194203506965719179522047046491489575280275678232439148170329359273033661524521427411191787421596981639709353868254044119073231599736765796677163779301047698718070665219409437641669086148533724636988276093326307749151410207387960521848243363050042170628112380019384839142543642612905997234757798225958950399201463485580893790906185150849471016251892565658403504413779544907210377992966457602587448233119477078937422459927927859270682518316711143908453374720529830188577849652582868&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ps&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">factor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">phi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">phi2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">e&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">ps&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">phi&lt;/span> &lt;span class="o">*=&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">phi2&lt;/span> &lt;span class="o">*=&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">**&lt;/span>&lt;span class="mi">2&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">p&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gf&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">phi&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">gf&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">discrete_log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">gf&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">Mod&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">g&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">phi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">long_to_bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="続く">続く&lt;/h2>
+&lt;p>良い問題を見つけ次第追加していきます．&lt;/p></description></item></channel></rss>

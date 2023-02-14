@@ -1,0 +1,1588 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>行列 on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/tags/%E8%A1%8C%E5%88%97/</link><description>Recent content in 行列 on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Tue, 06 Dec 2022 02:00:00 +0000</lastBuildDate><atom:link href="https://shibaken28.github.io/my-blog-4/tags/%E8%A1%8C%E5%88%97/index.xml" rel="self" type="application/rss+xml"/><item><title>2D画面になんちゃって3Dを書く</title><link>https://shibaken28.github.io/my-blog-4/contents/processing/</link><pubDate>Tue, 06 Dec 2022 02:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/processing/</guid><description>&lt;p>この記事は&lt;a class="link" href="https://zenn.dev/shibak3n/articles/d3d212157e0a0a" target="_blank" rel="noopener"
+>Zennに投稿したもの&lt;/a>と同じです．&lt;/p>
+&lt;h2 id="はじめに">はじめに&lt;/h2>
+&lt;p>　2Dの画面に3Dを描画することにロマンを感じませんか．私は感じます．描きましょう．
+&lt;img src="https://storage.googleapis.com/zenn-user-upload/5bc40ee83454-20221207.gif"
+loading="lazy"
+>
+なお，「なんちゃって3D」とタイトルにあるのは，遠くのものが小さく見えるような処理がないからです．ガチガチの3Dモデルを描きたい！という方が求めるようなものはない可能性が高いですし，厳密性には欠けるかもしれません．そういうものを求めている方にはごめんなさい．&lt;/p>
+&lt;p>また，この記事は&lt;a class="link" href="https://qiita.com/advent-calendar/2022/nnct" target="_blank" rel="noopener"
+>長野高専アドベントカレンダー2022&lt;/a>の8日目の記事です．&lt;/p>
+&lt;h2 id="環境">環境&lt;/h2>
+&lt;p>ジェネラティブアートの作品にしばしば使われる&lt;a class="link" href="https://processing.org/" target="_blank" rel="noopener"
+>Processing&lt;/a>を使います．ProcessingはJavaベースの記法で簡単に図形を描画することができます．ダウンロードしてついてくるexeファイルを実行すればIDEが立ち上がり，すぐにコードを実行できます．&lt;/p>
+&lt;p>余談ですが，長野高専の情報技術研究部ではProcessingを用いてプログラミング入門しています．&lt;/p>
+&lt;h2 id="原理">原理&lt;/h2>
+&lt;h3 id="座標系">座標系&lt;/h3>
+&lt;p>今回は，processingの$xy$平面に奥行き$z$を追加した座標系を考えます．すなわち，&lt;/p>
+&lt;ul>
+&lt;li>$x$軸の正の方向は右&lt;/li>
+&lt;li>$y$軸の正の方向は下&lt;/li>
+&lt;li>$z$軸の正の方向は奥&lt;/li>
+&lt;/ul>
+&lt;p>の座標系の世界で考えます．&lt;/p>
+&lt;h3 id="正面から見る">正面から見る&lt;/h3>
+&lt;p>画面上で，手前から奥が$z$軸の方向になるわけですが，画面はもちろん平面であり，$z$座標の違いを表現しなければ手前と奥がわかりません．今回はこの違いを表現することを諦めます．
+今回の手法は点$(1,2,3)$を描画したいときは$(1,2)$に点を打ちます．$(1,2,5)$を描画する場合も$(1,2)$に点を打ちます．つまり，&lt;strong>$z$座標は完全に無視&lt;/strong>をします．
+もちろん，この方法で描画すると現実ではあり得ないような立体の見え方になってしまいます．$z$座標が全く違う場所に同じ形の立体を置いても，大きさの差が全く現れません．遠近法とかそんなものはありません．なんちゃって3Dだからいいのです&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>．&lt;/p>
+&lt;h3 id="別の角度から見る">別の角度から見る&lt;/h3>
+&lt;p>各辺が各座標軸と平行な立方体を先程の手法で描画すると，ただの正方形が描かれます．「これは真正面から見た立方体です！3Dです！」と主張するのは無理がありますね．しかし，斜めから見た場合を描画するのは簡単ではないです．そこで，別の角度から見た場合の処理は諦めます．代わりに，立体自身が回転してもらいます．視点が動くのではなく，&lt;strong>見えてる物体が動き，実質視点が動いているように見える&lt;/strong>，という状態です．自分が動いているのではない，世界が動いているんだ．&lt;/p>
+&lt;h3 id="z軸周りの回転">z軸周りの回転&lt;/h3>
+&lt;p>　では，ここから回転をさせる方法を考えていきます．いきなり立方体を回転させるのは難しいので，点を回転させることを考えます．立体図形は点の集まりだと考えれば良いです．立方体であれば，$8$つの頂点があります．これらのそれぞれの点について回転させて，それらの点をつなげることで，回転した立方体が完成します．&lt;/p>
+&lt;p>まず，$z$軸中心に点を回転したときの様子を数式で表します．
+$z$軸中心に点を回転させても，その$z$座標が変わらないので，これは$xy$平面の世界の回転だと考えることができます．
+$z$軸周りで$\gamma$だけ回転されると座標$(x_0,y_0)$は次のような座標$(x,y)$に移動します．&lt;/p>
+&lt;p>$$
+x = x_0\cos \gamma - y_0\sin \gamma \\\\
+y = x_0\sin \gamma + y_0\cos \gamma
+$$&lt;/p>
+&lt;p>なぜこうなるかは，ベクトルの$(x_0,0)$と$(0,y_0)$を回転させることを考えるとわかります．$(x_0,0)$は$\gamma$回転すると$(x_0\cos \gamma,x_0\sin \gamma)$に，$(0,y_0)$は$(-y_0\sin \gamma,y_0\cos \gamma)$に移動します．$(x_0,0)$と$(0,y_0)$を足したベクトル$(x_0,y_0)$を$\gamma$回転させた結果は，$(x_0,0)$と$(0,y_0)$をそれぞれ$\gamma$回転させてから足したものと等しいです．よって上記の式が示せます．&lt;/p>
+&lt;h3 id="xy軸周りの回転">x,y軸周りの回転&lt;/h3>
+&lt;p>　$z$軸周りのときの$x,y$を$y,z$とか$z,x$に置き換えれば良いです&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>．
+$x$軸周りに$\alpha$回転したときは&lt;/p>
+&lt;p>$$
+y = y_0\cos \alpha - z_0\sin \alpha \\\\
+z = y_0\sin \alpha + z_0\cos \alpha
+$$&lt;/p>
+&lt;p>$y$軸周りに$\beta$回転したときは&lt;/p>
+&lt;p>$$
+z = z_0\cos \beta - x_0\sin \beta \\\\
+x = z_0\sin \beta + x_0\cos \beta
+$$&lt;/p>
+&lt;p>で表されます．&lt;/p>
+&lt;h3 id="行列での表現">行列での表現&lt;/h3>
+&lt;p>　行列で表現しておくと，行列の積によって回転の組み合わせが行えるため，便利です．このような行列を&lt;strong>回転行列&lt;/strong>と呼びます．&lt;/p>
+&lt;p>$$
+A_x(\alpha) =
+\begin{pmatrix}
+1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; \cos \alpha &amp;amp; - \sin \alpha \\
+0 &amp;amp; \sin \alpha &amp;amp; \cos \alpha
+\end{pmatrix}
+\\\\
+A_y(\beta) =
+\begin{pmatrix}
+\cos \beta &amp;amp; 0 &amp;amp; \sin \beta \\
+0 &amp;amp; 1 &amp;amp; 0 \\
+-\sin \beta &amp;amp; 0 &amp;amp; \cos \beta
+\end{pmatrix}
+\\\\
+A_z(\gamma) =
+\begin{pmatrix}
+\cos \gamma &amp;amp; - \sin \gamma &amp;amp; 0 \\
+\sin \gamma &amp;amp; \cos \gamma &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>座標$X=^t(1,2,3)$を$z$軸周りに$90^\circ$回転させたい場合，$A_z(90^\circ)$を$X$の左から掛け算します．具体的には次の計算をします．&lt;/p>
+&lt;p>$$
+A_z(90^\circ)X
+=
+\begin{pmatrix}
+\cos 90^\circ &amp;amp; - \sin 90^\circ &amp;amp; 0 \\
+\sin 90^\circ &amp;amp; \cos 90^\circ &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+2 \\
+3 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 &amp;amp; -1 &amp;amp; 0 \\
+1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+2 \\
+3 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2 \\
+1 \\
+3 \\
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$z$軸周りに$90^\circ$回転させて，さらに$x$軸周りに$30^\circ$回転させた座標は，$A_x(30^\circ)A_z(90^\circ)X$で表されます．左から掛け算されていることに注意です&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>．&lt;/p>
+&lt;h3 id="平行移動">平行移動&lt;/h3>
+&lt;p>　原点から離れた場所に立体を置いてから回転させると，回転の軸が原点を通っているため立体の場所が移動します．これは，その場で回転させたい場合に不便です．その場合は，&lt;/p>
+&lt;ol>
+&lt;li>原点中心に立体を配置&lt;/li>
+&lt;li>欲しい角度に回転させる&lt;/li>
+&lt;li>平行移動させる&lt;/li>
+&lt;/ol>
+&lt;p>のステップが必要です．面倒ですね．スッキリさせたいです．
+行列の次元数を$1$増やして定数を足すテクニックを使い，次のように平行移動も行列で表現します．&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; d_x \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; d_y \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; d_z \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+x_0 \\
+y_0 \\
+z_0 \\
+1 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x_0 + d_x \\
+y_0 + d_y \\
+z_0 + d_z \\
+1 \\
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$x$軸周りに$\alpha$回転させて$(d_x,d_y,d_z)$だけ平行移動させた座標は次のようになります．&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; d_x \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; d_y \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; d_z \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; \cos \alpha &amp;amp; - \sin \alpha &amp;amp; 0 \\
+0 &amp;amp; \sin \alpha &amp;amp; \cos \alpha &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+x_0 \\
+y_0 \\
+z_0 \\
+1 \\
+\end{pmatrix}
+$$
+左の$2$つの行列の積を事前に計算しておくことで，$\alpha$回転させて$(d_x,d_y,d_z)$平行移動させるような行列が得られるため，あとはこれを掛け算するだけで一連の移動が可能になります．頂点が複数ある立体を移動させるときに便利です．&lt;/p>
+&lt;p>このように行列の積を扱うことで，平行移動させて回転させて平行移動させて回転させて&amp;hellip;みたいな複雑な座標変換も可能です．複数のオブジェクトを配置したあとに，視点を移動させるためにさらに平行移動と回転を加える，といったことができます．&lt;/p>
+&lt;p>このように座標を表すベクトルに行列を掛け算させるて座標を移動させることを&lt;strong>座標変換&lt;/strong>といい，その行列のことを&lt;strong>変換行列&lt;/strong>と呼びます．また，この掛け算をベクトルに変換行列を&lt;strong>作用させる&lt;/strong>，といいます．&lt;/p>
+&lt;p>行列の積は交換法則が成り立ちません．行列の掛け算の順序には注意が必要です．&lt;/p>
+&lt;p>平行移動をしたあとに回転させた場合と
+&lt;img src="https://storage.googleapis.com/zenn-user-upload/a5075b3e85d4-20221207.gif"
+loading="lazy"
+>
+回転させたあとに平行移動した場合の結果は異なります．
+&lt;img src="https://storage.googleapis.com/zenn-user-upload/e281d377db9a-20221207.gif"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="実装">実装&lt;/h2>
+&lt;p>$4$次の正方行列に関する次の機能を作ります．行列は$4\times 4$のfloat型の配列で作ります．&lt;/p>
+&lt;ul>
+&lt;li>行列の積&lt;/li>
+&lt;li>単位行列の生成&lt;/li>
+&lt;li>各軸周りの回転行列の生成&lt;/li>
+&lt;li>平行移動するための変換行列の生成&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixMul&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">A&lt;/span>&lt;span class="o">[][],&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="n">B&lt;/span>&lt;span class="o">[][])&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">A&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">]*&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixI&lt;/span>&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixRotateX&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixRotateY&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixRotateZ&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixMove&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">Vector3D&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">printMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="n">mat&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="s">&amp;#34;, &amp;#34;&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="s">&amp;#34;\n&amp;#34;&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>また，$3$次元の点が扱えるように&lt;code>Vector3D&lt;/code>クラスを作ります．行列を作用させた点を返す&lt;code>actMatrix&lt;/code>メソッドも作っておきます．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">class&lt;/span> &lt;span class="nc">Vector3D&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">z&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">_x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="n">_y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="n">_z&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">_x&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">_y&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">_z&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="nf">actMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[][])&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">p&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">p&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">p&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>グローバル変数として，&lt;code>transformMatrix&lt;/code>を用意してます．各描画関数では$3$次元の点を受け取り，この行列&lt;code>transformMatrix&lt;/code>を作用させて得られる点を使って描画するようにします．次の例では&lt;code>line3D&lt;/code>関数を実装しています．また，時間&lt;code>t&lt;/code>もグローバル変数として用意しておきます．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span> &lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p1&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p2&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">a1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">p1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">actMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">a2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">p2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">actMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//ellipse(a1.x, a1.y, 10, 10); 頂点
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">//ellipse(a2.x, a2.y, 10, 10);
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">line&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>あとは&lt;code>draw&lt;/code>関数に適当な内容を書いて完成です．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">draw&lt;/span>&lt;span class="o">(){;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">background&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translate&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">width&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">height&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">50&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transformMatrix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixI&lt;/span>&lt;span class="o">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">mat1&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixRotateX&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">mat2&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixRotateY&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transformMatrix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixMul&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">mat2&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transformMatrix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixMul&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">mat1&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p4&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p5&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p6&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p7&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p8&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">stroke&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">255&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">strokeWeight&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p1&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p2&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p2&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p3&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p3&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p4&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p4&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p1&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p5&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p6&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p6&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p7&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p7&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p8&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p8&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p5&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p1&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p5&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p2&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p6&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p3&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p7&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p4&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">p8&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://storage.googleapis.com/zenn-user-upload/cdd43b8af535-20221207.gif"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="遊ぶ">遊ぶ&lt;/h2>
+&lt;p>キーボード(WASD)を押すと正八面体を回転させることができるサンプルです．
+コピペで動きます．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;span class="lnt">125
+&lt;/span>&lt;span class="lnt">126
+&lt;/span>&lt;span class="lnt">127
+&lt;/span>&lt;span class="lnt">128
+&lt;/span>&lt;span class="lnt">129
+&lt;/span>&lt;span class="lnt">130
+&lt;/span>&lt;span class="lnt">131
+&lt;/span>&lt;span class="lnt">132
+&lt;/span>&lt;span class="lnt">133
+&lt;/span>&lt;span class="lnt">134
+&lt;/span>&lt;span class="lnt">135
+&lt;/span>&lt;span class="lnt">136
+&lt;/span>&lt;span class="lnt">137
+&lt;/span>&lt;span class="lnt">138
+&lt;/span>&lt;span class="lnt">139
+&lt;/span>&lt;span class="lnt">140
+&lt;/span>&lt;span class="lnt">141
+&lt;/span>&lt;span class="lnt">142
+&lt;/span>&lt;span class="lnt">143
+&lt;/span>&lt;span class="lnt">144
+&lt;/span>&lt;span class="lnt">145
+&lt;/span>&lt;span class="lnt">146
+&lt;/span>&lt;span class="lnt">147
+&lt;/span>&lt;span class="lnt">148
+&lt;/span>&lt;span class="lnt">149
+&lt;/span>&lt;span class="lnt">150
+&lt;/span>&lt;span class="lnt">151
+&lt;/span>&lt;span class="lnt">152
+&lt;/span>&lt;span class="lnt">153
+&lt;/span>&lt;span class="lnt">154
+&lt;/span>&lt;span class="lnt">155
+&lt;/span>&lt;span class="lnt">156
+&lt;/span>&lt;span class="lnt">157
+&lt;/span>&lt;span class="lnt">158
+&lt;/span>&lt;span class="lnt">159
+&lt;/span>&lt;span class="lnt">160
+&lt;/span>&lt;span class="lnt">161
+&lt;/span>&lt;span class="lnt">162
+&lt;/span>&lt;span class="lnt">163
+&lt;/span>&lt;span class="lnt">164
+&lt;/span>&lt;span class="lnt">165
+&lt;/span>&lt;span class="lnt">166
+&lt;/span>&lt;span class="lnt">167
+&lt;/span>&lt;span class="lnt">168
+&lt;/span>&lt;span class="lnt">169
+&lt;/span>&lt;span class="lnt">170
+&lt;/span>&lt;span class="lnt">171
+&lt;/span>&lt;span class="lnt">172
+&lt;/span>&lt;span class="lnt">173
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span> &lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span> &lt;span class="n">alpha&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">beta&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">gamma&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixMul&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">A&lt;/span>&lt;span class="o">[][],&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="n">B&lt;/span>&lt;span class="o">[][])&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">A&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">]*&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixI&lt;/span>&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixRotateX&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixRotateY&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixRotateZ&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">sin&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cos&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="nf">MatrixMove&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">Vector3D&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="o">[][]&lt;/span> &lt;span class="n">Mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">printMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="n">mat&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="o">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">++)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="s">&amp;#34;, &amp;#34;&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="s">&amp;#34;\n&amp;#34;&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">class&lt;/span> &lt;span class="nc">Vector3D&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">z&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">_x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="n">_y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="kt">float&lt;/span> &lt;span class="n">_z&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">_x&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">_y&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">_z&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="nf">actMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[][])&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">p&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">p&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">p&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">z&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">Mat&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p1&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p2&lt;/span>&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">a1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">p1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">actMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">a2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">p2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">actMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ellipse&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">10&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">10&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ellipse&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">10&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">10&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">ellipse3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="kt">float&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="o">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">actMatrix&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ellipse&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">x&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="na">y&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">r&lt;/span> &lt;span class="o">,&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">setup&lt;/span>&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">size&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">500&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="mi">500&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">frameRate&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="o">);&lt;/span> &lt;span class="c1">// 50fpsでアニメーションする
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">draw&lt;/span>&lt;span class="o">()&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="mf">0.1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">background&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">translate&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">width&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">height&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">70&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transformMatrix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixI&lt;/span>&lt;span class="o">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">mat1&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixRotateY&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">PI&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">alpha&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">mat2&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixRotateX&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">beta&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">mat3&lt;/span>&lt;span class="o">[][]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixRotateZ&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">gamma&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transformMatrix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixMul&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">mat1&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transformMatrix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixMul&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">mat2&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transformMatrix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MatrixMul&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">mat3&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="n">transformMatrix&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">stroke&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">255&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="o">(-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p4&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="o">(-&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p5&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">sqrt&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">)*&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Vector3D&lt;/span> &lt;span class="n">p6&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Vector3D&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">,-&lt;/span>&lt;span class="n">sqrt&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">)*&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p1&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p2&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p2&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p3&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p3&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p4&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p4&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p1&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p1&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p5&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p2&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p5&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p3&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p5&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p4&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p5&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p1&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p6&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p2&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p6&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p3&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p6&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">line3D&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">p4&lt;/span>&lt;span class="o">,&lt;/span>&lt;span class="n">p6&lt;/span>&lt;span class="o">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">keyPressed&lt;/span>&lt;span class="o">(){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39;d&amp;#39;&lt;/span>&lt;span class="o">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">alpha&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="mf">0.1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39;a&amp;#39;&lt;/span>&lt;span class="o">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">alpha&lt;/span> &lt;span class="o">-=&lt;/span> &lt;span class="mf">0.1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39;w&amp;#39;&lt;/span>&lt;span class="o">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">beta&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="mf">0.1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="o">(&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="sc">&amp;#39;s&amp;#39;&lt;/span>&lt;span class="o">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">beta&lt;/span> &lt;span class="o">-=&lt;/span> &lt;span class="mf">0.1&lt;/span>&lt;span class="o">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://storage.googleapis.com/zenn-user-upload/364b04465dc9-20221208.gif"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="余談">余談&lt;/h2>
+&lt;p>こちらのつぶやきProcessingは回転行列を作用させるような計算をして作りました．
+&lt;a class="link" href="https://twitter.com/Shibak33333333n/status/1418192071987400713" target="_blank" rel="noopener"
+>https://twitter.com/Shibak33333333n/status/1418192071987400713&lt;/a>&lt;/p>
+&lt;h2 id="あとがき">あとがき&lt;/h2>
+&lt;p>3Dで描画できる環境を使えばいい話なのですが，ロマンがありますね．&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>なんちゃって3Dとか書いてしまいましたが，製図の分野などで，キャビネット図や等角図という名前で使われます．&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>厳密には，どちらが正の方向の回転であるかをよく考える必要がありますが，今回は無視します&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3">
+&lt;p>$X$を列ベクトルではなく行ベクトルとして用意することで右から行列を掛け算する流派(この場合は回転行列が転置します)も存在します．&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>行列累乗まとめ</title><link>https://shibaken28.github.io/my-blog-4/contents/matrix-pow/</link><pubDate>Tue, 06 Dec 2022 02:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/matrix-pow/</guid><description>&lt;p>この記事は&lt;a class="link" href="https://zenn.dev/shibak3n/articles/f08a8ad67a7d14" target="_blank" rel="noopener"
+>Zennに投稿したもの&lt;/a>と同じです．&lt;/p>
+&lt;h2 id="これはなに">これはなに&lt;/h2>
+&lt;p>　行列累乗と呼ばれる競プロのテクニックの概要と，それを用いる例をひたすら挙げていきます．競プロチックな話題ではありますが，行列が役立つ場面の例の紹介として，非競プロerでも楽しめると思います．ただし，数列と行列に関する用語がある程度わかっている人向けです．&lt;/p>
+&lt;p>なお，この記事は&lt;a class="link" href="https://qiita.com/advent-calendar/2022/nnct" target="_blank" rel="noopener"
+>長野高専 Advent Calender 2022&lt;/a>の2日目の記事です。&lt;/p>
+&lt;h2 id="原理フィボナッチ数列の例">原理(フィボナッチ数列の例)&lt;/h2>
+&lt;p>次の式で表される数列を考えます．&lt;/p>
+&lt;p>$$
+\begin{align}
+F_1 &amp;amp;= 1 \\
+F_2 &amp;amp;= 1 \\
+F_n &amp;amp;= F_{n-1} + F_{n-2} \quad　(n \geq 3)
+\end{align}
+$$&lt;/p>
+&lt;p>これはフィボナッチ数列という名で知られている，$F=(1,1,2,3,5,8,13,21,34,\cdots)$という前の$2$項の和が次の項になる数列です．これの第$n$項目をプログラミングで求めることにします．第$1$項目から第$n$項目までを求めるのではなく，第$n$項目のみ求めれば良いことに注意です．それっぽいコードを次に示します．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//F[i]:=フィボナッチ数列のi項目
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">F&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>for&lt;/code>文を$n$回くらい回すので計算量は$O(n)$です(計算量についてこちら&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>を参照してください)．&lt;/p>
+&lt;p>では，$n=10^{15}$項目を求めたい場合はどうでしょうか．このコードでは，実行が終わりません．&lt;/p>
+&lt;h4 id="行列で表現する">行列で表現する&lt;/h4>
+&lt;p>　ここで，行列です．フィボナッチ数列の定義より，次の式は成り立ちます．&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+F_{n} \\
+F_{n-1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+F_{n-1} \\
+F_{n-2}
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>具体的に計算してみます．&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+5 \\
+3
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>前の$2$項から次の項が生成されていることがわかりますね．
+これらの結果を使って次のような変形を考えます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+5 \\
+3
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+^3
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>始めの$2$項に同じ行列を$3$回掛け算することで3つ後の項が出てきました．これを繰り返すと次が成り立つことがわかります．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+F_n \\
+F_{n-1}
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+^{n-2}
+\begin{pmatrix}
+F_2 \\
+F_1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>第$10$項目を求めたいときは次のように計算できます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+F_{10} \\
+F_{9}
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 1 \\
+1 &amp;amp; 0
+\end{pmatrix}
+^{8}
+\begin{pmatrix}
+F_2 \\
+F_1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+89 &amp;amp; 55 \\
+55 &amp;amp; 34
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\\
+&amp;amp;=
+\begin{pmatrix}
+144 \\
+89
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>フィボナッチ数列は$1,1,2,3,5,8,13,21,34,55,89,144,\cdots$であるため，確かにあっています．
+便利そうな式が行列によって完成しました．漸化式の悪いところは前の項の値がわかっていないと次の項が計算できないことですが，この式は特定の項をダイレクトに表すことに成功しています．行列の$n$乗が高速に計算できればフィボナッチ数列の第$n$項が高速に計算できそうです．&lt;/p>
+&lt;h4 id="累乗の高速計算">累乗の高速計算&lt;/h4>
+&lt;p>行列$A$の$n$乗である$A^n$を計算するのに，ナイーブな方法だと$n-1$回の行列同士の掛け算が発生します．この行列同士の掛け算の回数が少なくなることを高速化と呼ぶことにします．
+$A^{128}$を考えてみましょう．&lt;/p>
+&lt;ul>
+&lt;li>$A$に$A$をかけて$A^2$&lt;/li>
+&lt;li>$A^2$に$A$をかけて$A^3$
+$\cdots$&lt;/li>
+&lt;li>$A^{127}$に$A$をかけて$A^{128}$&lt;/li>
+&lt;/ul>
+&lt;p>全部で$127$回の掛け算が必要ですね．では，$128$という特徴的な数に注目して次のように計算したらどうでしょうか．&lt;/p>
+&lt;ul>
+&lt;li>$A$に$A$をかけて$A^2$&lt;/li>
+&lt;li>$A^2$に$A^2$をかけて$A^4$&lt;/li>
+&lt;li>$A^4$に$A^4$をかけて$A^8$&lt;/li>
+&lt;li>$A^{8}$に$A^{8}$をかけて$A^{16}$&lt;/li>
+&lt;li>$A^{16}$に$A^{16}$をかけて$A^{32}$&lt;/li>
+&lt;li>$A^{32}$に$A^{32}$をかけて$A^{64}$&lt;/li>
+&lt;li>$A^{64}$に$A^{64}$をかけて$A^{128}$&lt;/li>
+&lt;/ul>
+&lt;p>全部で，$7$回の掛け算で$A^{128}$が計算できました．$127$回から$7$回という驚異の回数削減です．
+実は，これは$128$のような$2$の冪数に限った話ではありません．先程，$A^1,A^2,A^4,A^8,A^{16},\cdots$を求めましたが，これらを掛け合わせることで任意の$A^n$が計算できます(指数法則$A^aA^b=A^{a+b}$が成り立つことに注意)．&lt;/p>
+&lt;ul>
+&lt;li>$A^{12} = A^{8} A^{4}$&lt;/li>
+&lt;li>$A^{39} = A^{32} A^{4} A^{2} A^{1}$&lt;/li>
+&lt;li>$A^{127} = A^{64}A^{32}A^{16}A^{8}A^{4}A^{2}A^{1}$&lt;/li>
+&lt;/ul>
+&lt;p>これらは，$Aの(2進数表記したとき，1である位)乗$を掛け算したものになっています．
+上の例では，$12_{(10)}=1100_{(2)}$であり，$1$である位は$4$の位と$8$の位なので$12=8+4$と$12$を$2$の冪数の和で表すことができます．
+このような手法をダブリングや繰り返し二乗法と呼びます．&lt;/p>
+&lt;p>それっぽいコードを次に示します．計算量は$O(\log N)$です．$O(N)$に比べて非常に高速です&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// AのB乗の計算結果をCの格納
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">I&lt;/span> &lt;span class="c1">//Iは単位行列
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">tmp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">A&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">C&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">C&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">tmp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">B&lt;/span>&lt;span class="o">/=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tmp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">tmp&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">tmp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Pythonでの汚い実装例も示します．&lt;/p>
+&lt;h5 id="愚直パターン">愚直パターン&lt;/h5>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">10000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;第&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">項目は&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">です&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h5 id="高速化">高速化&lt;/h5>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">I&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">J&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">K&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]),&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">J&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">I&lt;/span>&lt;span class="p">)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">I&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">j&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">J&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">k&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">K&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">mat_pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">))]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">&amp;amp;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n&lt;/span> &lt;span class="o">//=&lt;/span> &lt;span class="mi">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">y&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">],[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mat&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">],[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">10000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mat_mul&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mat_pow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mat&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">ret&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;第&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">項目は&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">ret&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">です&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="線形漸化式">線形漸化式&lt;/h2>
+&lt;p>フィボナッチ数列は$2$項間の漸化式でしたが，$k$項間の線形漸化式でも可能です．&lt;/p>
+&lt;h4 id="3項の場合">3項の場合&lt;/h4>
+&lt;blockquote>
+&lt;p>次で定義される数列$a$の$n$項目を求めよ．&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+\begin{align}
+a_1 &amp;amp;= a_2 = a_3 = 1 \\
+a_n &amp;amp;= 2a_{n-1} - 4a_{n-2} + 3a_{n-3}\quad　(n \geq 4)
+\end{align}
+$$&lt;/p>
+&lt;p>この漸化式は次のような行列で表されます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+a_{n-1} \\
+a_{n-2}
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+2 &amp;amp; -4 &amp;amp; 3\\
+1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0
+\end{pmatrix}
+^{n-3}
+\begin{pmatrix}
+a_3 \\
+a_2 \\
+a_1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>実際に行列を計算すると確かに成立していることがわかります．&lt;/p>
+&lt;p>一般に，$k+1$項間の漸化式は$k\times k$の行列を使って表され，$k\times k$の行列同士の掛け算は$k^3$回の掛け算が必要であるため，第$n$項を求めるのに$O(k^3\log n)$かかります．&lt;/p>
+&lt;p>なお，$k+1$項間の線形漸化式の第$n$項はkitamasa法と呼ばれる手法で$(k^2\log n)$で求めることが可能です．こちらもダブリングを使った手法です．&lt;/p>
+&lt;h4 id="定数項がある場合">定数項がある場合&lt;/h4>
+&lt;blockquote>
+&lt;p>$a,b,m,x_0$を使って線形合同法で乱数を生成する．このときの$n$番目の乱数$x_n$を求めよ
+ただし，線形合同法とは，&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+x_{i+1} = ax_i + b \pmod m
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>の漸化式で疑似乱数を生成する手法である．&lt;/p>
+&lt;/blockquote>
+&lt;p>定数項がある場合は$1$の行を付け足して次のように作ることができます．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+x_n \\
+1 \\
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+a &amp;amp; b\\
+0 &amp;amp; 1
+\end{pmatrix}
+^{n}
+\begin{pmatrix}
+x_0 \\
+1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;h2 id="複数変数の線形漸化式">複数変数の線形漸化式&lt;/h2>
+&lt;p>複数の変数で表される漸化式にも応用できます&lt;/p>
+&lt;h4 id="平方根を含む数の累乗">平方根を含む数の累乗&lt;/h4>
+&lt;p>次の問題を考えます．&lt;/p>
+&lt;blockquote>
+&lt;p>$(2+\sqrt{3})^n$はいくつか？$a+b\sqrt{3}$の形式になるので$a,b$を求めよ．&lt;/p>
+&lt;/blockquote>
+&lt;p>$n$が大きいと展開が厄介になりそうなことが想像できますね．
+とりあえず，$2+\sqrt{3}$の累乗を次のように文字で置きます．&lt;/p>
+&lt;p>$$
+X_n = (a_n + b_n\sqrt{3})
+$$&lt;/p>
+&lt;p>$X_n$から$X_{n+1}$を計算してみます．&lt;/p>
+&lt;p>$$
+\begin{align}
+X_{n+1} &amp;amp;= X_n (2 + \sqrt{3}) \\
+&amp;amp;= (a_n + b_n \sqrt{3})(2 + \sqrt{3}) \\
+&amp;amp;= 2a_n + a_n \sqrt{3} + 2b_n \sqrt{3} + 3b_n \\
+&amp;amp;= (2a_n + 3b_n) + (a_n + 2b_n)\sqrt{3} \\
+&amp;amp;= a_{n+1} + b_{n+1} \sqrt{3}
+\end{align}
+$$&lt;/p>
+&lt;p>最後の二行の係数を比較して，次の漸化式が立ちます．&lt;/p>
+&lt;p>$$&lt;/p>
+&lt;p>\begin{align}
+a_1&amp;amp;=b_1=1 \\
+a_{n+1} &amp;amp;= 2a_{n} + 3b_n \\
+b_{n+1} &amp;amp;= a_n + 2b_n
+\end{align}&lt;/p>
+&lt;p>$$&lt;/p>
+&lt;p>これを行列にすると次のようになります．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+b_n
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+2 &amp;amp; 3\\
+1 &amp;amp; 2
+\end{pmatrix}
+^{n-1}
+\begin{pmatrix}
+a_1 \\
+b_1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;h4 id="確率">確率&lt;/h4>
+&lt;p>次の問題を考えます．&lt;/p>
+&lt;blockquote>
+&lt;p>エアコンのスイッチの状態は$OFF$である．遠隔操作を1回行うと確率$p$でエアコンの$ON$と$OFF$が入れ替わる．$n$回遠隔操作をしたときエアコンが$ON$である確率を求めよ．($N\leq 10^{18}$)　出典 &lt;a class="link" href="https://atcoder.jp/contests/code-festival-2014-morning-middle/tasks/code_festival_morning_med_c" target="_blank" rel="noopener"
+>CODE FESTIVAL 2014 Middle C - eject&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>次のように変数を設定します．
+$a_i = i$回目の遠隔操作をしたときにエアコンが$ON$である確率
+$b_i = i$回目の遠隔操作をしたときにエアコンが$OFF$である確率
+漸化式は次のように立ちます．&lt;/p>
+&lt;p>$$
+a_i = p b_{i-1} + (1-p)a_{i-1} \\
+b_i = p a_{i-1} + (1-p)b_{i-1} \\
+$$&lt;/p>
+&lt;p>行列にします．ただし，$a_0=0,b_0=1$です．&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+b_n
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+1-p &amp;amp; p\\
+p &amp;amp; 1-p
+\end{pmatrix}
+^{n}
+\begin{pmatrix}
+a_0 \\
+b_0
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>今までのものは全て，小さな問題の答えから大きな問題の答えを導くdp(dynamic programming:動的計画法)に分類されます．dpの漸化式が立ったときに，それが線形であり，同じ遷移をする場合に行列累乗が有効なことが多いです．&lt;/p>
+&lt;h2 id="グラフのパス数">グラフのパス数&lt;/h2>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/dp/tasks/dp_r" target="_blank" rel="noopener"
+>EDPC R - Walk&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>$N$頂点の単調有効グラフ$G$で，長さ$1$の有向辺が長さ$K$のパスは何通りありますか．ただし同じ頂点を複数回通っても良い&lt;/p>
+&lt;/blockquote>
+&lt;p>$N$次の正方行列で，頂点$i$から頂点$j$までの有向辺があれば$A_{ij}=1$，なければ$A_{ij}=0$となるような隣接行列を考えます．&lt;/p>
+&lt;p>例えば，次の$4$頂点のグラフを隣接行列にすると次のようになります．&lt;/p>
+&lt;p>&lt;img src="https://storage.googleapis.com/zenn-user-upload/1c6bfa766abe-20221107.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+0 &amp;amp;1 &amp;amp;0 &amp;amp;1 \\
+0 &amp;amp;0 &amp;amp;1 &amp;amp;0 \\
+0 &amp;amp;1 &amp;amp;0 &amp;amp;0 \\
+0 &amp;amp;0 &amp;amp;0 &amp;amp;1
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>このとき，頂点$i$から頂点$j$へのパス数は次のように計算できます．&lt;/p>
+&lt;p>$$
+(頂点iから頂点jへのパス数) = \sum &lt;em>{k=1}^4 A&lt;/em>{ik} A_{kj}
+$$&lt;/p>
+&lt;p>これは，行列の積の定義とよく似ていて，$A^2$の$(i,j)$成分は，頂点$i$から頂点$j$への長さ$2$のパス数を表します．よって，$A^n$の$i,j$成分から頂点$i$から$j$までの長さ$n$のパス数を求めることができます．&lt;/p>
+&lt;p>なお，無向グラフの場合は双方向に有向辺が張っていると考え，$A_{ij}=A_{ji}$とすることで同様に処理できます．&lt;/p>
+&lt;h2 id="行列の級数">行列の級数&lt;/h2>
+&lt;blockquote>
+&lt;p>正方行列$A$がある．$A+A^2+A^3+A^4+A^5+\cdots+A^N$を求めよ．&lt;/p>
+&lt;/blockquote>
+&lt;p>次のように$X_n$を定義します．&lt;/p>
+&lt;p>$$
+X_n = A^1 + A^2 + A^3 + \cdots + A^n
+$$&lt;/p>
+&lt;p>漸化式は次のように作れます．&lt;/p>
+&lt;p>$$
+\begin{align}
+X_1 &amp;amp;= A\\
+X_n &amp;amp;= A+AX_{n-1} \quad (n\geq 2)
+\end{align}
+$$&lt;/p>
+&lt;p>よって，&lt;/p>
+&lt;p>$$
+\begin{align}
+\begin{pmatrix}
+X_n \\ \hline
+I
+\end{pmatrix}
+&amp;amp;=
+\begin{pmatrix}
+\begin{array}{c|c}
+A &amp;amp; A\\ \hline
+O &amp;amp; I
+\end{array}
+\end{pmatrix}
+^{n-1}
+\begin{pmatrix}
+A \\ \hline
+I
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>です．&lt;/p>
+&lt;h2 id="半環">半環&lt;/h2>
+&lt;p>普通，行列の掛け算は次のように定義されています．&lt;/p>
+&lt;p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+a_{11} &amp;amp; a_{12} \\
+a_{21} &amp;amp; a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11} &amp;amp; b_{12} \\
+b_{21} &amp;amp; b_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11}\cdot b_{11}+a_{12}\cdot b_{21} &amp;amp; a_{11}\cdot b_{12}+a_{12}\cdot b_{22} \\
+a_{21}\cdot b_{11}+a_{22}\cdot b_{21} &amp;amp; a_{21}\cdot b_{12}+a_{22}\cdot b_{22}
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>それぞれ要素の積を計算し，和を計算しています．ここで，「和」と「積」を別のものに置き換えることを考えます．例えば次のように$\max$と$+$に変えるとどうなるでしょうか．ここで，$\max(a_1,a_2,a_3,\cdots)$は，$a_1,a_2,a_3,\cdots$のうちの最大値を表します．&lt;/p>
+&lt;p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+a_{11} &amp;amp; a_{12} \\
+a_{21} &amp;amp; a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11} &amp;amp; b_{12} \\
+b_{21} &amp;amp; b_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\max(a_{11}+b_{11},a_{12}+b_{21}) &amp;amp; \max(a_{11}+b_{12},a_{12}+b_{22}) \\
+\max(a_{21}+b_{11},a_{22}+b_{21}) &amp;amp; \max(a_{21}+b_{12},a_{22}+b_{22})
+\end{pmatrix}
+\end{align}
+$$&lt;/p>
+&lt;p>この$\max,+$で計算される行列ですが，実はこの行列においても高速な行列累乗の計算が可能です．こんな変な演算の世界で行列累乗をしてどうするんだと思いますが，例は後述します．もちろん，演算子を好き勝手変えていいわけではありません．いくつか条件があります．次に示す条件を満たす，集合と加法$+$と乗法 $\cdot$ の$2$つの二項演算，である必要があります．この性質を満たす集合と$+$と$\cdot$の組を半環と言います．また，集合の要素を元と言います．&lt;/p>
+&lt;ul>
+&lt;li>加法において，結合法則が成り立ち，可換であり，単位元$0$を持つ．
+&lt;ul>
+&lt;li>$(a + b) + c = a + (b + c)$&lt;/li>
+&lt;li>$a+b = b+a$&lt;/li>
+&lt;li>$0 + a = a + 0 = 0$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>乗法において，結合法則が成り立ち，単位元$1$を持つ．
+&lt;ul>
+&lt;li>$(a \cdot b) \cdot c = a \cdot (b \cdot c)$&lt;/li>
+&lt;li>$1 \cdot a = a \cdot 1 = a$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>分配法則が成り立つ．
+&lt;ul>
+&lt;li>$a \cdot (b+c) = (a\cdot b) + (a\cdot c)$&lt;/li>
+&lt;li>$(a+b)\cdot c = (a\cdot c) + (b\cdot c)$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>乗法で，$0$(加法の単位元)と任意の元の積は$0$になる．
+&lt;ul>
+&lt;li>$0\cdot a = a\cdot 0 = 0$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>例えば，有理数の集合を$\mathbb{R}$とすると，$(\mathbb{R},+,\cdot)$は半環をなす，という言い方をします．&lt;/p>
+&lt;p>では，先程の$\max$と$+$の例は本当に半環をなしているかを確認してみましょう．この場合の集合も$\mathbb{R}$(有理数全体)としておきます．先述した半環の定義だと，加法が$\max$で，乗法が$+$に対応しています．
+まずは加法$\max$について見ていきます．&lt;/p>
+&lt;ul>
+&lt;li>$\max(\max(a,b),c) = \max(a,\max(b,c))$&lt;/li>
+&lt;li>$\max(a,b) = \max(b,a)$&lt;/li>
+&lt;li>$\max(\infty,a) = \max(a,\infty) = \infty$&lt;/li>
+&lt;/ul>
+&lt;p>$\max$は単位元を$\infty$にすることで成立します．次に乗法$+$です．&lt;/p>
+&lt;ul>
+&lt;li>$(a + b) + c = a + ( b+c)$&lt;/li>
+&lt;li>$0 + a = a + 0 = a$&lt;/li>
+&lt;/ul>
+&lt;p>$+$の単位元は$0$です．
+次に分配法則の確認です．ややこしいですが，次の式が成り立つことがわかります．&lt;/p>
+&lt;ul>
+&lt;li>$a+\max(b,c) = \max(a+b,a+c)$&lt;/li>
+&lt;li>$\max(a,b)+c = \max(a+c,b+c)$&lt;/li>
+&lt;/ul>
+&lt;p>最後に加法$\max$の単位元$\infty$を乗算$+$すると$\infty$になることを確認します．&lt;/p>
+&lt;ul>
+&lt;li>$\infty +a = a + \infty = \infty$&lt;/li>
+&lt;/ul>
+&lt;p>以上，厳密性には欠けますが$(\mathbb{R},\max,+)$が半環をなしていることがわかりました．さて，次の節からは，いつもと違う半環の世界での行列累乗の例を見ていきます．&lt;/p>
+&lt;h3 id="andとxor">ANDとXOR&lt;/h3>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc009/tasks/abc009_4" target="_blank" rel="noopener"
+>ABC009 D - 漸化式&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>定数$C_1,C_2,C_3,\cdots,C_K$があり，$K$項間の漸化式が次のように定まる
+$A_i \quad (1\leq i\leq K)$は与えられる．&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+A_{K+1} = (C_1 \mathrm{AND} A_{K}) \mathrm{XOR} (C_2 \mathrm{AND} A_{K-1}) \mathrm{XOR} \cdots \mathrm{XOR} (C_K \mathrm{AND} A_{1})
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>このとき，$A_N$を求めよ($1\leq M\leq 10^{9}$)．
+なお，$\mathrm{AND}$はビットごとの論理積，$\mathrm{XOR}$はビットごとの排他的論理和を表す．&lt;/p>
+&lt;/blockquote>
+&lt;p>この問題は$(\mathbb{N},\mathrm{AND},\mathrm{XOR})$が半環をなすことを利用して，ただの線形漸化式と見ることができます．なお，$\mathrm{AND}$と$\mathrm{XOR}$はビットごとで独立した演算であるため，各bitで$\mod 2$の掛け算とたし算をしていると見ることでも解くことができます．&lt;/p>
+&lt;h3 id="ワーシャルフロイド法">ワーシャルフロイド法&lt;/h3>
+&lt;p>ワーシャルフロイド法は，$(\mathbb{R},\min,+)$の世界での行列累乗だと捉えることができます．&lt;/p>
+&lt;p>MojaCoderで類題を見つけました．
+&lt;a class="link" href="https://mojacoder.app/users/magurofly/problems/dungeon-attack" target="_blank" rel="noopener"
+>Dungeon Attack (Hard)&lt;/a>&lt;/p>
+&lt;h2 id="関連問題">関連問題&lt;/h2>
+&lt;p>行列累乗がストレートに出ることは珍しく，考察の末に最後の一捻りとして出てくることが多い印象があります．全体的に難しいです．&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://yukicoder.me/problems/no/526" target="_blank" rel="noopener"
+>フィボナッチ数列の第N項をMで割った余りを求める&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc204/tasks/abc204_f" target="_blank" rel="noopener"
+>ABC204 F - Hanjo 2&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc199/tasks/abc199_f" target="_blank" rel="noopener"
+>ABC199 F - Graph Smoothing&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc256/tasks/abc256_g" target="_blank" rel="noopener"
+>ABC256 G - Blakc and Whte Stones&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc129/tasks/abc129_f" target="_blank" rel="noopener"
+>ABC129 F - Takahashi&amp;rsquo;s Basics in Education and Learning&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc271/tasks/abc271_g" target="_blank" rel="noopener"
+>ABC271 G - Access Counter &lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc212/tasks/abc212_h" target="_blank" rel="noopener"
+>ABC212 H - Nim Counting&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/arc025/tasks/arc025_4" target="_blank" rel="noopener"
+>ARC025 D - コンセント&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b" target="_blank" rel="noopener"
+>DISCO2020 B - Hawker on Graph&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>APG4b 計算量 &lt;a class="link" href="https://atcoder.jp/contests/APG4b/tasks/APG4b_w" target="_blank" rel="noopener"
+>https://atcoder.jp/contests/APG4b/tasks/APG4b_w&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>実はこの計算量解析はあまり意味のあるものではありません．なぜなら，フィボナッチ数列は後の項に行けば行くほど桁数が増えるからです．後の項に行くほど，かけ算やたし算の計算コストは上がっていきます．ですので，$O(\log N)$といっても$N=10^7$の時点で結構時間がかかってしまいます．競プロでは$10^9+7$では割ったあまりを求めなさい，のように桁数を気にせずに計算できる場合が多いため，今回は考えないことにしています(競プロに限った話ではなく，大きな数を求めるときに異なる素数で割ったあまりを求めておいて，中国剰余原理で復元する，等の手法が使われる)．&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item></channel></rss>
