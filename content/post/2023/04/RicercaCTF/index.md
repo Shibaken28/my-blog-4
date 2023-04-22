@@ -267,7 +267,7 @@ x1 = int(- my_gcd(f1, f2).coefficients()[0])
 print (x1)
 
 r2 = pow((a*x1+b)%n,e,n)
-m2 = c2 ^ r2
+m2 = c2 ^^ r2
 print(long_to_bytes(m2))
 ```
 
