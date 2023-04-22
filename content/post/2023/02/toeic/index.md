@@ -1,6 +1,6 @@
 ---
 title: "TOEIC受けてきた"
-description: 830点
+description: 感想など
 slug: "toeic"
 date: 2023-02-14T12:00:36+09:00
 categories:
