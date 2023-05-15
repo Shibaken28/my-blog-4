@@ -53,7 +53,7 @@ $$
 - 式$(6)$：余計な項を付け足した．足して引いているので，値は変わらない．
 - 式$(7)$：$\Delta x$を余分にかけている．分子と分母に同じ値をかけているので，値は変わらない．
 - 式$(8)$：$\Delta x\to 0$のとき，$f(x+\Delta x,y,z(x+\Delta x,y))-f(x,y,z(x+\Delta x,y)) \to f(x+\Delta x,y,z(x,y))-f(x,y,z(x,y))$であることを用いた．
-    - 随分乱雑な変形に見えるかもしれないし，実際そうである気がする．しかし，この後のこの項の扱われ方を見ると，この変形でも問題なさそうである．
+    - この後のこの項の扱われ方を見ると，この変形は問題ない．
 
 式$(8)$の一項目は，$f(x,y,z)$を$x$で偏微分したものであるが，このときに$z$は**動いていない**．二項目は，$f(x,y,z)$うち$z(x,y)$の$x$で偏微分したものである．このときに$f$の第一引数$x$は**動いている**．
 
@@ -102,20 +102,13 @@ $$
 $$
 df(x,y,z(x,y)) = \frac{\partial f(x,y,z)}{\partial x} dx + \frac{\partial f(x,y,z)}{\partial z} \frac{\partial z(x,y)}{\partial x} dx
 $$
-であり，両辺を$dx$で割ると，
+であり，両辺を$dx$で割ると(左辺は偏微分になることに注意して)，
 $$
 \begin{align}
-\frac{df(x,y,z(x,y))}{dx} &= \frac{\partial f(x,y,z)}{\partial x} + \frac{\partial f(x,y,z)}{\partial z} \frac{\partial z(x,y)}{\partial x} \\\\
+\frac{\partial f(x,y,z(x,y))}{\partial x} &= \frac{\partial f(x,y,z)}{\partial x} + \frac{\partial f(x,y,z)}{\partial z} \frac{\partial z(x,y)}{\partial x} \\\\
 &= \frac{\partial f}{\partial x} + \frac{\partial f}{\partial z} \frac{\partial z}{\partial x}
 \end{align}
 $$
-という式が導出される．この式では，右辺では常微分の$df/dx$が，左辺では偏微分の$\partial f/\partial x$が登場している．
+という式が導出される．
 
-## 注意点
-常微分のように，通分して$\partial z$を消すことはできない．
-$$
-\frac{\partial f}{\partial z} \frac{\partial z}{\partial x}
-\ne \frac{\partial f}{\partial x} 
-$$
-
-
+## 執筆中
