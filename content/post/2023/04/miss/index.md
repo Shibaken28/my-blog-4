@@ -7,6 +7,7 @@ image:
 categories:
     - 数学
     - メモ
+draft: true
 ---
 
 だらだらと学んだことを書いています．随時
