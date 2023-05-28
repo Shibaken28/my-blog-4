@@ -3,7 +3,6 @@ title: "山梨大学コンピュータ理工科過去問を解く"
 description: 計算機アーキテクチャを除く
 slug: Yamanashi_Univ
 date: 2023-05-25T12:08:30+09:00
-image: 
 categories:
     - 情報数学
     - メモ
