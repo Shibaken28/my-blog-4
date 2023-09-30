@@ -344,8 +344,8 @@ $$
 
 $$
 \mathrm{GL}\_4(\mathbb{Z}/p\mathbb{Z}) = \left\lbrace
-A = 4次正方行列
-\mid a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land \det A \neq 0 \right\rbrace
+A = 各要素が\mathbb{Z}/p\mathbb{Z}の元である4次正方行列
+\mid \land \det A \neq 0 \right\rbrace
 $$
 
 このとき、定義より明らかに$\mathbb{H}^\prime_p \subset \mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$である。
@@ -396,7 +396,16 @@ print(x^e)
 お疲れ様でした。
 
 
+### まとめ
+四元数バージョンのフェルマーの小定理っぽいやつを最後にまとめておく。
 
+$$
+\mathbb{H}_p = \lbrace a+bi+cj+dk \mid a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land a^2+b^2+c^2+d^2 \neq 0 \rbrace \\\\
+\Rightarrow \forall w\in \mathbb{H}_p, w^{p^4(p^4-p)(p^4-p^2)(p^4-p^3)} = 1
+$$
+
+### 余談
+本当は、$w$の指数はもっと小さくできることができるらしいのだが、証明方法がわからなかった。
 
 ## 参考文献
 - [四元数 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%9B%9B%E5%85%83%E6%95%B0)
