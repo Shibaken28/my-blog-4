@@ -4,6 +4,7 @@ description: モーメント母関数もあるよ
 slug: EV
 date: 2023-06-03T12:08:30+09:00
 image: 
+hidden: true
 categories:
     - 数学
     - 確率統計

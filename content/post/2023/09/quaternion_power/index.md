@@ -4,6 +4,7 @@ description:
 slug: quaternion_power
 date: 2023-09-20T12:08:30+09:00
 image: 
+hidden: true
 categories:
     - 数学
     - 数論

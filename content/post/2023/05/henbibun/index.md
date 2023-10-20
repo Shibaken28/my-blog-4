@@ -4,6 +4,7 @@ description:
 slug: henbibun
 date: 2023-05-13T15:01:00+09:00
 image: 
+hidden: true
 categories:
     - 数学
     - 解析学
