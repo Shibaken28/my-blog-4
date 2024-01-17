@@ -10,6 +10,7 @@ categories:
 tags:
     - SageMath
     - python
+hidden: true
 ---
 
 ## まえおき
