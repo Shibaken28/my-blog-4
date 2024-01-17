@@ -1,0 +1,217 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="$Q$学習やSARSA学習では，状態の価値を求めて，その価値から方策を決定していた．ここでは，方策そのものを学習する方法，方策勾配法を考える．
+導出 難しそうな式が見えるが，今までの知識に加えて合成関数の微分さえわかっていれば理解はできると思う．
+目的関数 ニューラルネットワークの全ての重みのパラメータを$\theta$とする．方策$\pi_{\theta}(a\mid s)$を学習する．このとき，方策勾配法では，方策のパラメータ$\theta$を更新する．正解がわからないため，損失関数を用意することはできないが，目的関数を用意してこれを最大化するように学習する1．
+目的関数を設定する．エピソードタスクで，方策$\pi_{\theta}$を実行したときの軌道(trajectory)が次の通りであったとする． $$ \tau = (S_0, A_0, R_0, S_1, A_1, R_1, \cdots, S_{T-1}, A_{T-1}, R_{T-1}, S_T) $$ この$\tau$から収益は決定するため，次の通りに関数$G(\tau)$が定義できる． $$ G(\tau) = R_0 + \gamma R_1 + \gamma^2 R_2 + \cdots + \gamma^{T-1} R_{T-1} + \gamma^T R_T $$
+目的関数$J(\theta)$は次のように表される． $$ J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}[G(\tau)] $$ 波の記号$a\sim A$は，$A$によって$a$が抽出(サンプリング，あるいは生成)されることを表す． この式は$\pi_{\theta}$から生成された軌道$\tau$の収益の期待値を表す． あとは，目的関数の勾配がわかれば，勾配上昇法2でパラメータを更新することができる．
+勾配の導出 では，目的関数の勾配$\nabla_{\theta} J(\theta)$を求める． 先に結果を示すと，次のようになる． $$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}} \left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right] $$"><title>強化学習勉強メモ #9 方策勾配法(WIP)</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/rl-9/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="強化学習勉強メモ #9 方策勾配法(WIP)"><meta property="og:description" content="$Q$学習やSARSA学習では，状態の価値を求めて，その価値から方策を決定していた．ここでは，方策そのものを学習する方法，方策勾配法を考える．
+導出 難しそうな式が見えるが，今までの知識に加えて合成関数の微分さえわかっていれば理解はできると思う．
+目的関数 ニューラルネットワークの全ての重みのパラメータを$\theta$とする．方策$\pi_{\theta}(a\mid s)$を学習する．このとき，方策勾配法では，方策のパラメータ$\theta$を更新する．正解がわからないため，損失関数を用意することはできないが，目的関数を用意してこれを最大化するように学習する1．
+目的関数を設定する．エピソードタスクで，方策$\pi_{\theta}$を実行したときの軌道(trajectory)が次の通りであったとする． $$ \tau = (S_0, A_0, R_0, S_1, A_1, R_1, \cdots, S_{T-1}, A_{T-1}, R_{T-1}, S_T) $$ この$\tau$から収益は決定するため，次の通りに関数$G(\tau)$が定義できる． $$ G(\tau) = R_0 + \gamma R_1 + \gamma^2 R_2 + \cdots + \gamma^{T-1} R_{T-1} + \gamma^T R_T $$
+目的関数$J(\theta)$は次のように表される． $$ J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}[G(\tau)] $$ 波の記号$a\sim A$は，$A$によって$a$が抽出(サンプリング，あるいは生成)されることを表す． この式は$\pi_{\theta}$から生成された軌道$\tau$の収益の期待値を表す． あとは，目的関数の勾配がわかれば，勾配上昇法2でパラメータを更新することができる．
+勾配の導出 では，目的関数の勾配$\nabla_{\theta} J(\theta)$を求める． 先に結果を示すと，次のようになる． $$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}} \left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right] $$"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/rl-9/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2023-01-14T16:00:36+09:00"><meta property="article:modified_time" content="2023-01-14T16:00:36+09:00"><meta name=twitter:title content="強化学習勉強メモ #9 方策勾配法(WIP)"><meta name=twitter:description content="$Q$学習やSARSA学習では，状態の価値を求めて，その価値から方策を決定していた．ここでは，方策そのものを学習する方法，方策勾配法を考える．
+導出 難しそうな式が見えるが，今までの知識に加えて合成関数の微分さえわかっていれば理解はできると思う．
+目的関数 ニューラルネットワークの全ての重みのパラメータを$\theta$とする．方策$\pi_{\theta}(a\mid s)$を学習する．このとき，方策勾配法では，方策のパラメータ$\theta$を更新する．正解がわからないため，損失関数を用意することはできないが，目的関数を用意してこれを最大化するように学習する1．
+目的関数を設定する．エピソードタスクで，方策$\pi_{\theta}$を実行したときの軌道(trajectory)が次の通りであったとする． $$ \tau = (S_0, A_0, R_0, S_1, A_1, R_1, \cdots, S_{T-1}, A_{T-1}, R_{T-1}, S_T) $$ この$\tau$から収益は決定するため，次の通りに関数$G(\tau)$が定義できる． $$ G(\tau) = R_0 + \gamma R_1 + \gamma^2 R_2 + \cdots + \gamma^{T-1} R_{T-1} + \gamma^T R_T $$
+目的関数$J(\theta)$は次のように表される． $$ J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}[G(\tau)] $$ 波の記号$a\sim A$は，$A$によって$a$が抽出(サンプリング，あるいは生成)されることを表す． この式は$\pi_{\theta}$から生成された軌道$\tau$の収益の期待値を表す． あとは，目的関数の勾配がわかれば，勾配上昇法2でパラメータを更新することができる．
+勾配の導出 では，目的関数の勾配$\nabla_{\theta} J(\theta)$を求める． 先に結果を示すと，次のようになる． $$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}} \left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right] $$"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#導出>導出</a><ol><li><a href=#目的関数>目的関数</a></li><li><a href=#勾配の導出>勾配の導出</a></li></ol></li><li><a href=#勾配上昇法>勾配上昇法</a></li><li><a href=#実装>実装</a><ol><li><a href=#ソフトマックス関数>ソフトマックス関数</a></li><li><a href=#モデル>モデル</a></li></ol></li><li><a href=#reinforceアルゴリズム>REINFORCEアルゴリズム</a><ol><li><a href=#概要>概要</a></li><li><a href=#証明>証明</a></li></ol></li><li><a href=#ベースライン>ベースライン</a><ol><li><a href=#ベースラインとは>ベースラインとは</a></li><li><a href=#actor-critic>Actor-Critic</a></li><li><a href=#証明-1>証明</a></li><li><a href=#実装-1>実装</a></li></ol></li><li><a href=#vの代わりにq関数を使う>Vの代わりにQ関数を使う</a><ol><li><a href=#結論>結論</a></li><li><a href=#証明-2>証明</a></li></ol></li><li><a href=#まとめ>まとめ</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/>強化学習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/rl-9/>強化学習勉強メモ #9 方策勾配法(WIP)</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Jan 14, 2023</time></div></footer></div></header><section class=article-content><p>$Q$学習やSARSA学習では，状態の<strong>価値</strong>を求めて，その価値から方策を決定していた．ここでは，方策そのものを学習する方法，<strong>方策勾配法</strong>を考える．</p><h2 id=導出>導出</h2><p>難しそうな式が見えるが，今までの知識に加えて合成関数の微分さえわかっていれば理解はできると思う．</p><h3 id=目的関数>目的関数</h3><p>　ニューラルネットワークの全ての重みのパラメータを$\theta$とする．方策$\pi_{\theta}(a\mid s)$を学習する．このとき，方策勾配法では，方策のパラメータ$\theta$を更新する．正解がわからないため，損失関数を用意することはできないが，<strong>目的関数</strong>を用意してこれを最大化するように学習する<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>．</p><p>　目的関数を設定する．エピソードタスクで，方策$\pi_{\theta}$を実行したときの軌道(trajectory)が次の通りであったとする．
+$$
+\tau = (S_0, A_0, R_0, S_1, A_1, R_1, \cdots, S_{T-1}, A_{T-1}, R_{T-1}, S_T)
+$$
+この$\tau$から収益は決定するため，次の通りに関数$G(\tau)$が定義できる．
+$$
+G(\tau) = R_0 + \gamma R_1 + \gamma^2 R_2 + \cdots + \gamma^{T-1} R_{T-1} + \gamma^T R_T
+$$</p><p>目的関数$J(\theta)$は次のように表される．
+$$
+J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}[G(\tau)]
+$$
+波の記号$a\sim A$は，$A$によって$a$が抽出(サンプリング，あるいは生成)されることを表す．
+この式は$\pi_{\theta}$から生成された軌道$\tau$の収益の期待値を表す．
+あとは，目的関数の勾配がわかれば，勾配上昇法<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>でパラメータを更新することができる．</p><h3 id=勾配の導出>勾配の導出</h3><p>では，目的関数の勾配$\nabla_{\theta} J(\theta)$を求める．
+先に結果を示すと，次のようになる．
+$$
+\nabla_{\theta} J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+$$</p><p>期待値の式からの変形によって導出する．</p><p>$$
+\begin{align}
+\nabla_{\theta} J(\theta) &= \nabla_\theta \mathbb{E}_{\tau\sim\pi_{\theta}} \left[ G(\tau) \right] \\
+&= \nabla_{\theta} \sum_r \mathrm{Pr}(\tau | \theta)G(\tau) \\
+&= \sum_r \nabla_{\theta} \mathrm{Pr}(\tau | \theta)G(\tau) \\
+&= \sum_r \left\{ G(\tau)\nabla_{\theta} \mathrm{Pr}(\tau | \theta) + \mathrm{Pr}(\tau | \theta)\nabla_{\theta} G(\tau) \right\} \\
+&= \sum_r G(\tau)\nabla_{\theta} \mathrm{Pr}(\tau | \theta) \\
+&= \sum _{r} G(\tau) \mathrm{Pr}(\tau | \theta) \frac{\nabla_{\theta} \mathrm{Pr}(\tau | \theta)}{\mathrm{Pr}(\tau | \theta)} \\
+&= \sum _{r} G(\tau) \mathrm{Pr}(\tau | \theta) \nabla_{\theta} \log \mathrm{Pr}(\tau | \theta) \\
+&= \mathbb{E}_{\tau\sim\pi_{\theta}} \left[ G(\tau) \nabla_{\theta} \log \mathrm{Pr}(\tau | \theta) \right] \\
+&= \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+\end{align}
+$$</p><ul><li>式$(2)$: 期待値を確率$\times$収益の総和に変形</li><li>式$(3)$: $\nabla$を移動．足し算した後に微分しても，微分した後に足し算しても結果は変わらない．</li><li>式$(4)$: 積の微分の公式を用いる．</li><li>式$(5)$: $\nabla_\theta G(\tau)$は，$0$である．なぜなら，$G(\tau)$は$\theta$に依存しないからである．<ul><li>いやいや，$\tau$は$\theta$によって決まるから，$G(\tau)$は$\theta$に依存するだろ，と思われるかもしれない(筆者は思った)．確かに，$\theta$から$\tau$を取り出したときに，その$\tau$は$\theta$に依存する．しかし，今見ているのはある一つの特定の$\tau$である．様々な$\theta$が考えられるが，どの$\theta$から取り出した$\tau$でも，その$\tau$自身はどれも同じであるから，$G(\tau)$はいつも同じ，つまり定数である．</li></ul></li><li>式$(6)$: $\mathrm{Pr}(\tau | \theta)/\mathrm{Pr}(\tau | \theta) = 1$を掛け算した．<ul><li>$\nabla$が掛かっているものは変わっていないことに注意</li></ul></li><li>式$(7)$: $\log$の合成関数の微分の逆を行っている<sup id=fnref:3><a href=#fn:3 class=footnote-ref role=doc-noteref>3</a></sup>．
+$$
+(\log f(x))&rsquo; = \frac{f&rsquo;(x)}{f(x)}
+$$</li><li>式$(8)$: 確率$\times$そのときの値の形をしていたので期待値として表す．</li></ul><p>式$(9)$は，少し飛躍がある．$\mathrm{Pr}(\tau | \theta)$を展開する．なお，$p(S_0)$は，始めの状態が$S_0$である確率を表す．
+$$
+\begin{align*}
+\mathrm{Pr}(\tau | \theta) = p(S_0) \prod_{t=0}^{T-1} \pi_\theta (A_t | S_t) p(S_{t+1} | S_t, A_t)
+\end{align*}
+$$
+対数をとると，積が和で表されるので，次のようになる．
+$$
+\begin{align*}
+\log \mathrm{Pr}(\tau | \theta) = \log p(S_0) + \sum_{t=0}^{T-1} \log \pi_\theta (A_t | S_t) + \sum_{t=0}^{T-1} \log p(S_{t+1} | S_t, A_t)
+\end{align*}
+$$
+よって，$\nabla_\theta \log \mathrm{Pr}(\tau | \theta)$は，
+$$
+\begin{align*}
+\nabla_\theta \log \mathrm{Pr}(\tau | \theta) = \nabla_\theta \log p(S_0) + \sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta (A_t | S_t) + \sum_{t=0}^{T-1} \nabla_\theta \log p(S_{t+1} | S_t, A_t)
+\end{align*}
+$$
+このうち，$p(S_0)$と$p(S_{t+1} | S_t, A_t)$は$\theta$に依存しないので，
+$$
+\begin{align*}
+\nabla_\theta \log \mathrm{Pr}(\tau | \theta) &= \sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta (A_t | S_t) \\
+&= \nabla_\theta \sum_{t=0}^{T-1} \log \pi_\theta (A_t | S_t)
+\end{align*}
+$$
+となる．以上で，導出は終わりである．</p><h2 id=勾配上昇法>勾配上昇法</h2><p>最も簡単な更新式は次である．$\alpha$は学習率である．
+$$
+\theta \leftarrow \theta + \alpha \nabla_{\theta} J(\theta)
+$$</p><p>$\nabla_\theta J(\theta)$を計算するために，モンテカルロ法を用いる．期待値の式が次であるため，
+$$
+\begin{align*}
+\nabla_{\theta} J(\theta) &= \mathbb{E}_{\tau\sim\pi_{\theta}} \left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+\end{align*}
+$$
+$\theta$に従い，$\tau$をサンプリングし，収益を計算をする．
+$$
+\text{sampling:} \tau_i \sim \pi_\theta \quad (i = 1, \dots, N) \\
+x^{(i)} = \sum_{t=0}^{T} G(\tau_i) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \\
+\nabla_{\theta} J(\theta) \approx \frac{1}{N} \sum_{i=1}^{N} x^{(i)}
+$$
+サンプルが$N=1$つだけの場合，次の式になる．これを使う場合は，エピソードの各行動をするたびに，$\nabla_{\theta} \log \pi_\theta (A_t | S_t)$を計算し，その値$G(\tau)$を足していくような実装となる．
+$$
+\begin{align*}
+\nabla_{\theta} J(\theta) \approx \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t)
+\end{align*}
+$$</p><h2 id=実装>実装</h2><p>例のポールを倒れないようにするやつを実装する．</p><h3 id=ソフトマックス関数>ソフトマックス関数</h3><p>$n$個の要素を持つベクトル$x$を入力すると，次のようなベクトルを返す関数である．
+$$
+\begin{align*}
+\mathrm{softmax}(x) = \left( \frac{\exp(x_1)}{\sum_{i=1}^{n} \exp(x_i)}, \dots, \frac{\exp(x_n)}{\sum_{i=1}^{n} \exp(x_i)} \right)
+\end{align*}
+$$
+$\exp(a)$は$e^a$を表し，これは各$e^{x_i}$を$\sum_{i=1}^{n} \exp(x_i)$でわっているので，全ての値を足すと1になる．また，$e^a$は正の値であるので，各要素は0から1の間に収まる．この値は確率として解釈できる．</p><h3 id=モデル>モデル</h3><p>ReLU関数とソフトマックス関数の$2$層のネットワークを用いる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>class</span> <span class=nc>Policy</span><span class=p>(</span><span class=n>Model</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>action_size</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>l1</span> <span class=o>=</span> <span class=n>L</span><span class=o>.</span><span class=n>Linear</span><span class=p>(</span><span class=mi>128</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>l2</span> <span class=o>=</span> <span class=n>L</span><span class=o>.</span><span class=n>Linear</span><span class=p>(</span><span class=n>action_size</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>relu</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>l1</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>softmax</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>l2</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>x</span>
+</span></span></code></pre></td></tr></table></div></div><p>「行動の種類数」次元の出力をソフトマックス関数に通すことで，各行動の確率として解釈できるようにしている．</p><p>　各行動の報酬とその確率を保存しておき，勾配の式にしたがって目的関数を計算する．プログラムでは，目的関数を負にして，損失関数として扱っている．計算が終わったら最後にoptimizerのupdateメソッドを呼び出して，パラメータを更新する．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>def</span> <span class=nf>update</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>pi</span><span class=o>.</span><span class=n>cleargrads</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>G</span><span class=p>,</span> <span class=n>loss</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>reward</span><span class=p>,</span> <span class=n>prob</span> <span class=ow>in</span> <span class=nb>reversed</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>memory</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>G</span> <span class=o>=</span> <span class=n>reward</span> <span class=o>+</span> <span class=bp>self</span><span class=o>.</span><span class=n>gamma</span> <span class=o>*</span> <span class=n>G</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>reward</span><span class=p>,</span> <span class=n>prob</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>memory</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>loss</span> <span class=o>+=</span> <span class=o>-</span><span class=n>F</span><span class=o>.</span><span class=n>log</span><span class=p>(</span><span class=n>prob</span><span class=p>)</span> <span class=o>*</span> <span class=n>G</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>loss</span><span class=o>.</span><span class=n>backward</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>optimizer</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>memory</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span></code></pre></td></tr></table></div></div><p>全体のコードは本の作者様の<a class=link href=https://github.com/Shibaken28/deep-learning-from-scratch-4/blob/master/ch09/simple_pg.py target=_blank rel=noopener>GitHub</a>に置いてあるので，そちらを参照してください．</p><p>ただし，この方法では効率が悪い．</p><h2 id=reinforceアルゴリズム>REINFORCEアルゴリズム</h2><h3 id=概要>概要</h3><p>$$
+\nabla_{\theta} J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+$$
+　さっきまで使っていたこの式の問題点を考えると，どの時刻$t$に対しても$G(\tau)$との積を取っている点が気になる．というのも，$t=T$のときにも$G(\tau)$が使われてしまっているのである．$t=T$は，最後の行動であり，その行動の重みとして，それまでのすべての行動$\tau$に関する収益$G(\tau)$を使っていることになる．つまり，$t=T$の行動をする前の情報が入ってきてしまっている．これは，他の$t$も同じで，それ以前どんな動きをしていたのかも知らないのに，それまでの行動込みの収益$G(\tau)$を使ってしまっている．そこで，$t$以降の行動のみを考慮するようにする．
+$$
+\nabla_{\theta} J(\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} G_t \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right] \\
+G_t = R_t + \gamma R_{t+1} + \dots + \gamma^{T-t} R_{T}
+$$</p><h3 id=証明>証明</h3><p>勝手に$G_t$に変えていいのか疑問に思うが，これは証明ができる．
+証明は本には載っておらず，証明は<a class=link href=https://spinningup.openai.com/en/latest/spinningup/extra_pg_proof1.html target=_blank rel=noopener>こちら</a>に書いてある．</p><p><em>todo: 証明を理解する</em></p><h2 id=ベースライン>ベースライン</h2><h3 id=ベースラインとは>ベースラインとは</h3><p><em>todo: 書く</em></p><h3 id=actor-critic>Actor-Critic</h3><p>$G(\tau)$から$b(S_t)$(ベースライン)を引き算する．$b(S_t)$は$S_t$の関数であれば何でもいい．
+$$
+\begin{align*}
+\nabla_\theta J(\pi_\theta) &= \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} G(\tau) \nabla_{\theta} \log \pi_\theta (A_t | S_t) \right] \\
+\nabla_\theta J(\pi_\theta)&= \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} (G(\tau) - b(S_t))\nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+\end{align*}
+$$
+予測の精度が高くなるため，分散が小さくなる．</p><p>さて，肝心の$b(S_t)$であるが，これは状態価値関数を使う．新たな変数として$w$を価値関数を表すニューラルネットワークのパラメータ，$V_w(S_t)$をそれに基づいた状態価値関数とする．
+$$
+\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} (G(\tau) - V_w(S_t))\nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+$$
+そして，これをTD法にする．
+$$
+\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} (G(\tau) + \gamma V_w(S_{t+1})-V_w(S_t))\nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+$$</p><h3 id=証明-1>証明</h3><p>いきなりだが，全事象の各確率の合計は$1$であるため次の式は成り立つ．
+$$
+\sum_x P_\theta(x) = 1
+$$
+この式の勾配を求めると，$0$になる．
+$$
+\nabla_\theta \sum_x P_\theta(x) = \nabla_\theta 1 = 0
+$$
+値が$0$である式を変形すると，次のようになる(途中で$\log$の合成関数の微分の逆を行っている)．
+$$
+\begin{align*}
+\nabla_\theta \sum_x P_\theta(x) &= \sum_x \nabla_\theta P_\theta(x) \\
+&= \sum _{x} P_\theta(x) \frac{\nabla_{\theta} P_\theta (x)}{P_\theta (x)} \\
+&= \sum_{x}P_\theta(x) \nabla_\theta \log P_\theta (x) \\
+&= \mathbb{E}_{x\sim P_\theta} [\nabla_\theta \log P_\theta(x)]
+\end{align*}
+$$
+これはつまり，次が成り立つということだ．
+$$
+\mathbb{E}_{A_t\sim \pi_\theta} [\nabla_\theta \log \pi_(A_t|S_t)] = 0
+$$
+好きな定数を掛け算しても$0$のままだ．定数である$S_t$の関数を掛け算しても問題ない(これは$A_t$に関する期待値だから)．
+$$
+\mathbb{E}_{A_t\sim \pi_\theta} [b(S_t)\nabla_\theta \log \pi_\theta(A_t|S_t)] = 0
+$$</p><h3 id=実装-1>実装</h3><p><em>todo: 書く</em></p><h2 id=vの代わりにq関数を使う>Vの代わりにQ関数を使う</h2><p>これも本には載っておらず，<a class=link href=https://spinningup.openai.com/en/latest/spinningup/extra_pg_proof2.html target=_blank rel=noopener>こちら</a>に書いてある．</p><h3 id=結論>結論</h3><p>$$
+\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} \left( \nabla_\theta \log \pi_\theta (a_t|s_t) \right)
+Q^{\pi_\theta}(s_t,a_t) \right]
+$$</p><h3 id=証明-2>証明</h3><p><em>todo:書く</em></p><h2 id=まとめ>まとめ</h2><p>方策勾配法は，基本的に次の式で表される．
+$$
+\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau\sim\pi_{\theta}}
+\left[ \sum_{t=0}^{T} \Phi_\tau\nabla_{\theta} \log \pi_\theta (A_t | S_t) \right]
+$$
+$\Phi_\tau$は，手法によって異なる．</p><ul><li>$\Phi_\tau = G(\tau)$の場合</li><li>$\Phi_\tau = G_t$の場合</li><li>$\Phi_\tau = G(\tau) - V_w(S_t)$の場合</li><li>$\Phi_\tau = G(\tau) + \gamma V_w(S_{t+1})-V_w(S_t)$の場合</li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>実は，損失関数にマイナス$1$を掛ければ，最大化する問題になるため，実質損失関数と目的関数は同じものである．&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p>勾配降下法は勾配ベクトルの逆の方向にパラメータを更新したが，勾配上昇法は勾配ベクトルの方向にパラメータを更新する．&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:3><p>この変形はよく出てくるらしい．&#160;<a href=#fnref:3 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/puyo-dqn/><div class=article-details><h2 class=article-title>強化学習でぷよぷよを学習させたかった(願望)</h2></div></a></article><article><a href=/my-blog-4/contents/rl-0/><div class=article-details><h2 class=article-title>強化学習勉強メモ (目次)</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

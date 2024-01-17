@@ -1,0 +1,909 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="計算機アーキテクチャを除く"><title>山梨大学コンピュータ理工科過去問を解く</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/yamanashi_univ/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="山梨大学コンピュータ理工科過去問を解く"><meta property="og:description" content="計算機アーキテクチャを除く"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/yamanashi_univ/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2023-05-25T12:08:30+09:00"><meta property="article:modified_time" content="2023-05-25T12:08:30+09:00"><meta name=twitter:title content="山梨大学コンピュータ理工科過去問を解く"><meta name=twitter:description content="計算機アーキテクチャを除く"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#はじめに>はじめに</a></li><li><a href=#傾向と対策>傾向と対策</a><ol><li><a href=#出題範囲>出題範囲</a></li><li><a href=#プログラミング>プログラミング</a></li><li><a href=#計算機アーキテクチャ>計算機アーキテクチャ</a></li><li><a href=#情報数学>情報数学</a></li></ol></li><li><a href=#令和5年度>令和5年度</a><ol><li><a href=#プログラミング-1>プログラミング</a><ol><li><a href=#問1>問1</a></li><li><a href=#問2>問2</a></li><li><a href=#問3>問3</a></li></ol></li><li><a href=#情報数学-1>情報数学</a><ol><li><a href=#問1-1>問1</a></li><li><a href=#問2-1>問2</a></li><li><a href=#問3-1>問3</a></li></ol></li></ol></li><li><a href=#令和4年度>令和4年度</a><ol><li><a href=#プログラミング-2>プログラミング</a><ol><li><a href=#問1-2>問1</a></li><li><a href=#問2-2>問2</a></li><li><a href=#問3-2>問3</a></li></ol></li><li><a href=#情報数学-2>情報数学</a><ol><li><a href=#問1-3>問1</a></li><li><a href=#問2-3>問2</a></li></ol></li></ol></li><li><a href=#令和3年度>令和3年度</a><ol><li><a href=#プログラミング-3>プログラミング</a><ol><li><a href=#問1-4>問1</a></li><li><a href=#問2-4>問2</a></li><li><a href=#問3-3>問3</a></li></ol></li><li><a href=#情報数学-3>情報数学</a><ol><li><a href=#問1-5>問1</a></li><li><a href=#問2-5>問2</a></li><li><a href=#問3-4>問3</a></li></ol></li></ol></li><li><a href=#令和2年度>令和2年度</a><ol><li><a href=#プログラミング-4>プログラミング</a><ol><li><a href=#問1-6>問1</a></li><li><a href=#問2-6>問2</a></li><li><a href=#問3-5>問3</a></li></ol></li><li><a href=#情報数学-4>情報数学</a><ol><li><a href=#問1-7>問1</a></li><li><a href=#問2-7>問2</a></li><li><a href=#問3-6>問3</a></li></ol></li></ol></li><li><a href=#平成31年度>平成31年度</a><ol><li><a href=#プログラミング-5>プログラミング</a><ol><li><a href=#問1-8>問1</a></li><li><a href=#問2-8>問2</a></li><li><a href=#問3-7>問3</a></li></ol></li><li><a href=#情報数学-5>情報数学</a><ol><li><a href=#問1-9>問1</a></li><li><a href=#問2-9>問2</a></li><li><a href=#問3-8>問3</a></li><li><a href=#問4>問4</a></li></ol></li></ol></li><li><a href=#平成30年度>平成30年度</a><ol><li><a href=#プログラミング-6>プログラミング</a><ol><li><a href=#問1-10>問1</a></li><li><a href=#問2-10>問2</a></li><li><a href=#問3-9>問3</a></li><li><a href=#問4-1>問4</a></li><li><a href=#問5>問5</a></li><li><a href=#問6>問6</a></li><li><a href=#問7>問7</a></li></ol></li><li><a href=#情報数学-6>情報数学</a><ol><li><a href=#問1-11>問1</a></li><li><a href=#問2-11>問2</a></li><li><a href=#問3-10>問3</a></li></ol></li></ol></li><li><a href=#平成29年度>平成29年度</a><ol><li><a href=#プログラミング-7>プログラミング</a><ol><li><a href=#問1-12>問1</a></li><li><a href=#問2-12>問2</a></li><li><a href=#問3-11>問3</a></li><li><a href=#問4-2>問4</a></li></ol></li><li><a href=#情報数学-7>情報数学</a><ol><li><a href=#問1-13>問1</a></li><li><a href=#問2-13>問2</a></li><li><a href=#問3-12>問3</a></li></ol></li></ol></li><li><a href=#平成28年度>平成28年度</a></li><li><a href=#平成27年度>平成27年度</a><ol><li><a href=#プログラミング-8>プログラミング</a><ol><li><a href=#問1-14>問1</a></li><li><a href=#問2-14>問2</a></li><li><a href=#問3-13>問3</a></li><li><a href=#問4-3>問4</a></li></ol></li><li><a href=#情報数学-8>情報数学</a><ol><li><a href=#問1-15>問1</a></li><li><a href=#問2-15>問2</a></li><li><a href=#問3-14>問3</a></li></ol></li></ol></li><li><a href=#平成26年度>平成26年度</a><ol><li><a href=#プログラミング-9>プログラミング</a><ol><li><a href=#問1-16>問1</a></li><li><a href=#問2-16>問2</a></li><li><a href=#問3-15>問3</a></li><li><a href=#問4-4>問4</a></li></ol></li><li><a href=#情報数学-9>情報数学</a><ol><li><a href=#問1-17>問1</a></li><li><a href=#問2-17>問2</a></li><li><a href=#問3-16>問3</a></li></ol></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/%E6%83%85%E5%A0%B1%E6%95%B0%E5%AD%A6/>情報数学</a>
+<a href=/my-blog-4/categories/%E3%83%A1%E3%83%A2/>メモ</a>
+<a href=/my-blog-4/categories/%E7%B7%A8%E5%85%A5/>編入</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/yamanashi_univ/>山梨大学コンピュータ理工科過去問を解く</a></h2><h3 class=article-subtitle>計算機アーキテクチャを除く</h3></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>May 25, 2023</time></div></footer></div></header><section class=article-content><h2 id=はじめに>はじめに</h2><p><strong>解答はあくまで私が解いたものであり、正解を保証するものではありません。</strong></p><p><strong>途中で解答を書くのに飽きて雑になっているところがあります。問題文が不完全な場合があります。</strong></p><p>山梨大学は編入試験を含め、入試問題を公開しています。神。
+<a class=link href=https://www.yamanashi.ac.jp/admission/293 target=_blank rel=noopener>山梨大学過去問集へのリンク</a></p><h2 id=傾向と対策>傾向と対策</h2><p>コンピュータ理工科は成績証明書：口述試験：筆記試験の配点の比が1:1:8となっています(ただし、口述試験単体でも否だと、他の点数に関わらず不合格になります)。</p><h3 id=出題範囲>出題範囲</h3><div class=table-wrapper><table><thead><tr><th>年度</th><th>プログラミング</th><th>計算機アーキテクチャ</th><th>情報数学</th></tr></thead><tbody><tr><td>令和5年度</td><td>計算量、ソート、ハッシュ表、二分探索木</td><td>論理回路、ビット演算、仮想記憶</td><td>数学的帰納法、確率、グラフ理論</td></tr><tr><td>令和4年度</td><td>計算量、組み合わせの探索、動的計画法、リスト</td><td>論理回路、ノイマン型コンピュータ</td><td>エントロピー、行列</td></tr><tr><td>令和3年度</td><td>コンパイラ、二分木、基礎問題</td><td>仮想記憶、サブシステム</td><td>数論証明、確率、行列</td></tr><tr><td>令和2年度</td><td>二分木、基礎問題、ポインタ</td><td>基礎問題、プロセッサ</td><td>命題、関係、行列</td></tr><tr><td>平成31年度</td><td>二分探索、ヒープ、基礎問題</td><td>ビット演算、RISC/CISC、アセンブリ</td><td>集合、関係、行列、確率</td></tr><tr><td>平成30年度</td><td>逆ポーランド記法、双方向リスト、基礎問題、木構造、オブジェクト指向</td><td>アセンブリ、メモリ、ビット演算</td><td>命題、行列(+グラフ理論)、確率</td></tr><tr><td>平成29年度</td><td>テスト、オブジェクト指向、基本問題、双方向リスト</td><td>ノイマン型コンピュータ、論理回路、仮想記憶</td><td>整数、関係、確率</td></tr></tbody></table></div><p>当たり前っちゃ当たり前ですが、基本情報や応用情報技術者試験と重なっている部分も多く、それらの試験の対策をしたことがあると解きやすいと思います。</p><h3 id=プログラミング>プログラミング</h3><ul><li>他の学校に比べ、難易度は高めだと思います。プログラミングの基礎知識、というよりはアルゴリズム寄りです。基本的なデータ構造やアルゴリズムはもちろん、計算量やプログラミング的な思考力が問われます。一方で、コンパイルの処理やオブジェクト指向について説明させる問題が出題されることもあり、多くの知識が求められます。</li><li>二分木に関する問題が頻出です。再帰処理に対する理解が必要です。</li><li>ポインタを扱うリスト構造も頻出です。ポインタの理解が必要です。</li><li>その他、ハッシュテーブルや動的計画法、ヒープ構造など、様々なアルゴリズムが出題されているため、対策が難しくなっています。<ul><li>bit全探索や、部分和問題についての動的計画法あたりはAtCoder茶色以上のレベル感です。</li></ul></li><li>行きがけ順、帰りがけ順、分離チェイン法など、語句を知っておく必要があります。</li><li>たまにソフトウェア工学に関する問題(オブジェクト指向、テスト)が出題されます。</li></ul><h3 id=計算機アーキテクチャ>計算機アーキテクチャ</h3><ul><li>出題範囲が広く、暗記の量が多いです。また、読解力が求められる問題も多く出題されています。</li></ul><h3 id=情報数学>情報数学</h3><ul><li>命題、集合、関係、行列、確率などの特に離散数学に関する問題が出題されます。</li><li>命題：数学的帰納法での証明問題や、命題に関する基礎的な問題が出題されます。</li><li>行列：固有値と固有ベクトル、行列式、逆行列、行列の積などに関する問題が出題されます。</li><li>確率：基本的な確率の問題です。ベイズの定理や重複組合せが出題されることもあります。</li><li>関係：反射律、対称律、同値関係あたりの定義は覚えておいたほうが良いです。</li><li>集合：一度包除原理を使った問題が出題されましたが、基本的には高校数学レベルです。</li><li>グラフ理論：令和5年度、突如2部グラフと2彩色グラフに関する証明問題が出ました。</li><li>その他、情報エントロピーやハフマン符号化に関する問題が出題されています。</li></ul><p>基本的に情報数学は他の科目に比べて優しいですが、稀に破天荒な問題が出題されることがあります。</p><h2 id=令和5年度>令和5年度</h2><ol><li>筆記試験
+プログラミング、計算機アーキテクチャ、情報数学の3科目を出題し、2科目の選択解答
+としました。試験時間は80分です。試験問題は別紙の通りです。</li><li>口述試験
+コンピュータ理工学に関する専門分野の基礎的事項、意欲、コミュニケーション力、思
+考力に関する口述試験を行いました。試験時間は10分です。</li></ol><h3 id=プログラミング-1>プログラミング</h3><h4 id=問1>問1</h4><blockquote><p>ソートアルゴリズムの安定性とは何かを説明しなさい。</p></blockquote><p>安定性とは、同じ値を持つ要素があった場合、ソート前とソート後でそれらの順番が入れ替わるかどうかのことである。ソート前とソート後で順番が変わらない場合、安定なソートであり、変わる場合、不安定なソートである。</p><blockquote><p>「挿入ソート」，「マージソート」，「クイックソート」の3つのアルゴリズムについて、安定かどうかを答えなさい。</p></blockquote><ul><li>挿入ソート：安定<ul><li>数字を挿入するときに、確定部分を前から順番に見ていって、挿入する数字よりも大きい数字があったら、その数字の前に挿入するようにすると安定なソートになる。逆に、確定部分を後ろから見ていき、挿入する数字よりも小さい数字があったら、その数字の後ろに挿入するようにすると不安定なソート(同じ数字は逆順)になる。</li></ul></li><li>マージソート：安定<ul><li>要素を分割したときに、同じ値を持つ要素があった場合、左側の要素を優先してマージするようにすると安定なソートになる。逆に、右側の要素を優先してマージするようにすると不安定なソートになる。</li></ul></li><li>クイックソート：不安定<ul><li>ピボットの選択により、同じ値を持つ要素の順番が変わることがあるため、不安定なソートになる。</li></ul></li></ul><blockquote><p>データ数が$n$のとき、「挿入ソート」，「マージソート」，「クイックソート」の3つのアルゴリズムの平均計算量、最悪計算量、最良計算量のオーダーを答えなさい。</p></blockquote><ul><li><p>挿入ソート</p><ul><li>平均計算量：$O(n^2)$</li><li>最悪計算量：$O(n^2)$<ul><li>逆順の配列をソートする場合</li></ul></li><li>最良計算量：$O(n)$<ul><li>整列済みの配列をソートする場合</li></ul></li></ul></li><li><p>マージソート</p><ul><li>平均計算量：$O(n\log n)$<ul><li>マージする際に、$n$回比較する。それを$\log n$回繰り返すので、$O(n\log n)$となる。</li></ul></li><li>最悪計算量：$O(n\log n)$</li><li>最良計算量：$O(n\log n)$<ul><li>数列がどのような形をしていても、比較回数は変わらない。</li></ul></li></ul></li><li><p>クイックソート</p><ul><li>平均計算量：$O(n\log n)$<ul><li>厳密な導出は結構難しいので、省略</li></ul></li><li>最悪計算量：$O(n^2)$<ul><li>ピボットが常に最大値または最小値の場合</li></ul></li><li>最良計算量：$O(n\log n)$<ul><li>ピボットの選択により、$n$回比較する。それを$\log n$回繰り返すので、$O(n\log n)$となる。</li></ul></li></ul></li></ul><h4 id=問2>問2</h4><blockquote><p>キー値が 0 から 15 までの整数値を取るとき，キー値の集合からハッシュ表を作成することを考えます．レコードはキー値のみで他にデータはないものとします．ハッシュ表のサイズ L を 5 とし，ハッシュ表の各要素は 0~4 の番地を持つものとします．ハッシュ関数 h(x)を h(x) = 3x mod L とします．</p></blockquote><blockquote><p>ハッシュ値が 2 で衝突するような 3 つの異なるキー値を挙げなさい．</p></blockquote><p>$3x \mod 5 = 2$となるような$x$を求めると、$x=4,9,14$。</p><blockquote><p>空のハッシュ表に，(a)の 3 つのキー値を分離チェイン法（チェイン法，分離連鎖法）によって格納する様子を図示しなさい．ただし，キー値が格納されているところだけの様子が分かればよく，その他の部分は書き入れる必要はありません．</p></blockquote><p>チェイン法は、結合リストを用いて同じ番地に複数のデータを入れる。(図は省略)</p><blockquote><p>空のハッシュ表に，(a)の 3 つのキー値を開番地法（空き番地法，オープンアドレス法）によって格納する様子を図示しなさい．ただし，代替ハッシュは線形走査法（線形探査法）で求めなさい．また，キー値が格納されているところだけの様子が分かればよく，その他の部分は書き入れる必要はありません．</p></blockquote><p>オープンアドレス法は、衝突が起きた場合に、ひとつ後ろの番地に格納する方法である。その場所も衝突していた場合は、さらにひとつ後ろの番地に格納する。これを繰り返す。(図は省略)</p><h4 id=問3>問3</h4><blockquote><p>データ数を n とする時，平衡２分探索木に格納されたデータの中から，特定のデータを探索する作業の平均計算量のオーダーを答えなさい．平衡２分探索木は「どのノードの左右部分木の高さの差も 1 以下」という条件を満たす２分探索木です．</p></blockquote><p>木の高さのオーダーは$O(\log n)$であるため、平均計算量のオーダーも$O(\log n)$となる。</p><blockquote><p>次のプログラムは，２分探索木の実装の一部です．空欄（ア）～（ウ）に当てはまる，再帰を用いたコードを記述しなさい．</p></blockquote><p><code>p</code>の子のうち、高い方の高さに1を加えたものが高さである。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=nf>height</span><span class=p>(</span><span class=n>BinaryNode</span><span class=o>*</span> <span class=n>p</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// p が指しているノードを根とする木の高さを返す．
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span> <span class=n>p</span> <span class=o>==</span> <span class=nb>NULL</span> <span class=p>)</span> <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>1</span> <span class=o>+</span> <span class=p>(</span> <span class=p>(</span> <span class=nf>height</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>left</span><span class=p>)</span> <span class=o>&gt;</span> <span class=nf>height</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>right</span><span class=p>)</span> <span class=p>)</span> <span class=o>?</span> <span class=nf>height</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>left</span><span class=p>)</span> <span class=o>:</span> <span class=nf>height</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>right</span><span class=p>)</span> <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>全てのノードについて検証をしなければならないということに注意。再帰関数に慣れていないと難しい。
+あるノードの子を根とする木が平衡２分探索木のバランス条件を満たしていて、かつ、そのノードの左右部分木の高さの差が1以下であるとき、そのノードを根とする木は平衡２分探索木のバランス条件を満たしている。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>bool</span> <span class=nf>is_balanced</span><span class=p>(</span><span class=n>BinaryNode</span> <span class=o>*</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// p が指しているノードを根とする木が平衡２分探索木のバランス条件を満たしているかどうかを返す．
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=n>p</span> <span class=o>==</span> <span class=nb>NULL</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nb>true</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nf>is_balanced</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>left</span><span class=p>)</span> <span class=o>&amp;&amp;</span> <span class=nf>is_balanced</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>right</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>(</span><span class=nf>abs</span><span class=p>(</span><span class=nf>height</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>left</span><span class=p>)</span> <span class=o>-</span> <span class=nf>height</span><span class=p>(</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>right</span><span class=p>))</span> <span class=o>&lt;=</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>main 関数の「エ」の時点での２分探索木を図示しなさい．この２分探索木を前順（行きかけ順，preorder）ならびに中順（通りがけ順，inorder）でなぞったときのノードの訪問順序を答えなさい．</p></blockquote><p>二分探索木は次のようになる</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>      5
+</span></span><span class=line><span class=cl>   /     \
+</span></span><span class=line><span class=cl>  2       7
+</span></span><span class=line><span class=cl> / \     /
+</span></span><span class=line><span class=cl>1   3   6
+</span></span><span class=line><span class=cl>     \
+</span></span><span class=line><span class=cl>      4
+</span></span></code></pre></td></tr></table></div></div><ul><li>行きかけ順(preorder): 5, 2, 1, 3, 4, 7, 6</li><li>通りがけ順(inorder): 1, 2, 3, 4, 5, 6, 7</li><li>(帰りかけ順(postorder): 1, 4, 3, 2, 6, 7, 5)</li></ul><h3 id=情報数学-1>情報数学</h3><h4 id=問1-1>問1</h4><blockquote><p>$𝑛$ 個の元からなる集合 $𝐴$ には $2^n$ 個の部分集合があることを数学的帰納法を用いて証明しなさい．</p></blockquote><ul><li>$n=0$のとき。$2^0=2$である。$A$の部分集合は$\phi$の1つである。よって、$n=0$のとき成立する。</li><li>$n=k$のとき、$A= \lbrace a_1,a_2,\cdots a_k \rbrace $の部分集合は$2^k$個あると仮定する。$n=k+1$のとき、$A= \lbrace a_1,a_2,\cdots a_k,a_{k+1} \rbrace $の部分集合は、$a_{k+1}$を含まない部分集合は$2^k$個ある。$a_{k+1}$を含む部分集合は、$a_{k+1}$を含まない部分集合に$a_{k+1}$を加えたものである。よって、$2^k+2^k=2^{k+1}$個ある。よって、$n=k+1$のときも成立する。</li></ul><h4 id=問2-1>問2</h4><blockquote><p>2 個の赤球と 18 個の白球が入った袋から，太郎，花子がこの順で 1 回ずつ球を取り出すとき，太郎が赤球を取り出す事象を 𝑇，花子が赤球を取り出す事象を 𝐻 とします．なお，取り出した球は袋に戻さないものとします．次の問いに答えなさい．</p></blockquote><blockquote><p>太郎が赤球を取り出した後，花子も赤球を取り出す確率 𝑃(𝑇∩ 𝐻) を求めなさい．</p></blockquote><p>$$
+\frac{2}{20} \times \frac{1}{19} = \frac{1}{190}
+$$</p><blockquote><p>太郎が赤球を取り出す確率 𝑃(𝑇) と花子が赤球を取り出す確率 𝑃(𝐻) は等しいことを証明しなさい．</p></blockquote><ul><li>太郎が赤球を取り出す確率は$\frac{2}{20}=\frac{1}{10}$である。</li><li>花子が赤球を取り出す確率は、<ul><li>太郎が赤球を取り出した後、花子が赤球を取り出す確率は$\frac{2}{20} \times \frac{1}{19} = \frac{1}{190}$である。</li><li>太郎が白球を取り出した後、花子が赤球を取り出す確率は$\frac{18}{20} \times \frac{2}{19} = \frac{18}{190}$である。</li></ul></li><li>よって、花子が赤球を取り出す確率は$\frac{1}{190} + \frac{18}{190} = \frac{19}{190} = \frac{1}{10}$であり、太郎が赤球を取り出す確率と等しい。</li></ul><h4 id=問3-1>問3</h4><figure><img src=img/r5-1.png></figure><ol><li>(i)$\rightarrow$(ii)について</li></ol><p>$|C|=2$であるから、$C$の要素を$0,1$としたときに、頂点の集合$L,R$を次のように定める。$L=\lbrace v\in V|f(v)=0 \rbrace,R=\lbrace v\in V|f(v)=1 \rbrace$とする。このとき、$L,R$は$L\cup R=V$かつ$L\cap R=\phi$である。すなわち、$L\subseteq V$かつ$R=V\setminus L$であり、各辺$(v,w)\in E$に対して、$v\in L,w\in R$または$v\in R,w\in L$である。よって、$G$は二部グラフである。</p><ol start=2><li>(ii)$\rightarrow$(i)について</li></ol><p>$f:V\rightarrow C$を次のように定める。$f(v)=0$ if $v\in L$、$f(v)=1$ if $v\in R$とする。このとき、各辺$(v,w)\in E$に対して、$f(v)\neq f(w)$である。よって、$G$は2彩色可能である。</p><ol start=3><li>(i)$\rightarrow$(iii)について</li></ol><p>対偶を示す。「$G$に奇数の長さの閉路が存在する$\rightarrow$$G$が2彩色不可能である」を示す。
+長さが奇数の閉路が頂点$v_1,v_2,\cdots,v_{2k+1}$を通るとする。$f(v_1)=0$とする。このとき、$f(v_2)=1,f(v_3)=0,\cdots,f(v_{2k+1})=0,f(v_1)=0$となる。$f(v_1)=f(v_{2k+1})$となり、$G$は2彩色不可能である。</p><ol start=4><li>(iii)$\rightarrow$(i)について</li></ol><p>長さが偶数の閉路の通る頂点を$v_1,v_2,\cdots,v_{2k}$とする。$f(v_1)=0$とする。このとき、$f(v_2)=1,f(v_3)=0,\cdots,f(v_{2k})=0,f(v_1)=0$となる。$f(v_1)\ne f(v_{2k})$となり、閉路は2彩色可能である。また、閉路でない頂点は明らかに2彩色可能である。よって、$G$は2彩色可能である。</p><h2 id=令和4年度>令和4年度</h2><ol><li>筆記試験
+プログラミング、計算機アーキテクチャ、情報数学から２科目を選択して解答してもら
+いました。解答時間は80分です。試験問題は別紙の通りです。</li><li>口述試験
+コンピュータ理工学に関する専門分野の基礎的事項、意欲、コミュニケーション力、思
+考力を試問しました。試験時間は10分です。</li></ol><h3 id=プログラミング-2>プログラミング</h3><h4 id=問1-2>問1</h4><blockquote><p>素数判定のプログラムの穴埋め</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=kt>bool</span> <span class=nf>isPrimeA</span><span class=p>(</span><span class=k>const</span> <span class=kt>int</span> <span class=n>N</span><span class=p>)</span><span class=err>｛</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>2</span><span class=p>;</span> <span class=n>i</span><span class=o>*</span><span class=n>i</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>N</span><span class=o>%</span><span class=n>i</span><span class=o>==</span><span class=mi>0</span><span class=p>)</span> <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=err>｝</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>true</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=err>｝</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>bool</span> <span class=n>isPrimeB</span><span class=p>(</span><span class=k>const</span> <span class=kt>int</span> <span class=n>N</span><span class=p>)</span><span class=err>｛</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>2</span><span class=p>;</span> <span class=n>i</span><span class=o>&lt;</span><span class=n>N</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>N</span><span class=o>%</span><span class=n>i</span><span class=o>==</span><span class=mi>0</span><span class=p>)</span> <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=err>｝</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>true</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p><code>isPrimeA</code>と<code>isPrimeB</code>について、それぞれのプログラムの最悪計算量を求めなさい。</p></blockquote><p>入力が素数であった場合に計算量が最悪となる。</p><ul><li><code>isPrimeA</code>の最悪計算量は$O(\sqrt{N})$である。</li><li><code>isPrimeB</code>の最悪計算量は$O(N)$である。</li></ul><p><code>isPrimeA</code>の方が効率が良い。</p><h4 id=問2-2>問2</h4><blockquote><p>部分和問題を解くプログラムについて、以下の問いに答えなさい。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp># include &lt;iostream&gt;
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>using</span> <span class=k>namespace</span> <span class=n>std</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>bool</span> <span class=nf>isSubsetSum</span><span class=p>(</span><span class=k>const</span> <span class=kt>int</span> <span class=n>a</span><span class=p>[],</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>N</span><span class=p>,</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>W</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>bit</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>bit</span> <span class=o>&lt;</span> <span class=p>(</span><span class=mi>1</span><span class=o>&lt;&lt;</span><span class=n>N</span><span class=p>);</span> <span class=o>++</span><span class=n>bit</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>sum</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>N</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span><span class=p>(</span><span class=n>bit</span> <span class=o>&amp;</span> <span class=p>(</span><span class=mi>1</span><span class=o>&lt;&lt;</span><span class=n>i</span><span class=p>))</span> <span class=n>sum</span> <span class=o>+=</span> <span class=n>a</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>sum</span> <span class=o>==</span> <span class=n>W</span><span class=p>)</span> <span class=k>return</span> <span class=nb>true</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>    <span class=k>const</span> <span class=kt>int</span> <span class=n>N</span> <span class=o>=</span> <span class=mi>4</span><span class=p>,</span> <span class=n>W</span> <span class=o>=</span> <span class=mi>19</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>const</span> <span class=kt>int</span> <span class=n>a</span><span class=p>[]</span> <span class=o>=</span> <span class=p>{</span><span class=mi>3</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>7</span><span class=p>,</span><span class=mi>9</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span><span class=p>(</span><span class=n>isSubsetSum</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>N</span><span class=p>,</span><span class=n>W</span><span class=p>))</span> <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Yes&#34;</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;No&#34;</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>関数boolisSubsetSum( )内の//(A)の行の｢bit&(1くくi)｣は,この部分和問題を解くためのどのような処理をおこなっているか.この中の｢&｣および｢くく｣の機能の説明を含めて, 150字程度で説明しなさい．</p></blockquote><p><code>&lt;&lt;</code>は左シフト演算子、<code>&</code>はAND演算子である。<code>(1&lt;&lt;i)</code>は下から<code>i</code>番目のビット(一番下を<code>0</code>番目とする)のみが<code>1</code>である数を表し、<code>bit & (1&lt;&lt;i)</code>は<code>bit</code>の下から<code>i</code>番目のビットが<code>1</code>であるかどうかを判定する。<code>i</code>番目のビットが立っているときに、<code>a[i]</code>を部分和の用いるとすると、<code>bit</code>が$0$から$2^N-1$まで変化することで、全ての部分和を求めることができる。</p><blockquote><p>このプログラムの最悪時間計算量を求めなさい．</p></blockquote><p>部分和問題の答えがNoだったときに、<code>for</code>文が<code>2^N</code>回実行される。よって、計算量は$O(2^N)$である。</p><blockquote><p>このソースコードのアルゴリズムの時間計算量よりも効率の良い、$O(NW)$の時間計算量のアルゴリズムを説明しなさい。</p></blockquote><p>動的計画法を説明する。</p><p><code>bool</code>型の二次元配列<code>dp</code>を用意し、<code>dp[i][j]</code>の値を「<code>i</code>番目($a_0,a_1,\cdots a_{i-1}$)までの数からいくつかを選んで和を<code>j</code>にすることができるか」の判定問題の答えとする。
+<code>dp[0][0]</code>は<code>true</code>とする。<code>dp[i][j]</code>の値は、<code>dp[i-1][j]</code>の値と<code>dp[i-1][j-a[i]]</code>の値を用いて、<code>dp[i][j] = dp[i-1][j] || dp[i-1][j-a[i]]</code>として求めることができる。<code>dp[N][W]</code>の値が<code>true</code>であれば、部分和問題の答えはYesである。</p><h4 id=問3-2>問3</h4><blockquote><p>都県名の一覧を処理するソースコードについて、答えなさい。</p></blockquote><figure><img src=img/r4-1.png></figure><blockquote><p>このソースコードをコンパイルして実行したときの,標準出力への出力をすべて書き出しなさい．</p></blockquote><p>この実装では、リスト構造を用いている。
+<code>func1</code>では<code>v</code>の<code>next</code>を<code>p</code>の<code>next</code>に変更し、<code>p</code>の<code>next</code>を<code>v</code>にしている。すなわち、<code>p</code>の次の要素を<code>v</code>に変更している。</p><p><code>func2</code>では、<code>n</code>の次が指しているポインタを<code>cur</code>とし、<code>cur</code>の<code>pref</code>を表示している。<code>cur</code>は<code>cur</code>の<code>next</code>に変更し、<code>cur</code>の<code>next</code>が<code>n</code>であれば終了する。</p><p><code>func3</code>では、<code>n</code>以外のリストの要素を全削除している。</p><p>以上のことを踏まえると、</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Tokyo-&gt;
+</span></span><span class=line><span class=cl>Kanagawa-&gt;Tokyo-&gt;
+</span></span><span class=line><span class=cl>Saitama-&gt;Kanagawa-&gt;Tokyo-&gt;
+</span></span><span class=line><span class=cl>Nagano-&gt;Saitama-&gt;Kanagawa-&gt;Tokyo-&gt;
+</span></span><span class=line><span class=cl>Nagano-&gt;Yamanashi-&gt;Saitama-&gt;Kanagawa-&gt;Tokyo-&gt;
+</span></span></code></pre></td></tr></table></div></div><p>となる。</p><blockquote><p>main( )関数内の｢//(A)｣の行で呼び出されるfunc1( )について,このときに渡される実引数に基づく実行の様子を説明しなさい.必要であれば,図を用いてかまわない．</p></blockquote><p>略</p><blockquote><p>このソースコードで都県名の一覧に用いられているデータ構造の代わりに配列の使用を考える.設問(b)の処理においては,時間計算量の観点から,配列の方が効率が悪い.その理由を150字程度で説明しなさい．</p></blockquote><p>このソースコードのアルゴリズムでは、どの場所に挿入するのも$O(1)$で行うことができるが、配列は挿入する場合、挿入する場所以降の要素を全てずらす必要があるため、最悪で$O(N)$の計算量がかかる。</p><h3 id=情報数学-2>情報数学</h3><h4 id=問1-3>問1</h4><blockquote><p>2種の記号AとBの発生確率がそれぞれ$0.8$と$0.2$である記憶のない情報源Sを考える.このとき,以下の設問に答えなさい.計算には $\log_2 10=3.322$を用いてよい.また,答えは小数点以下第4位を四捨五入して表しなさい．</p></blockquote><blockquote><p>$S$のエントロピーを求めなさい．</p></blockquote><p>$$
+H(S) = -\sum p_i \log_2 p_i = -0.8 \log_2 0.8 - 0.2 \log_2 0.2 \simeq 0.722
+$$</p><p>$\log 0.2 = \log (2/10) = \log 2 - \log 10 = -2.322 $、$\log 0.8 = \log (8/10) = \log 8 - \log 10 = -0.322$であることに注意。</p><blockquote><p>$S$を2次に拡大してからハフマン符号化した場合に生成される符号を示しなさい。また、1情報源記号あたりの平均符号長を求めなさい。(b)</p></blockquote><p>$S$を$2$次に拡大し、ハフマン符号化すると、以下のようになる($AB$と$BA$は逆でも良い)。</p><div class=table-wrapper><table><thead><tr><th>情報源</th><th>AA</th><th>AB</th><th>BA</th><th>BB</th></tr></thead><tbody><tr><td>発生確率</td><td>0.64</td><td>0.16</td><td>0.16</td><td>0.04</td></tr><tr><td>符号</td><td>0</td><td>10</td><td>110</td><td>111</td></tr></tbody></table></div><p>また、1情報源記号あたりの平均符号長は、$0.64\times 1 + 0.16\times 2 + 0.16\times 3 + 0.04\times 3 = 1.56$となる。</p><blockquote><p>AとBの発生確率が偏っているので,ランレングス符号化を行う.ただし,Aは長さ4までのランを考え,Bは長さ1のランのみを考える.すなわち,下記の5種類のランを考える.これをハフマン符号化し,生成される符号を示しなさい.また, 1情報源記号当たりの平均符号長を求めなさい． (c)</p></blockquote><div class=table-wrapper><table><thead><tr><th>情報源</th><th>AAAA</th><th>AAAB</th><th>AAB</th><th>AB</th><th>B</th></tr></thead><tbody><tr><td>発生確率</td><td>0.4096</td><td>0.1024</td><td>0.128</td><td>0.16</td><td>0.2</td></tr><tr><td>符号</td><td>0</td><td>110</td><td>111</td><td>100</td><td>101</td></tr></tbody></table></div><p>1情報源記号あたりの平均符号長は、$0.4096\times 1 + 0.1024\times 3 + 0.128\times 3 + 0.16\times 3 + 0.2\times 3 = 2.08$となる。</p><blockquote><p>(c)の符号化は(b)の符号化に比べて,どれだけ符号化の効率(1情報源記号当たりの平均符号長に対するエントロピーの比)が改善されているか答えなさい．</p></blockquote><p>$(b)$のエントロピーは$1.444$、$c$のエントロピーは$2.468$である。</p><p>エントロピーは「一つの情報源に対してどれほどの情報量があるか」を示す指標であるから、エントロピーを平均符号長で割ることで、一つの記号あたりの情報量を示すことができる。</p><ul><li>$b$の場合、$1.444/1.56 = 0.925$</li><li>$c$の場合、$2.468/2.08 = 1.186$</li></ul><p>これらの差である$0.261$bit(binary unit)分だけ、符号化の効率が改善されている。</p><h4 id=問2-3>問2</h4><p>固有値の問題。詳細は省略する。
+$$
+A=\begin{pmatrix}
+2 & 1 & -1 \\
+1 & 0 & -1 \\
+1 & -1& 0
+\end{pmatrix}
+$$</p><p>$A$の固有値と固有ベクトルは、
+$$
+\lambda_1 = 1, \lambda_2 = -1, \lambda_3 = 2
+$$
+$$
+v_1 = (1,0,1)^T, v_2 = (0,1,1)^T, v_3 = (3,1,1)^T
+$$
+である。</p><p>$$
+x = (-1,-3,-1)^T = 2v_1-2v_2-v_3
+$$
+と表されるので、
+$$
+A^n x = 2 \cdot 1^n v_1 - 2 \cdot (-1)^n v_2 - 2^n v_3
+$$
+よって、
+$$
+A^n x = \begin{pmatrix}
+2-3\cdot 2^n \\
+-2\cdot (-1)^n - 2^n \\
+2 - 2 \cdot(-1)^n - 2^n
+\end{pmatrix}
+$$</p><h2 id=令和3年度>令和3年度</h2><h3 id=プログラミング-3>プログラミング</h3><h4 id=問1-4>問1</h4><p>なんと、アルゴリズムではなくコンパイルの仕組みが出ています。？？？？？？？？？</p><figure><img src=img/r3-1.jpg></figure><ul><li>(ア)：プリプロセス<ul><li>マクロの展開やヘッダファイルなどを処理する。</li></ul></li><li>(イ)：構文解析<ul><li>字句解析では、<code>if</code>や<code>else</code>やセミコロン、括弧などを解析する。</li><li>構文解析では、字句解析をもとに構文構造をまとめる。</li></ul></li><li>(ウ)：アセンブリファイル</li><li>(エ)：オブジェクトファイル</li><li>(オ)：ライブラリファイル</li></ul><p>実行ファイルの実行速度を高速化するために、コンパイラは様々な最適化を行う。</p><ul><li>関数のインライン展開：関数呼び出しを関数の中身に置き換える。</li><li>定数の畳み込み：定数同士の計算を、計算結果に置き換える。</li><li>ループの展開(アンローリング)：ループ処理の内容を展開する。</li><li>無用命令の削除：冗長で無用な命令を削除する。</li><li>定数伝搬：変数を定数で置き換える。</li><li>共通部分式の削除：同じ計算を複数回行う場合、一度計算した結果を変数に格納しておき、再利用する。<ul><li>例えば、<code>a = b + c; d = b + c;</code>というコードがあった場合、<code>b + c</code>を一度計算しておき、<code>a = b + c; d = a;</code>とする。</li></ul></li><li>ループ内不変式の移動：ループ内で変化しない変数の計算をループの外に移動する。</li></ul><h4 id=問2-4>問2</h4><blockquote><p>二分木をC言語を用いて実装する。</p></blockquote><ul><li><p>着目ノードの左の部分技のすべてのノードの値は、着目ノードの値より小さく</p></li><li><p>着目ノードの右の部分木のすべてのノードの値は、着目ノードの値より大きい</p></li><li><p>その声質から、木の最も右のノードが木に保持される値の最大値、ミットも左のノードの値が最小値である。</p></li><li><p>入力データが<code>1,2,3,4,5,6,7,8</code>のとき、<code>1</code>が根で、右の子が<code>2</code>、<code>2</code>の右の子が<code>3</code>、<code>3</code>の右の子が<code>4</code>、<code>4</code>の右の子が<code>5</code>、<code>5</code>の右の子が<code>6</code>、<code>6</code>の右の子が<code>7</code>、<code>7</code>の右の子が<code>8</code>となる。</p></li><li><p>入力データが<code>4,6,2,8,1,5,3,7,-1</code>のとき</p></li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    4
+</span></span><span class=line><span class=cl>   / \
+</span></span><span class=line><span class=cl>  2   6
+</span></span><span class=line><span class=cl> / \ / \
+</span></span><span class=line><span class=cl>1  3 5  8
+</span></span><span class=line><span class=cl>       /
+</span></span><span class=line><span class=cl>      7
+</span></span></code></pre></td></tr></table></div></div><ul><li>ある整数がノードに含まれるかどうかの処理の計算量は、木の高さに依存する。<ul><li>最良の場合、木の高さが$O(\log n)$であるから、$O(\log n)$</li><li>最悪の場合、木の高さが$O(n)$であるから、$O(n)$</li></ul></li></ul><h4 id=問3-3>問3</h4><blockquote><p>大きさ3の配列<code>v</code>を入力とし、次の条件を満たすような<code>v</code>の要素を返す。</p><ul><li>一つ以上の他の要素よりも大きいかまたは等しい。</li><li>一つ以上の他の要素よりも小さいかまたは等しい。</li></ul></blockquote><p>要するに、中央値を求めれば良い。中央値を求める問題を10問も解かされる謎の問題。</p><div class=table-wrapper><table><thead><tr><th>v[0]</th><th>v[1]</th><th>v[2]</th><th>中央値</th></tr></thead><tbody><tr><td>3</td><td>5</td><td>7</td><td>5</td></tr><tr><td>3</td><td>7</td><td>5</td><td>5</td></tr><tr><td>5</td><td>3</td><td>7</td><td>5</td></tr><tr><td>3</td><td>5</td><td>5</td><td>5</td></tr><tr><td>5</td><td>5</td><td>5</td><td>5</td></tr><tr><td>3</td><td>0</td><td>1</td><td>1</td></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>3</td><td>-1</td><td>0</td><td>0</td></tr><tr><td>-2</td><td>-3</td><td>-4</td><td>-3</td></tr><tr><td>-2</td><td>0</td><td>-2</td><td>-2</td></tr></tbody></table></div><blockquote><p>CかC++で実装せよ。</p></blockquote><p>いくつか方法はある。</p><ul><li>バブルソートのようにスワップしながらソートし、真ん中の値を返す。</li><li>各v[i]について、それぞれ条件を満たすかを調べる。</li><li>最大値と最小値を求め、v[0]+v[1]+v[2]から最大値と最小値を引く。</li></ul><p>一番実装が楽そうなのは3番目の方法。変な方法ではあるが、特に指定されていないので問題ないと思われる。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=kt>int</span> <span class=nf>func</span><span class=p>(</span><span class=kt>int</span> <span class=n>v</span><span class=p>[</span><span class=mi>3</span><span class=p>])</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>max</span> <span class=o>=</span> <span class=n>v</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>min</span> <span class=o>=</span> <span class=n>v</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>sum</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>3</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>max</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>max</span> <span class=o>=</span> <span class=n>v</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>min</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>min</span> <span class=o>=</span> <span class=n>v</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=n>sum</span> <span class=o>+=</span> <span class=n>v</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>sum</span> <span class=o>-</span> <span class=n>max</span> <span class=o>-</span> <span class=n>min</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=情報数学-3>情報数学</h3><p>問1から3のうち、2問選択して解答する。</p><h4 id=問1-5>問1</h4><blockquote><p>$r(n+3)$と$r(n)$の差が$3$の倍数であることを証明せよ。
+$$
+r(n) = \sum_{i=1}^{m} d_i \quad (d_iは10進数表記でi番目の桁の数字を表し、mはnの桁数)
+$$</p></blockquote><p>方針として、$n$を$3$で割ったあまりと、各位の数の和を$3$で割ったあまりが等しいことを証明すれば良い。</p><p>$$
+\begin{align}
+n &\equiv \sum_{i=1}^{m} 10^{i-1}d_i \pmod 3 \\
+&\equiv \sum_{i=1}^{m} (3\times 333\cdots 3 + 1)^{i-1}d_i \pmod 3 \\
+&\equiv \sum_{i=1}^{m} 1^{i-1}d_i \pmod 3 \\
+&\equiv \sum_{i=1}^{m} d_i \pmod 3 \\
+&\equiv r(n) \pmod 3
+\end{align}
+$$</p><p>よって、$n \equiv r(n) \pmod 3$、つまり$n$を$3$で割ったあまりと、各位の数の和を$3$で割ったあまりが等しい。
+$n$を$3$で割ったあまりを$a$と置けば、$n = 3k+a$と整数$k$を用いて表せる。
+$n+3=3k+a+3=3(k+1)+a$であるから、$n+3$を$3$で割ったあまりも$a$である。
+したがって、$r(n+3) - r(n) \equiv a - a \equiv 0 \pmod 3$である。</p><h4 id=問2-5>問2</h4><blockquote><p>ある会社は、A,B,C社から同じ製品を2:3:5の比率で購入している。A,B,C社の製品にはそれぞれ2.5%,1.5%,1.0%の割合で不良品が含まれている。</p></blockquote><blockquote><p>(a) 購入した製品の中から1つを選んだとき、不良品である確率を求めよ。</p></blockquote><ul><li>A社の製品を選び、かつ不良品である確率は$\frac{2}{10}\times \frac{25}{1000} = \frac{1}{200}$</li><li>B社の製品を選び、かつ不良品である確率は$\frac{3}{10}\times \frac{15}{1000} = \frac{9}{2000}$</li><li>C社の製品を選び、かつ不良品である確率は$\frac{5}{10}\times \frac{10}{1000} = \frac{1}{200}$</li><li>したがって、不良品である確率は$\frac{1}{200} + \frac{9}{2000} + \frac{1}{200} = \frac{29}{2000}$</li></ul><blockquote><p>(b) 購入した製品の中から1つを選んだら不良品であった。この不良品が、A社、B社、C社の製品である確率をそれぞれ求めよ。</p></blockquote><p>ベイズの定理を用いる(個人的に、特にベイズの定理という名前を認識して使う必要はないと思う)。</p><ul><li>A社の製品である確率は$\frac{1}{200} \div \frac{29}{2000} = \frac{10}{29}$</li><li>B社の製品である確率は$\frac{9}{2000} \div \frac{29}{2000} = \frac{9}{29}$</li><li>C社の製品である確率は$\frac{1}{200} \div \frac{29}{2000} = \frac{10}{29}$<ul><li>(ここで、$\frac{10}{29} + \frac{9}{29} + \frac{10}{29} = \frac{29}{29} = 1$であることを確認できる。)</li></ul></li></ul><h4 id=問3-4>問3</h4><p>固有値に関する問題。詳細は省略する。
+$$
+A=\begin{pmatrix}
+3 & -2 & -1 \\
+0 & 1 & -1 \\
+2 & 1 & 5
+\end{pmatrix}
+$$</p><blockquote><p>(a) 行列$A$の行列式を求めよ。</p></blockquote><p>$24$</p><blockquote><p>(b) 行列$A$の固有値を求めよ。</p></blockquote><p>$\lambda_1 = 2, \lambda_2 = 3, \lambda_3 = 4$
+$a_1= (-1,-1,1)^T, a_2 = (-3,-2,4)^T, a_3 = (-1,-1,3)^T$</p><blockquote><p>(c) 対角化する行列$P$とその逆行列$P^{-1}$を求めよ。</p></blockquote><p>$$
+P = \begin{pmatrix}
+-1 & -3 & -1 \\
+-1 & -2 & -1 \\
+1 & 4 & 3
+\end{pmatrix}
+$$</p><p>$$
+P^{-1} = \frac{1}{24}\begin{pmatrix}
+6 & 9 & 3 \\
+-2 & 17 & 3 \\
+-2 & -7 & 3
+\end{pmatrix}
+$$</p><p>このとき、$P^{-1}AP = \begin{pmatrix}
+2 & 0 & 0 \\
+0 & 3 & 0 \\
+0 & 0 & 4
+\end{pmatrix}$
+である。</p><h2 id=令和2年度>令和2年度</h2><h3 id=プログラミング-4>プログラミング</h3><h4 id=問1-6>問1</h4><figure><img src=img/r2-1.jpg></figure><blockquote><p>二分木について、「親から子へ」「左から右へ」の順番を原則に答えよ
+(a) 深さ優先探索、幅優先探索をしたとき、訪問する順番を答えよ。</p></blockquote><ul><li>深さ優先探索: A,B,D,E,H,I,C,F,G,J</li><li>幅優先探索: A,B,C,D,E,F,G,H,I,J</li></ul><blockquote><p>(b) in-order, pre-order, post-orderで木を巡回したとき、訪問する順番を答えよ。</p></blockquote><ul><li>pre-order(行きがけ順、前順): A,B,D,E,H,I,C,F,G,J</li><li>in-order(通りがけ順、中順): D,B,H,E,I,A,F,C,J,G</li><li>post-order(帰りがけ順、後順): D,H,I,E,B,F,J,G,C,A</li></ul><figure><img src=img/r2-2.jpg></figure><ul><li>stackを使っているので、右を先に探索するためには、<strong>左、右の順番でpush</strong>する必要がある。</li></ul><h4 id=問2-6>問2</h4><blockquote><p><code>d[]</code>には<code>-10000</code>から<code>10000</code>までの整数が格納される。<code>d[]</code>の最大値と最小値を求めるプログラムを作成する。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=n>d</span><span class=p>[</span><span class=mi>100</span><span class=p>],</span> <span class=n>minimum</span><span class=p>,</span> <span class=n>maximum</span><span class=p>,</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>// dに値を格納する処理
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>mininmum</span> <span class=o>=</span> <span class=mi>10000</span><span class=p>;</span> <span class=n>maximum</span> <span class=o>=</span> <span class=o>-</span><span class=mi>10000</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>100</span><span class=p>;</span><span class=n>i</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>maximum</span><span class=p>)</span> <span class=n>maximum</span> <span class=o>=</span> <span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=nf>if</span> <span class=p>(</span><span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>minimum</span><span class=p>)</span> <span class=n>minimum</span> <span class=o>=</span> <span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>(a) 上記のプログラムでは最大値と最小値が正しく求められない場合がある。その場合を示せ。</p></blockquote><p><code>else</code>が使われているため、<code>maximum</code>と<code>minimum</code>が同時に更新されることがなくなっている。
+すなわち、<code>d[0],d[1],d[2],...,d[99]</code>が常に増え続けるよう(ただし<code>d[0]!=-10000</code>)な入力に対しては<code>minimum</code>が更新されず、<code>10000</code>のままとなってしまう。</p><blockquote><p>(b) 上記のプログラムを修正し、最大値と最小値を正しく求めるプログラムを作成せよ。</p></blockquote><p>単に、<code>else if</code>を<code>if</code>に変えるだけで良い。</p><blockquote><p>(c) <code>d[]</code>の中に最小あるいは最大を取る値が複数個含まれていた場合に、最小値や最大値の値がそれぞれ何個含まれているかを求めるプログラムを作成せよ。</p></blockquote><p>ループを$2$回回せば良い。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=n>d</span><span class=p>[</span><span class=mi>100</span><span class=p>],</span> <span class=n>minimum</span><span class=p>,</span> <span class=n>maximum</span><span class=p>,</span> <span class=n>i</span><span class=p>,</span> <span class=n>count_min</span><span class=p>,</span> <span class=n>count_max</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>// dに値を格納する処理
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>mininmum</span> <span class=o>=</span> <span class=mi>10000</span><span class=p>;</span> <span class=n>maximum</span> <span class=o>=</span> <span class=o>-</span><span class=mi>10000</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span><span class=p>(</span><span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>100</span><span class=p>;</span><span class=n>i</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>maximum</span><span class=p>)</span> <span class=n>maximum</span> <span class=o>=</span> <span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>minimum</span><span class=p>)</span> <span class=n>minimum</span> <span class=o>=</span> <span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>count_min</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>count_max</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span><span class=p>(</span><span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span><span class=n>i</span> <span class=o>&lt;</span> <span class=mi>100</span><span class=p>;</span><span class=n>i</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>==</span> <span class=n>maximum</span><span class=p>)</span> <span class=n>count_max</span><span class=o>++</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>d</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>==</span> <span class=n>minimum</span><span class=p>)</span> <span class=n>count_min</span><span class=o>++</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=問3-5>問3</h4><blockquote><p>(a) 値がコメントのようになるように(1),(2),(3),(4)を埋めよ。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>rotate</span><span class=p>(</span><span class=kt>int</span> <span class=o>*</span><span class=n>x</span><span class=p>,</span> <span class=kt>int</span> <span class=o>*</span><span class=n>y</span><span class=p>,</span> <span class=kt>int</span> <span class=o>*</span><span class=n>z</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>tmp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// (1)
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// (2)
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// (3)
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// (4)
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>void</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>a</span><span class=o>=</span><span class=mi>7</span><span class=p>,</span> <span class=n>b</span><span class=o>=</span><span class=mi>61</span><span class=p>,</span> <span class=n>c</span><span class=o>=</span><span class=mi>199</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// a=7, b=61, c=199
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>rotate</span><span class=p>(</span><span class=o>&amp;</span><span class=n>a</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>b</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>c</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// a=61, b=199, c=7
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>rotate</span><span class=p>(</span><span class=o>&amp;</span><span class=n>a</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>b</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>c</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// a=199, b=7, c=61
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>a,b,c</code>が<code>b,c,a</code>の順番になれば良い。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=n>tmp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>tmp</span> <span class=o>=</span> <span class=o>*</span><span class=n>x</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>*</span><span class=n>x</span> <span class=o>=</span> <span class=o>*</span><span class=n>y</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>*</span><span class=n>y</span> <span class=o>=</span> <span class=o>*</span><span class=n>z</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>*</span><span class=n>z</span> <span class=o>=</span> <span class=n>tmp</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>(b) 関数定義において引数をポインタとする実装方法の特徴と有効な使い方について簡単に説明せよ。また、この実装方法の危険性についても説明せよ。</p></blockquote><p>ポインタを用いると、値をコピーせずに、関数内で値を変更することができる。また、値をコピーする必要がないため、メモリの節約になる。ただし、ポインタはアドレスを指すため、誤ってアドレスの変更やアドレスの指す値の変更をしてしまうと、予期せぬ動作をする可能性がある。</p><h3 id=情報数学-4>情報数学</h3><h4 id=問1-7>問1</h4><blockquote><p>次の3つの命題を仮定したとき、これらの命題から得られる結論をすべて求めよ。</p><ul><li>$P_1$: ソクラテスは、人である。</li><li>$P_2$: 人はいつか死ぬ。</li><li>$P_3$: ベニクラゲは死なない。</li></ul></blockquote><p>整理すると、</p><ul><li>ソクラテス$\rightarrow$人間</li><li>人間$\rightarrow$死ぬ</li><li>ベニクラゲ$\rightarrow$死なない</li></ul><p>また、これらの対偶も成り立つので、</p><ul><li>人間ではない$\rightarrow$ソクラテスではない</li><li>死なない$\rightarrow$人間ではない</li><li>死ぬ$\rightarrow$ベニクラゲではない</li></ul><p>これらを組み合わせると、</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>ソクラテス -&gt; 人間 -&gt; 死ぬ -&gt; ベニクラゲではない
+</span></span><span class=line><span class=cl>ベニクラゲ -&gt; 死なない -&gt; 人間ではない -&gt; ソクラテスではない
+</span></span></code></pre></td></tr></table></div></div><p>よって、$P_1,P_2,P_3$の他に、</p><ul><li>ソクラテスは死ぬ</li><li>ソクラテスはベニクラゲではない</li><li>人間はベニクラゲではない</li><li>ベニクラゲは人間ではない</li><li>ベニクラゲはソクラテスではない</li><li>死なないならばソクラテスではない</li></ul><p>の6つの結論が得られる。</p><h4 id=問2-7>問2</h4><blockquote><p>$R$を集合$A$上の同値関係とする。各要素$a\in A$に対して$a$と同値関係にある要素の集合を同類値と呼び、$[a]$と表す。すなわち$[a]= \lbrace x|(a,x)\in R \rbrace$である。このとき、次を証明せよ。</p></blockquote><p>同値関係の定義は、関係が反射律、対称律、推移律を満たすことである。</p><blockquote><p>(a) $A$の各要素$a\in A$に対して、$a\in[a]$である。</p></blockquote><p>同値類は反射律を満たすから、$(a,a)\in R$である。よって、$a\in[a]$である。</p><blockquote><p>(b) $[a]=[b]$のとき、かつこのときに限り、$(a,b)\in R$である。</p></blockquote><p>$\rightarrow$の証明：
+(a)の結論より、$ a \in [a]$である。また、$[a]=[b]$であるので、$a \in [b]$である。よって、$(a,b)\in R$である。</p><p>$\leftarrow$の証明：
+$R$は同値関係であるため、$(a,b)\in R$のとき$a,b$は同値である。よって、$[a]=[b]$である。</p><blockquote><p>(c) $[a]\ne [b]$ならば、$[a]$と$[b]$は互いに素である。</p></blockquote><p>対偶を示す。$a,b$が互いに素ではないとき、$a,b$は同値である。よって、(b)より$[a]=[b]$である。</p><h4 id=問3-6>問3</h4><p>固有値に関する問題。詳細は省略する。
+$$
+A=\begin{pmatrix}
+0 & 1 & 2 \\
+-4 & 1 & 4 \\
+-5 & 1 & 7
+\end{pmatrix}
+$$</p><p>行列式は$10$</p><p>固有値と固有ベクトルは、$1$に対して$(1,-1,1)^T$、$2$に対して$(1,0,1)^T$、$5$に対して$(1,1,2)^T$である。</p><h2 id=平成31年度>平成31年度</h2><h3 id=プログラミング-5>プログラミング</h3><h4 id=問1-8>問1</h4><blockquote><p>$n$子の整数より構成される配列$x$から整数$t$を探索する関数<code>search</code>を作る。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=nf>search</span><span class=p>(</span><span class=kt>int</span> <span class=n>t</span><span class=p>,</span> <span class=kt>int</span><span class=o>*</span> <span class=n>x</span><span class=p>,</span> <span class=kt>int</span> <span class=n>n</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>lower</span><span class=p>,</span> <span class=n>upper</span><span class=p>,</span> <span class=n>middle</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>lower</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>upper</span> <span class=o>=</span> <span class=n>n01</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span><span class=p>(</span><span class=n>lower</span> <span class=o>&lt;=</span> <span class=n>upper</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=n>middle</span> <span class=o>=</span> <span class=p>(</span><span class=n>lower</span> <span class=o>+</span> <span class=n>upper</span><span class=p>)</span> <span class=o>/</span><span class=mi>2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=n>middle</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>t</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>lower</span> <span class=o>=</span> <span class=n>middle</span><span class=p>;</span> <span class=c1>//(1)
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>t</span> <span class=o>&lt;</span> <span class=n>x</span><span class=p>[</span><span class=n>middle</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>            <span class=n>upper</span> <span class=o>=</span> <span class=n>middle</span><span class=p>;</span> <span class=c1>//(2)
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>else</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>middle</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>(a)このプログラムが正しく動作するのに、<code>x</code>は昇順と降順どちらである必要があるか(ただし、狭義単調増加、狭義単調減少を指す)。</p></blockquote><p>プログラムでは、二分探索を行っている。<code>x[middle]</code>が<code>t</code>より小さいときに、下限<code>lower</code>が<code>middle</code>におきかわっている。<code>middle</code>より前を見る必要がない、ということだから、<code>x</code>は昇順である必要があることがわかる。</p><blockquote><p>(b)入力によって、プログラムが停止しない場合がある。例えば、<code>x={1,2,3}</code>で、<code>t=3</code>のときに停止しない。プログラム中の<code>(1),(2)</code>の部分を変更して、このような場合にも停止するようにせよ。</p></blockquote><p><code>lower = middle + 1</code>、<code>upper = middle - 1</code>とすればよい。(要検証)</p><blockquote><p>(c)<code>x</code>が(a)とは逆の順序である場合に、<code>(1),(2)</code>の部分を修正してプログラムが動作するようにせよ。</p></blockquote><p><code>(b)</code>で、<code>(1)</code>と<code>(2)</code>を逆にすればよい。</p><blockquote><p>(d) このプログラムの計算量が$O(\log n)$になることを説明せよ。</p></blockquote><p>一回で半分になるので、ループはおよそ$\log_2 n$回実行される。</p><h4 id=問2-8>問2</h4><blockquote><p>(a) ヒープに関する説明の穴埋め問題</p></blockquote><ul><li>ヒープは、要素の「あつまり」を表す ?型のデータ構造である。抽象的機能として、要素の並びを保持し、挿入と削除が可能な優先度付きキューの実装の一つと位置づけられる。一般に以下の2つの性質を持つ2分木と定義され、性質1より最小要素は必ず根頂点に格納される。</li><li>性質1：略</li><li>性質2：略</li></ul><blockquote><p>(b)<code>n</code>子の整数より構成される配列<code>x</code>に対し、以下の&lt;対応付け規則>から構成される2分木を<code>x</code>の2分木と呼ぶ。配列<code>x={20,18,13,19,24,15,28,40}</code>(この順番どおりに格納されている)の2分木を図示しなさい。</p><ul><li>規則1:x[0]を根頂点とする。</li><li>規則2:$0\leq i \leq (n-1)/2$を満たす整数$i$に対し、<code>x[2*i+1]</code>を<code>x[i]</code>の左の子とする。</li><li>規則3:$0\leq i \leq (n-2)/2$を満たす整数$i$に対し、<code>x[2*i+2]</code>を<code>x[i]</code>の右の子とする。</li></ul></blockquote><p>具体例を考えれば良い。</p><ul><li><code>x[0]</code>が根である。</li><li><code>x[0]</code>の左の子が<code>x[1]</code>で、右の子は<code>x[2]</code>である。</li><li><code>x[1]</code>の左の子が<code>x[3]</code>で、右の子は<code>x[4]</code>である。</li><li><code>x[2]</code>の左の子が<code>x[5]</code>で、右の子は<code>x[6]</code>である。</li><li>以下同様</li></ul><p>これは単に、上から下へ、左から右に、順番に並べたものと一致する。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>          20
+</span></span><span class=line><span class=cl>        /    \
+</span></span><span class=line><span class=cl>      18      13
+</span></span><span class=line><span class=cl>     /  \    /  \
+</span></span><span class=line><span class=cl>   19   24  15  28
+</span></span><span class=line><span class=cl>  /
+</span></span><span class=line><span class=cl>40
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>(c) 次ページのC言語のプログラムは、配列<code>x</code>の各要素を移動する関数<code>shift</code>を表している。(b)の配列<code>x={20,18,13,19,24,15,28,40}</code>について、<code>shift(0,x,8)</code>実行したときの<code>x</code>を答えなさい。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>shift</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span><span class=p>,</span> <span class=kt>int</span><span class=o>*</span> <span class=n>x</span><span class=p>,</span> <span class=kt>int</span> <span class=n>n</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>parent</span><span class=p>,</span> <span class=n>child</span><span class=p>,</span> <span class=n>temp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>parent</span> <span class=o>=</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>child</span> <span class=o>=</span> <span class=mi>2</span><span class=o>*</span><span class=n>parent</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span><span class=p>(</span><span class=n>child</span> <span class=o>&lt;</span> <span class=n>n</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=n>child</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>x</span><span class=p>[</span><span class=n>parent</span><span class=p>]){</span>
+</span></span><span class=line><span class=cl>            <span class=n>temp</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>child</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>            <span class=n>x</span><span class=p>[</span><span class=n>child</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>parent</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>            <span class=n>x</span><span class=p>[</span><span class=n>parent</span><span class=p>]</span> <span class=o>=</span> <span class=n>temp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>parent</span> <span class=o>=</span> <span class=n>child</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>child</span> <span class=o>=</span> <span class=mi>2</span><span class=o>*</span><span class=n>parent</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span><span class=k>else</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><p>初期は<code>x={20,18,13,19,24,15,28,40}</code>で<code>parent = 0, child = 1</code></p></li><li><p><code>x[1] &lt; x[0]</code>なので、<code>x={18,20,13,19,24,15,28,40}</code>で<code>parent = 1, child = 3</code></p></li><li><p><code>x[3] &lt; x[1]</code>なので、<code>x={18,19,13,20,24,15,28,40}</code>で<code>parent = 3, child = 7</code></p></li><li><p><code>x[7] &lt; x[3]</code>なので、変化はなく<code>x={18,19,13,20,24,15,28,40}</code>で終了</p></li><li><p>(d) (c)の結果の<code>x</code>を、二分木をヒープにするには、プログラムにどのような処理を追加すればよいか。</p></li></ul><p>任意の配列<code>x</code>ではなく、少なくとも(c)で回答した<code>x</code>についてヒープになれば良い。
+余談ではあるが、任意の<code>x</code>についてヒープにする必要があると勘違いをし、非常に悩んだ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>shift</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span><span class=p>,</span> <span class=kt>int</span><span class=o>*</span> <span class=n>x</span><span class=p>,</span> <span class=kt>int</span> <span class=n>n</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>parent</span><span class=p>,</span> <span class=n>child</span><span class=p>,</span> <span class=n>temp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>parent</span> <span class=o>=</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>child</span> <span class=o>=</span> <span class=mi>2</span><span class=o>*</span><span class=n>parent</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span><span class=p>(</span><span class=n>child</span> <span class=o>&lt;</span> <span class=n>n</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>child</span><span class=o>+</span><span class=mi>1</span><span class=o>&lt;</span><span class=n>n</span><span class=p>)</span><span class=k>if</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=n>child</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>x</span><span class=p>[</span><span class=n>child</span> <span class=o>+</span> <span class=mi>1</span><span class=p>])</span><span class=n>child</span> <span class=o>++</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>x</span><span class=p>[</span><span class=n>child</span><span class=p>]</span> <span class=o>&lt;</span> <span class=n>x</span><span class=p>[</span><span class=n>parent</span><span class=p>]){</span>
+</span></span><span class=line><span class=cl>            <span class=n>temp</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>child</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>            <span class=n>x</span><span class=p>[</span><span class=n>child</span><span class=p>]</span> <span class=o>=</span> <span class=n>x</span><span class=p>[</span><span class=n>parent</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>            <span class=n>x</span><span class=p>[</span><span class=n>parent</span><span class=p>]</span> <span class=o>=</span> <span class=n>temp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>parent</span> <span class=o>=</span> <span class=n>child</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>child</span> <span class=o>=</span> <span class=mi>2</span><span class=o>*</span><span class=n>parent</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span><span class=k>else</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=問3-7>問3</h4><p>省略</p><h3 id=情報数学-5>情報数学</h3><h4 id=問1-9>問1</h4><blockquote><p>40名のクラスについて、選択科目A,B,Cの履修状況は以下のとおりである。</p><ul><li>A,B,Cのそれぞれの履修者は18名</li><li>少なくともAとBを履修している者は9名</li><li>少なくともAとCを履修している者は8名</li><li>少なくともBとCを履修している者は5名</li><li>一課目以上履修している学生は35名</li></ul></blockquote><blockquote><p>(a)1科目も履修していない学生
+(b)A,B,Cの3科目をすべて履修している学生
+(c)A,Bのみを履修している学生
+(d)A,Cのみを履修している学生
+(e)Aのみを履修している学生、をそれぞれ求めなさい。</p></blockquote><p>ベン図を書いて、パズルチックに解く。あるいは、包除原理を用いる。
+3要素の場合の包除原理は以下の通り。
+$$
+|A\cup B\cup C| = |A| + |B| + |C| - |A\cap B| - |B\cap C| - |C\cap A| + |A\cap B\cap C|
+$$
+これを今わかっている情報に当てはめる。
+$$
+35 = 18 + 18 + 18 - 9 - 8 - 5 + |A\cap B\cap C|
+$$
+よって、$|A\cap B\cap C| = 3$である。</p><p>なお、この程度の数字の大きさであれば、適当に数を当てはめていって辻褄が合うようなものを探すという方法でも良いだろう。</p><p>あとは、単純な足し算や引き算で求められ、$(a)5,(b)3,(c)6,(d)5,(e)4$</p><h4 id=問2-9>問2</h4><blockquote><p>$R$を集合$A$上の二項関係とする。
+(a) $R$が同値関係であるときに満たされる$3$つの性質について、空欄を埋めなさい。</p></blockquote><ul><li>任意の$a\in A$に対して$aRa$が成立するとき、$R$は反射的である。</li><li>任意の$a,b\in A$に対して$aRb\Rightarrow bRa$が成立するとき、$R$は対称的である。</li><li>任意の$a,b,c\in A$に対して$aRb\land bRc\Rightarrow aRc$が成立するとき、$R$は推移的である。</li></ul><blockquote><p>(b) 整数$m>1$について、$2$つの整数$x,y$に対して、$x-y$が$m$で割り切れるとき、$x$と$y$は$m$は法として合同であると言い、$x\equiv y\pmod{m}$と表す。この関係が、整数の集合$\mathbb{Z}$上の同値関係であることを示しなさい。</p></blockquote><ul><li>反射的であること<ul><li>任意の$x$について、$x-x=0$は$m$で割り切れるので、$x\equiv x\pmod{m}$である。</li></ul></li><li>対称的であること<ul><li>整数$k$を用いると$x-y=mk$と表され、$y-x=-mk$は$m$で割り切れるので、$y\equiv x\pmod{m}$である。</li></ul></li><li>推移的であること<ul><li>整数$k,l$を用いると$x-y=mk,y-z=ml$と表され、$x-z=(x-y)+(y-z)=m(k+l)$は$m$で割り切れるので、$x\equiv z\pmod{m}$である。</li></ul></li></ul><h4 id=問3-8>問3</h4><blockquote><p>行列$A$に関して答えなさい</p></blockquote><p>$$
+A = \begin{pmatrix}
+1 & 1 & 1 \\
+1 & 1 & 2 \\
+1 & 2 & 0
+\end{pmatrix}
+$$</p><blockquote><p>(a) $A$の逆行列は存在するか。存在するならば、求めなさい。</p></blockquote><p>$|A|=-1\ne 0$なので、$A$は正則である。よって、$A^{-1}$が存在する。</p><p>$$
+A^{-1} = \begin{pmatrix}
+4 & -2 & -1 \\
+-2 & 1 & 1 \\
+-1 & 1 & 0
+\end{pmatrix}
+$$</p><blockquote><p>(b) $A$を隣接行列としてもつ多重グラフ$G=(V,E)$を描きなさい。ただし、頂点集合$V={v_1,v_2,v_3}$とする。</p></blockquote><figure><img src=img/r2-3.svg></figure><h4 id=問4>問4</h4><blockquote><p>(a) 正$4$面体サイコロの、出目を確率変数$X$とすると、確率分布表は以下の通りである。</p><div class=table-wrapper><table><thead><tr><th style=text-align:center>$X$</th><th style=text-align:center>$1$</th><th style=text-align:center>$2$</th><th style=text-align:center>$3$</th><th style=text-align:center>$4$</th></tr></thead><tbody><tr><td style=text-align:center>$P(X=x)$</td><td style=text-align:center>$\frac{1}{4}$</td><td style=text-align:center>$\frac{1}{4}$</td><td style=text-align:center>$\frac{1}{4}$</td><td style=text-align:center>$\frac{1}{4}$</td></tr></tbody></table></div></blockquote><blockquote><p>2つのサイコロを振り、2つの出目の和を$Y$とすると、$Y$の確率分布表と、期待値を求めなさい。</p></blockquote><ul><li>$Y=2$は$(1,1)$</li><li>$Y=3$は$(1,2),(2,1)$</li><li>$Y=4$は$(1,3),(2,2),(3,1)$</li><li>$Y=5$は$(1,4),(2,3),(3,2),(4,1)$</li><li>$Y=6$は$(2,4),(3,3),(4,2)$</li><li>$Y=7$は$(3,4),(4,3)$</li><li>$Y=8$は$(4,4)$</li></ul><div class=table-wrapper><table><thead><tr><th style=text-align:center>$Y$</th><th style=text-align:center>$2$</th><th style=text-align:center>$3$</th><th style=text-align:center>$4$</th><th style=text-align:center>$5$</th><th style=text-align:center>$6$</th><th style=text-align:center>$7$</th><th style=text-align:center>$8$</th></tr></thead><tbody><tr><td style=text-align:center>$P(Y=y)$</td><td style=text-align:center>$\frac{1}{16}$</td><td style=text-align:center>$\frac{1}{8}$</td><td style=text-align:center>$\frac{3}{16}$</td><td style=text-align:center>$\frac{1}{4}$</td><td style=text-align:center>$\frac{3}{16}$</td><td style=text-align:center>$\frac{1}{8}$</td><td style=text-align:center>$\frac{1}{16}$</td></tr></tbody></table></div><p>期待値は、
+$$
+E[Y]= 2\cdot \frac{1}{16} + 3\cdot \frac{1}{8} + 4\cdot \frac{3}{16} + 5\cdot \frac{1}{4} + 6\cdot \frac{3}{16} + 7\cdot \frac{1}{8} + 8\cdot \frac{1}{16} = \frac{40}{8} = 5
+$$</p><blockquote><p>(b) $n$人いるとき、少なくとも$2$人が同じ誕生日である確率を求めなさい。ただし、$1&lt;n&lt;365$であり、閏年は考えないとする。</p></blockquote><p><strong>少なくとも</strong>は、余事象を考えるとやりやすい。すなわち、$n$人とも誕生日が異なる確率を求め、それを$1$から引けばよい。</p><p>$$
+1-\frac{365}{365}\cdot \frac{364}{365}\cdot \frac{363}{365}\cdots \frac{365-n+1}{365} = 1-\frac{365!}{(365-n)!365^n}
+$$</p><h2 id=平成30年度>平成30年度</h2><h3 id=プログラミング-6>プログラミング</h3><h4 id=問1-10>問1</h4><blockquote><p>次の算術式を逆ポーランド記法(後置記法)で表しなさい。<br>(a) $((A+B)\times C)\div (D-(E\div F))$<br>(b) $(A+B)\div (C-D)+(E-F) \div G$</p></blockquote><p>逆ポーランド記法とは、演算子を後ろに置く記法である。例えば、$A+B$は$AB+$と表される。括弧や乗算除算の順序に注意する。</p><ul><li>(a): $A B + C \times D E F \div - \div$</li><li>(b): $A B + C D - \div E F - G \div +$</li></ul><h4 id=問2-10>問2</h4><blockquote><p>逆ポーランド記法で書かれた四則演算の算術式を計算することを考える。スタックを用いる方法を説明しなさい。</p></blockquote><p>スタックを用いる方法は、以下の通りである。</p><ul><li>前から順に、処理をしていく。</li><li>被演算子(数値)が現れたら、スタックに積む。</li><li>演算子が現れたら、スタックから2つ取り出し、演算子に関する計算を行い、結果をスタックに積む。</li></ul><h4 id=問3-9>問3</h4><blockquote><p>次の手続きを実行したとき、手続きが終了するまでに、比較「<code>x &lt;= 5000</code>」が何回行われるかとその理由とともに答えなさい。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>while</span><span class=p>(</span><span class=n>x</span><span class=o>&lt;=</span><span class=mi>5000</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=n>x</span><span class=o>+</span><span class=n>y</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>y</span><span class=o>+</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>具体的な処理をみていく。</p><ul><li>初期値は<code>x=y=0</code></li><li><code>x&lt;=5000</code>であり、<code>x</code>に<code>y</code>が加算され、<code>y</code>に<code>1</code>が加算される。<code>x=0,y=1</code></li><li><code>x&lt;=5000</code>であり、<code>x</code>に<code>y</code>が加算され、<code>y</code>に<code>1</code>が加算される。<code>x=1,y=2</code></li><li><code>x&lt;=5000</code>であり、<code>x</code>に<code>y</code>が加算され、<code>y</code>に<code>1</code>が加算される。<code>x=3,y=3</code></li><li><code>x&lt;=5000</code>であり、<code>x</code>に<code>y</code>が加算され、<code>y</code>に<code>1</code>が加算される。<code>x=6,y=4</code></li></ul><p>このコードは<code>x</code>が<code>5000</code>以下の間、<code>x</code>に<code>0,1,2,3,...</code>を加算し続けるプログラムである。
+<code>y=101</code>まで足されたときに、<code>x=5050</code>となり、<code>x&lt;=5000</code>が<code>false</code>となる。よって、比較は<code>103</code>回行われる(<code>0</code>から加算を始めていること、<code>5000</code>を超えたときにも比較が一度行われることに注意)。</p><h4 id=問4-1>問4</h4><blockquote><p>双方向リスト構造に関する問題(詳細は省略)。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>if (root = p){ /*削除対象のセルがリストの先頭のとき*/
+</span></span><span class=line><span class=cl>    (1) root = root.next;
+</span></span><span class=line><span class=cl>    if (root != nil) //リストに要素があるとき
+</span></span><span class=line><span class=cl>        (2) p.next.prev = nil;
+</span></span><span class=line><span class=cl>}else if (tail = p){ /*削除対象のセルがリストの末尾のとき*/
+</span></span><span class=line><span class=cl>    tail = tail.prev;
+</span></span><span class=line><span class=cl>    if ( (3) tail != nil) //リストに要素があるとき
+</span></span><span class=line><span class=cl>        (4) p.prev.next = nil;
+</span></span><span class=line><span class=cl>}else{
+</span></span><span class=line><span class=cl>    (5) p.prev.next = p.next;
+</span></span><span class=line><span class=cl>    (6) p.next.prev = p.prev;
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><h4 id=問5>問5</h4><blockquote><p>根付き木に関する問題(詳細は省略)。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>v = (1) FirstChild[Parent[v]];
+</span></span><span class=line><span class=cl>while( v != nil ){
+</span></span><span class=line><span class=cl>    write Info[v];
+</span></span><span class=line><span class=cl>    v = (2) NextBrother[v];
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p><code>v</code>が親の第1子であるとは限らないため、一度親を参照し、その第1子を参照する必要がある。</p><h4 id=問6>問6</h4><blockquote><p>次の主手続きを実行した後の変数$x$と$y$のの値をその理由とともに答えなさい。ただし、手続き<code>addsub(x,y)</code>の仮引数<code>x</code>は値呼び出し、仮引数<code>y</code>は参照呼び出しを家庭留守。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=c1>//主手続き
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>x</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=mi>5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nf>addsub</span><span class=p>(</span><span class=n>y</span><span class=p>,</span><span class=n>x</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=c1>//手続き addsub(x,y)
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>x</span> <span class=o>=</span> <span class=n>x</span><span class=o>+</span><span class=n>y</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=n>x</span><span class=o>-</span><span class=n>y</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p>引数<code>(x,y)</code>が逆になっていてややこしいので、<code>addsub(a,b)</code>を考える。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=c1>//手続き addsub(a,b) aはコピー、bは参照
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>a</span> <span class=o>=</span> <span class=n>a</span><span class=o>+</span><span class=n>b</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=n>a</span><span class=o>-</span><span class=n>b</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>a=5,b=10</code>だから、<code>a=15,b=5</code>となる。<code>a</code>はコピーなので、<code>y</code>には影響しない。<code>b</code>は参照なので、<code>x</code>に影響する。
+よて、<code>x=5,y=5</code>となる。</p><h4 id=問7>問7</h4><blockquote><p>オブジェクト指向設計における、継承とポリモルフィズムの考え方を説明し、それらを利用する利点を述べなさい。</p></blockquote><p>継承とは、特定のオブジェクトの機能を引き継いで使用することであrう。同じ機能を持つオブジェクトが複数ある場合、それらの機能を共通化することで、プログラムの見通しを良くすることができる。</p><p>ポリモーフィズムとは、目的が同じ機能だが、処理内容が異なる場合に、同じ名前をつけて処理を行うことである。ポリモーフィズムにより操作方法を統一することで、プログラムの見通しを良くすることができる。</p><h3 id=情報数学-6>情報数学</h3><h4 id=問1-11>問1</h4><blockquote><p>(a) $p,q$を命題とする、$p\rightarrow q$が真であることを証明するための、直接法、対偶法、背理法を説明しなさい。</p></blockquote><ul><li>直接法：$p$を真と仮定して、$q$が真であることを示す。</li><li>対偶法：$\lnot q$を仮定して、$\lnot p$が真であることを示す。</li><li>背理法：$p \land \lnot q$を仮定して、矛盾が生じる(偽となる)ことを示す。</li></ul><blockquote><p>(b) 命題関数$P(n)$を「最初の$n$個の正の奇数の和は$n^2$である」とする。全ての正の奇数$n$に対して$P(n)$が真であることを数学的帰納法を用いて証明しなさい。</p></blockquote><p>なぜか正の奇数$n$に限定されているが、$n$が正の偶数の場合も成り立つので、$n$が正の整数のときに成り立つことを示せば良い。</p><ul><li>$n=1$のとき、始めの1個の正の奇数の和は$1$であり、$1^2=1$であるから、$P(1)$は真である。</li><li>$n=k$のとき、最初の$k$個の正の奇数$1,3,5,&mldr;,2k-1$の和は$k^2$であると仮定する。$n=k+1$のとき、最初の$k+1$個の正の奇数$1,3,5,&mldr;,2k-1,2k+1$の和は、$k^2+2k+1=(k+1)^2$であるから、$P(k+1)$は真である。</li><li>以上より、数学的帰納法より全ての正の整数$n$に対して$P(n)$が真であることが示された。よって全ての正の奇数$n$に対して$P(n)$が真であることが示された。</li></ul><h4 id=問2-11>問2</h4><blockquote><p>行列に関する問題(詳細は省略)。</p></blockquote><p>$$
+A = \begin{pmatrix}
+1 & 0 & 1 & 2 \\
+1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 \\
+0 & 1 & 2 & 0
+\end{pmatrix}
+$$</p><p>$|A|=2$</p><p>$$
+A^2 = \begin{pmatrix}
+2 & 3 & 6 & 2 \\
+2 & 1 & 1 & 2 \\
+3 & 2 & 2 & 2 \\
+3 & 3 & 2 & 0
+\end{pmatrix}
+$$</p><figure><img src=img/h30-1.svg></figure><p>v1からv3への長さ3のパスの本数は、$A^3$の1行3列目の要素と等しい。よって、12本である。</p><h4 id=問3-10>問3</h4><blockquote><p>2つの箱A,Bがあって、箱Aには赤玉1個と白玉5個、箱Bには赤玉5個と白玉1個がある。</p></blockquote><blockquote><p>(a) 任意に箱を選んで1個の玉を取り出したとき、その玉が赤色である確率を求めなさい。</p></blockquote><p>$$\frac{1}{2}\times\frac{1}{6}+\frac{1}{2}\times\frac{5}{6}=\frac{1}{2}$$</p><blockquote><p>(b) 任意に箱を選んで1個玉を取り出し元の箱に戻し、もう一度同じ箱から取り出す、二回連続で取り出した玉が赤色である確率を求めなさい。</p></blockquote><p>$$\frac{1}{2}\times\frac{1}{6}\times\frac{1}{6} + \frac{1}{2}\times\frac{5}{6}\times\frac{5}{6}=\frac{13}{36}$$</p><blockquote><p>(c) 任意に箱を選んで1個取り出したら赤玉であった。その玉を元の箱に戻し、もう一度同じ箱から取り出して赤玉である確率を求めなさい。</p></blockquote><ul><li>赤→白の順で取り出す場合 $\frac{1}{2}\times\frac{1}{6}\times\frac{5}{6}+\frac{1}{2}\times\frac{5}{6}\times\frac{1}{6}=\frac{5}{36}$</li><li>赤→赤の順で取り出す場合 $\frac{1}{2}\times\frac{1}{6}\times\frac{1}{6}+\frac{1}{2}\times\frac{5}{6}\times\frac{5}{6}=\frac{13}{36}$</li></ul><p>よって、ベイズの定理より
+$$
+\frac{\frac{5}{36}}{\frac{5}{36}+\frac{13}{36}}=\frac{5}{18}
+$$</p><h2 id=平成29年度>平成29年度</h2><h3 id=プログラミング-7>プログラミング</h3><h4 id=問1-12>問1</h4><blockquote><p>(a) ホワイトボックステストについて答えなさい。</p></blockquote><ul><li>命令網羅：全ての命令(条件分岐を除く)を最低1回は通すようにするテスト。</li><li>判定条件網羅(分岐網羅)：それぞれの判定条件の結果が真となるケース、負となるケースを作成し、全ての分岐を最低1回は通すようにするテスト。</li><li>複数条件網羅：全ての判定条件の組み合わせにおける全ての可能な組み合わせを網羅し、かつ全ての命令を一度は実行する。</li></ul><blockquote><p>(b)<figure><img src=img/h29-1.jpg></figure></p></blockquote><p>次の２つを用意すればいい。命令網羅であるため、命令がない②を通る必要はない。</p><ul><li>1 -> 3 -> 5 -> 6 -> 8</li><li>1 -> 4 -> 5 -> 7 -> 8</li></ul><h4 id=問2-12>問2</h4><blockquote><p>オブジェクト指向プログラミング言語に関する説明文を埋めなさい。</p></blockquote><p>クラスは階層構造をもってそのｎ属性や操作を継承できる。継承して新たに定義されたクラスを元のクラスの下位クラス(サブクラス)とよび、その元のクラスを上位クラス(スーパークラス)とよぶ。このような階層構造をもつクラスの間の県警には、「自動車-トラック」のような「is-a」関係と、「自動車-タイヤ」のような「has-a」関係がある。</p><h4 id=問3-11>問3</h4><blockquote><p>以下のCで書かれた関数<code>f_a,f_b,f_c</code>のそれぞれについて、引数に<code>N=6</code>が渡されたとときの戻り値を求めよ。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=nf>f_a</span><span class=p>(</span><span class=kt>int</span> <span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>count</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>3</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>N</span><span class=p>;</span> <span class=n>i</span><span class=o>+=</span><span class=mi>2</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>3</span><span class=p>;</span> <span class=n>j</span><span class=o>&lt;=</span><span class=n>i</span><span class=p>;</span> <span class=n>j</span><span class=o>+=</span><span class=mi>2</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span><span class=p>(</span><span class=n>i</span><span class=o>==</span><span class=n>j</span><span class=p>)</span><span class=o>++</span><span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span><span class=p>(</span><span class=n>i</span><span class=o>%</span><span class=n>j</span><span class=o>==</span><span class=mi>0</span><span class=p>)</span><span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>f_b</span><span class=p>(</span><span class=kt>int</span> <span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span><span class=p>(</span><span class=n>N</span><span class=o>&lt;=</span><span class=mi>1</span><span class=p>)</span><span class=k>return</span> <span class=n>N</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=k>return</span> <span class=nf>f_b</span><span class=p>(</span><span class=n>N</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span><span class=o>+</span><span class=nf>f_b</span><span class=p>(</span><span class=n>N</span><span class=o>-</span><span class=mi>2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>f_c</span><span class=p>(</span><span class=kt>int</span> <span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=n>N</span><span class=o>+</span><span class=mi>7</span><span class=p>)</span><span class=o>&gt;&gt;</span><span class=mi>3</span><span class=o>&lt;&lt;</span><span class=mi>3</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><code>f_a(6)</code>：関数の目的がよくわからないが、<code>i=3,5</code>のときに<code>i==j</code>になるので、戻り値は<code>3</code>となる。</li><li><code>f_b(6)</code>：フィボナッチ数列を計算している。<code>f_b(0),f_b(1),...</code>と順番に計算していくとわかりやすい。戻り値は<code>8</code>。</li><li><code>f_c(6)</code>：6+7=13を2進数にすると1101であり、右に3ビットシフトすると1で、左に3ビットシフトすると1000である。戻り値は<code>8</code>。</li></ul><h4 id=問4-2>問4</h4><blockquote><p>(a)<code>initList(&amp;list, N, data)</code>によって作成されるリスト構造、(b)<code>func1()</code>と<code>func2()</code>のそれぞれの時間計算量について説明しなさい。<figure><img src=img/h29-2.jpg></figure></p></blockquote><ul><li><p>(a) Node構造体は次のNodeを指す<code>next</code>と<code>prev</code>のポインタと要素<code>value</code>を持っている。先頭と末尾が連結している双方向リストを生成する<code>initList(&amp;list, N, data)</code>により、<code>list</code>の<code>next</code>が<code>data[0]</code>を<code>value</code>に持つノード、その次が<code>data[1]</code>を<code>value</code>に持つノード、&mldr;と続き、最後のノードの<code>next</code>が<code>list</code>を指すようになる。また、<code>prev</code>は前の要素を指し、最初のノードの<code>prev</code>は最後のノードを指すようになる。(図は省略)。</p></li><li><p>(b) <code>func1()</code>は<code>list</code>の先頭から末尾まで順番に要素を取り出し、<code>v</code>と等しい要素があれば<code>n</code>に加算している。これは、リストに含まれる<code>v</code>の個数をカウントする関数であり、計算量はノードの長さをNとすると$O(N)$。<code>func2()</code>は<code>list</code>が空ではない場合に、<code>list</code>の一つ前の要素を削除する関数である。計算量は$O(1)$。(図は省略)。</p></li></ul><h3 id=情報数学-7>情報数学</h3><h4 id=問1-13>問1</h4><blockquote><p>(a) 3変数$x,y,z$からなる方程式$x+y+z=10$を考える。。$x,y,z$が非負整数とすると、この方程式の解である$(x,y,z)$の組の個数はいくつか。</p></blockquote><p>$10$個のボールと$2$個の仕切りを一列に並べる場合の数と等しい。よって、$_{10+2}\mathrm{C}_{2}=66$通り。</p><blockquote><p>(b) 2変数$x,y$と実定数$\alpha,\beta$に関した、$x+y=1$と$\alpha,\beta>0$が成り立っている。<br>(1) $x,y$が実数であるとき、$\alpha x + \beta xy$の最大値とそのときの$x$を求めなさい。<br>(2) $x,y\in \lbrace 0,1 \rbrace$であるとき、$\alpha x + \beta xy$の最大値とそのときの$x$を求めなさい。</p></blockquote><p>(1) $y=1-x$を代入し、平方完成すれば良い。
+$$
+\begin{align}
+\alpha x + \beta xy &= \alpha x + \beta x(1-x) \\
+&= \alpha x + \beta x - \beta x^2 \\
+&= -\beta x^2 + (\alpha + \beta)x \\
+&= -\beta \left(x^2 - \frac{\alpha + \beta}{\beta}x + \frac{(\alpha + \beta)^2}{4\beta^2} \right) + \frac{\beta(\alpha + \beta)^2}{4\beta^2} \\
+&= -\beta \left(x - \frac{\alpha + \beta}{2\beta} \right)^2 + \frac{(\alpha + \beta)^2}{4\beta} \\
+\end{align}
+$$
+よって、$\beta>0$より、$x=\frac{\alpha + \beta}{2\beta}$のとき、$\alpha x + \beta xy$は最大値$\frac{(\alpha + \beta)^2}{4\beta}$をとる。</p><p>(2) 場合分けする。</p><ul><li>$x=0,y=0$のとき、$\alpha x + \beta xy=0$</li><li>$x=0,y=1$のとき、$\alpha x + \beta xy=0$</li><li>$x=1,y=0$のとき、$\alpha x + \beta xy=\alpha$</li><li>$x=1,y=1$のとき、$\alpha x + \beta xy=\alpha + \beta$</li></ul><p>よって、$\alpha x + \beta xy$の最大値は$\alpha + \beta$であり、そのときの$x$は$1$である。</p><h4 id=問2-13>問2</h4><blockquote><p>無向グラフ$G=(V,E)$で、$2$頂点$u,v\in V$を結ぶパスが存在することを$uRv$で表す。このとき、$R$は同値関係であることを示しなさい。</p></blockquote><ul><li>反射律：明らかにパス$[u]$が存在するので、$uRu$が成り立つ。</li><li>対称律：$uRv$が成り立つとき、$u$から$v$へのパス$[u,a_1,a_2,&mldr;,a_n,v]$が存在する。このとき、$v$から$u$へのパス$[v,a_n,a_{n-1},&mldr;,a_1,u]$が存在するので、$vRu$が成り立つ。</li><li>推移律：$uRv$かつ$vRw$が成り立つとき、$u$から$v$へのパス$[u,a_1,a_2,&mldr;,a_n,v]$と$v$から$w$へのパス$[v,b_1,b_2,&mldr;,b_m,w]$が存在する。このとき、$u$から$w$へのパス$[u,a_1,a_2,&mldr;,a_n,v,b_1,b_2,&mldr;,b_m,w]$が存在するので、$uRw$が成り立つ。</li><li>よって、$R$は同値関係である。</li></ul><h4 id=問3-12>問3</h4><blockquote><p>次のようなテストを受験し、合格する必要がある。</p><ul><li>無限の数の問題が用意されており、一問ずつ出題され、解答を行う。</li><li>各問に正解すると得点1を得て、不正解すると得点-1を得る。</li><li>得点の合計が3になるとテストに合格となり、受験が終了する。<br>各問に正解する確率が$2/3$とするとき、次の設問に答えなさい。<br>(a) 5問に解答した時点で、テストに合格する確率はいくらか。<br>(b) 6問に解答した時点で、得点の合計が2である確率を求めなさい。<br>(c) テストに合格するまでに8問以上に解答する必要がある確率を求めてください。</li></ul></blockquote><p>$i$問目を解いたときに$j$点を獲得している場合の数を求める。</p><div class=table-wrapper><table><thead><tr><th style=text-align:center>得点</th><th style=text-align:center>1問</th><th style=text-align:center>2問</th><th style=text-align:center>3問</th><th style=text-align:center>4問</th><th style=text-align:center>5問</th><th style=text-align:center>6問</th><th style=text-align:center>7問</th></tr></thead><tbody><tr><td style=text-align:center>3</td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>3</td><td style=text-align:center></td><td style=text-align:center>9</td></tr><tr><td style=text-align:center>2</td><td style=text-align:center></td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>3</td><td style=text-align:center></td><td style=text-align:center>9</td><td style=text-align:center></td></tr><tr><td style=text-align:center>1</td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>3</td><td style=text-align:center></td><td style=text-align:center>9</td><td style=text-align:center></td><td style=text-align:center>28</td></tr><tr><td style=text-align:center>0</td><td style=text-align:center></td><td style=text-align:center>2</td><td style=text-align:center></td><td style=text-align:center>6</td><td style=text-align:center></td><td style=text-align:center>19</td><td style=text-align:center></td></tr><tr><td style=text-align:center>-1</td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>3</td><td style=text-align:center></td><td style=text-align:center>10</td><td style=text-align:center></td><td style=text-align:center>34</td></tr><tr><td style=text-align:center>-2</td><td style=text-align:center></td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>4</td><td style=text-align:center></td><td style=text-align:center>15</td><td style=text-align:center></td></tr><tr><td style=text-align:center>-3</td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>5</td><td style=text-align:center></td><td style=text-align:center>21</td></tr><tr><td style=text-align:center>-4</td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>6</td><td style=text-align:center></td></tr><tr><td style=text-align:center>-5</td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center>1</td><td style=text-align:center></td><td style=text-align:center>7</td></tr><tr><td style=text-align:center>-6</td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center>1</td><td style=text-align:center></td></tr><tr><td style=text-align:center>-7</td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center></td><td style=text-align:center>1</td></tr></tbody></table></div><p>$i$問目まで解いたときに$j$点を獲得している場合の数$A_{ij}$は、次の漸化式で計算できる。</p><ul><li>$A_{0j}=0 \quad (全てのj)$</li><li>$A_{i2} = A_{i-1,1} \quad (全てのi)$</li><li>$A_{ij}=A_{i-1,j-1}+A_{i-1,j+1} \quad (その他の場合)$</li></ul><p>(a) 表より、$A_{5,3}=3$である。また、4問正解して1問不正解だから、
+$$
+\left( \frac{2}{3} \right)^4 \times \left( \frac{1}{3} \right)^1 \times 3 = \frac{16}{81}
+$$</p><p>(b) 表より、$A_{6,2}=9$である。また、6問正解して2問不正解だから、
+$$
+\left( \frac{2}{3} \right)^4 \times \left( \frac{1}{3} \right)^2 \times 9 = \frac{16}{81}
+$$</p><p>(c) 余事象は、$7$問目までに合格する確率であり、その確率は、表を見ながら、
+$$
+\left( \frac{2}{3} \right)^3 \times \left( \frac{1}{3} \right) ^0 \times 1
++ \left( \frac{2}{3} \right)^4 \times \left( \frac{1}{3} \right) ^1 \times 3 \\
++ \left( \frac{2}{3} \right)^5 \times \left( \frac{1}{3} \right) ^2 \times 9 = \frac{152}{243}
+$$
+よって、答えは
+$$
+1 - \frac{152}{243} = \frac{91}{243}
+$$</p><h2 id=平成28年度>平成28年度</h2><p>問題が見つかりませんでした！</p><h2 id=平成27年度>平成27年度</h2><h3 id=プログラミング-8>プログラミング</h3><h4 id=問1-14>問1</h4><blockquote><p>浮動小数点で表現された多くの数を加算する。加算結果に含まれる誤差をもっとも小さくなるようにするには、以下のいずれの方法が良いかを、その理由とともに100～150字程度で述べなさい。</p><ol><li>数を絶対値の小さい順に整列し、絶対値の小さい数から始めて順に絶対値の大きい数へと加算してゆく。</li><li>絶対値の大きい数から始めて順に絶対値の小さい数へと加算してゆく。</li></ol></blockquote><p>2の絶対値を大きい数から順に加算する方法が良い。\</p><p>浮動小数点型は、絶対値の大きな数と小さな数を加算したときに、下の方の桁の精度が崩れ、誤差が生じる情報落ちが起こる。絶対値の大きな数から順に加算しておくと、符号が異なり絶対値が近い数同士の加算が行われる可能性があり、その結果が絶対値の小さな数であれば情報落ちの度合いが小さくなる。</p><p>以下のコードを試してみるとよくわかる。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>float</span> <span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>,</span> <span class=n>c</span><span class=p>,</span> <span class=n>d</span><span class=p>,</span> <span class=n>s</span><span class=p>,</span> <span class=n>t</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>a</span> <span class=o>=</span> <span class=mf>0.1111</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>b</span> <span class=o>=</span> <span class=mf>0.1111</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>c</span> <span class=o>=</span> <span class=mf>123456.0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>d</span> <span class=o>=</span> <span class=o>-</span><span class=mf>123456.0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>s</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>t</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span> <span class=o>+=</span> <span class=n>a</span><span class=p>;</span> <span class=n>s</span> <span class=o>+=</span> <span class=n>b</span><span class=p>;</span> <span class=n>s</span> <span class=o>+=</span> <span class=n>c</span><span class=p>;</span> <span class=n>s</span> <span class=o>+=</span> <span class=n>d</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>t</span> <span class=o>+=</span> <span class=n>d</span><span class=p>;</span> <span class=n>t</span> <span class=o>+=</span> <span class=n>c</span><span class=p>;</span> <span class=n>t</span> <span class=o>+=</span> <span class=n>b</span><span class=p>;</span> <span class=n>t</span> <span class=o>+=</span> <span class=n>a</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;%f</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>s</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;%f</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>t</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// s = 0.218750
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// t = 0.222200
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=問2-14>問2</h4><blockquote><p><code>N=10</code>としたとき、次の関数<code>fa(),fb(),fc(),fd()</code>の実行結果を求めなさい。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=nf>fa</span><span class=p>(</span><span class=kt>int</span> <span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>,</span><span class=n>j</span><span class=p>,</span><span class=n>kcount</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>count</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=n>i</span><span class=o>=</span><span class=mi>1</span><span class=p>;</span><span class=n>i</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>;</span><span class=n>i</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span><span class=p>(</span><span class=n>j</span><span class=o>=</span><span class=mi>1</span><span class=p>;</span><span class=n>j</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>;</span><span class=n>j</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span><span class=p>(</span><span class=n>k</span><span class=o>=</span><span class=mi>1</span><span class=p>;</span><span class=n>k</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>;</span><span class=n>k</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>                <span class=n>count</span><span class=o>=</span><span class=n>count</span><span class=o>+</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>fb</span><span class=p>(</span><span class=kt>int</span> <span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span><span class=p>(</span><span class=n>N</span><span class=o>==</span><span class=mi>0</span><span class=p>)</span><span class=k>return</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>count</span> <span class=o>=</span> <span class=nf>fb</span><span class=p>(</span><span class=n>N</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span> <span class=o>+</span> <span class=nf>fb</span><span class=p>(</span><span class=n>N</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>fc</span><span class=p>(</span><span class=kt>int</span> <span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>,</span><span class=n>j</span><span class=p>,</span><span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>count</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=n>i</span><span class=o>=</span><span class=mi>1</span><span class=p>;</span><span class=n>i</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>;</span><span class=n>i</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span><span class=p>(</span><span class=n>j</span><span class=o>=</span><span class=mi>1</span><span class=p>;</span><span class=n>j</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>;</span><span class=n>j</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=n>count</span><span class=o>=</span><span class=n>count</span><span class=o>+</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>i</span><span class=o>%</span><span class=mi>2</span><span class=o>==</span><span class=mi>1</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=n>count</span><span class=o>=</span><span class=n>count</span><span class=o>+</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>fd</span><span class=p>(</span><span class=kt>int</span> <span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>,</span><span class=n>j</span><span class=p>,</span><span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>count</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>i</span><span class=o>=</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span><span class=p>(</span><span class=n>i</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=n>count</span> <span class=o>=</span> <span class=n>count</span> <span class=o>+</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>j</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span><span class=p>(</span><span class=n>j</span><span class=o>&lt;=</span><span class=n>N</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=n>count</span><span class=o>=</span><span class=n>count</span><span class=o>+</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>j</span><span class=o>=</span><span class=n>j</span><span class=o>*</span><span class=mi>2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=n>i</span><span class=o>++</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>count</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><code>fa()</code>：$N^3 = 1000$</li><li><code>fb()</code>：$2^N = 1024$</li><li><code>fc()</code>：<code>if</code>文を無視すれば、$N^2$であり、$i=1,3,5,7,9$のときにそれぞれ$10$回加算されるので、$100+5\times 10=150$</li><li><code>fd()</code>：$j$は$2,4,8,16$と変化していき、$16$になったときに<code>while</code>を抜ける。これを$N$回繰り返しているため、$4\times 10+10=50$</li></ul><h4 id=問3-13>問3</h4><blockquote><p>以下のような完全二分木$T$を考える。(問題文省略)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    3
+</span></span><span class=line><span class=cl>   / \
+</span></span><span class=line><span class=cl>  4   6
+</span></span><span class=line><span class=cl> / \
+</span></span><span class=line><span class=cl>7   5
+</span></span></code></pre></td></tr></table></div></div></blockquote><p>(a)</p><ul><li>根：3</li><li>節点6の親：3</li><li>節点4の兄弟：6</li><li>木の高さ：2</li><li>木の大きさ：5</li></ul><p>(b)</p><ul><li>inoder：7->4->5->3->6</li><li>(preorder：3->4->7->5->6)</li><li>(postorder：7->5->4->6->3)</li></ul><p>(c)</p><ul><li>根のみからなる木$T$はヒープ木である。</li><li>ヒープ木$T$の「$T$の根以外を、根とする部分木」はまたヒープ木である。</li><li>ヒープ木$t$の根の数値は、その全ての「$T$の根以外を、根とする部分木」の根の数値よりも「小さい」。</li></ul><p>(d)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    2
+</span></span><span class=line><span class=cl>   / \
+</span></span><span class=line><span class=cl>  4   3
+</span></span><span class=line><span class=cl> / \ /
+</span></span><span class=line><span class=cl>7  5 6
+</span></span></code></pre></td></tr></table></div></div><p>(e)</p><p>$N\log N$回</p><p>(f)</p><p>節点は、その節点の持つ値、子の節点へのポインタが2つ、親へのポインタが1つ、計4つのデータを持つ。よって、16byte。</p><p>(g)</p><p>配列を用いて、$i$番目の要素の親は$\lfloor i/2 \rfloor$番目の要素、左の子は$2i$番目の要素、右の子は$2i+1$番目の要素と表現することで、4byteで済む。</p><h4 id=問4-3>問4</h4><blockquote><p>$N=10^9$個の数からなる一次元配列が与えられる。その中から、$p$個の数をその値の小さいものから順に取り出すとき、どのようなアルゴリズムを用いると、最も効率よく$p$個の数を取り出すことができるか。<br>(a)$p=1$のとき (b)$p=10^8$のとき</p></blockquote><p>(a)</p><p>配列を<code>A</code>とする。<code>m=A[0]</code>とおき、<code>for</code>文で<code>A</code>を走査し、<code>m</code>より小さい値があれば<code>m</code>をその値に置き換える。これを<code>A</code>の最後まで繰り返す。このとき、<code>m</code>には<code>A</code>の最小値が格納されている。計算量は$O(N)$。</p><p>(b)</p><p>昇順にソート(マージソートやヒープソートなどの最悪計算量が$O(N\log N)$のソート)を行い、<code>A</code>の最初の$p$個の要素を取り出す。計算量は$O(N\log N)$。
+(a)のように、最小値を求める方法を用いると、計算量は$O(Np)$とり、$\log N &lt; p$であるから、前者の方が効率的である。</p><h3 id=情報数学-8>情報数学</h3><h4 id=問1-15>問1</h4><blockquote><p>集合$A$上の二項関係$R$を直積集合$A\times A$の部分集合として定義する。また、$x,y\in A$に対して、$(x,y)\in R$であるとき$xRy$と表記する。いま、自然数全体の集合を$A=\mathbb{N}$とし、次の$\mathbb{N}$上の二項関係$D={(x,y)|x,y\in \mathbb{N},xはyの約数}$を考える。</p></blockquote><blockquote><p>(a) $xDy$を満たす$(x,y)$の組を具体的に3つあげなさい。</p></blockquote><ul><li>$(1,1),(1,2),(1,3)$</li></ul><blockquote><p>(b) 順序$R$とは、$A$の任意の要素$x,y,z$に対して反射律、推移律、反対称律を満たす二項関係のことである。$D$が順序であることを示しなさい。</p></blockquote><ul><li>反射律：明らかに$x$は$x$の約数であるから、$xDx$である。</li><li>推移律：$xDy$かつ$yDz$であるとき、整数$a,b$を用いて$ax=y,by=z$と表せる。このとき、$abx=z$であるから、$x$は$z$の約数である。よって、$xDz$である。</li><li>反対称律：$xDy$かつ$yDx$であるとき、整数$a,b$を用いて$ax=y,by=x$と表せる。このとき、$abx=x$であるから、$ab=1$である。よって、$x=y$である。</li></ul><blockquote><p>集合$A$と$A$上の順序$\preceq$ の対を順序集合と呼び、$\left&lt;A,\preceq\right>$と表記する。$A$のある要素$a$と、$A$の任意の要素$x,y,z$に対して、以下の条件が成り立つとき、$x$を$a$の直後の要素という。<br>(1) $a\preceq x$<br>(2) $a\prec z \preceq x$ならば$z=x$<br>ただし、$x \preceq y$かつ$x\ne y$であるとき$x\prec y$と表記する。
+順序集合$\left&lt;N,D\right>$では、任意の$k\in \mathbb{N}$に対して、$k$の直後の要素が無限に存在することが知られている。$k$の値を具体的に定め、その直後の要素の例を$3$つあげなさい。</p></blockquote><p>$k=1$のとき、$2,3,5$は$k$の直後の要素である。</p><h4 id=問2-15>問2</h4><figure><img src=img/h27-1.jpg></figure><p>包除原理を使えば良い。英語、中国語、ドイツ語をそれぞれ履修している人の集合を$A,B,C$とする。</p><p>$$
+|A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|B\cap C|-|C\cap A|+|A\cap B\cap C|
+$$
+わかっている情報を代入すると、</p><p>$$
+|A\cup B\cup C|=50+35+25-15-15-10+|A\cap B\cap C| = 70+|A\cap B\cap C|
+$$</p><p>どれも履修していない人数が$5$人だから、$|A\cup B\cup C|=75$である。よって、$|A\cap B\cap C|=5$である。</p><p>あとは、適当に足し算引き算していけば良い。</p><ul><li>英語のみ：$30$</li><li>中国語のみ：$10$</li><li>ドイツ語のみ：$5$</li><li>中国語とドイツ語を両方登録しているが、英語は登録していない：$10$</li><li>全部登録している人：$5$</li></ul><h4 id=問3-14>問3</h4><blockquote><p><figure><img src=img/h27-2.jpg></figure><figure><img src=img/h27-3.jpg></figure></p></blockquote><p>(a) $B_4$</p><p>(b)図のようになる。<figure><img src=img/h27-4.jpg></figure></p><ul><li>$B_1$：$8$</li><li>$B_2$：$12$</li><li>$B_3$：$12$</li><li>$B_4$：$18$</li></ul><p>(c) $B_6$<figure><img src=img/h27-5.jpg></figure></p><p>(d)
+区切られたグリットを挟んだところに最も近い基地局があると、この探索方法だとその基地局が選ばれないことがある。</p><h2 id=平成26年度>平成26年度</h2><h3 id=プログラミング-9>プログラミング</h3><h4 id=問1-16>問1</h4><blockquote><p>選択ソートのプログラムの穴埋め</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>selectSort</span><span class=p>(</span><span class=kt>void</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>,</span><span class=n>j</span><span class=p>,</span><span class=n>min</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span><span class=n>i</span><span class=o>&lt;</span><span class=n>N</span><span class=o>-</span><span class=mi>1</span><span class=p>;</span><span class=n>i</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=n>min</span><span class=o>=</span><span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span><span class=p>(</span><span class=n>j</span><span class=o>=</span><span class=n>i</span><span class=o>+</span><span class=mi>1</span><span class=p>;</span><span class=n>j</span><span class=o>&lt;</span><span class=n>N</span><span class=p>;</span><span class=n>j</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span><span class=p>(</span> <span class=n>data</span><span class=p>[</span><span class=n>min</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>data</span><span class=p>[</span><span class=n>j</span><span class=p>]</span> <span class=p>){</span>
+</span></span><span class=line><span class=cl>                <span class=n>min</span><span class=o>=</span><span class=n>j</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=nf>swap</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=n>min</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>swap</span><span class=p>(</span><span class=kt>int</span> <span class=n>x</span><span class=p>,</span><span class=kt>int</span> <span class=n>y</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>tmp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>tmp</span><span class=o>=</span><span class=n>data</span><span class=p>[</span><span class=n>x</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>data</span><span class=p>[</span><span class=n>x</span><span class=p>]</span><span class=o>=</span><span class=n>data</span><span class=p>[</span><span class=n>y</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>data</span><span class=p>[</span><span class=n>y</span><span class=p>]</span><span class=o>=</span><span class=n>tmp</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>(b)計算量を求めなさい。</p></blockquote><p>$O(N^2)$</p><blockquote><p>(c) <code>N=8,data[N]={5,8,7,3,6,1,4,2}</code>であった場合を考える。プログラムの実行時、変数<code>i</code>の値がインクリメントされ、<code>i=2</code>となった直後の<code>data</code>の値を求めなさい。</p></blockquote><ul><li><code>i=0</code>のとき：<code>{1,8,7,3,6,5,4,2}</code></li><li><code>i=1</code>のとき：<code>{1,2,7,3,6,5,4,8}</code></li><li><code>i=2</code>のとき：<code>{1,2,3,7,6,5,4,8}</code></li></ul><h4 id=問2-16>問2</h4><blockquote><p>異なる$n$個の候補から$r$個を選択する組み合わせの総数を求める、次の条件を満たす関数を作成しなさい。</p><ul><li>$n,r$を引数とする。</li><li>再帰呼び出しを用いる。</li><li>$n,r$の大小関係に関するエラー処理はしなくてよい。</li></ul><p>また、次の性質を利用して良い</p><ul><li>$_n\mathrm{C}_0 = _n\mathrm{C}_n = 1$</li><li>$_n\mathrm{C}_r = _{n-1}\mathrm{C}_{r-1} + _{n-1}\mathrm{C}_r$</li></ul></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=nf>combination</span><span class=p>(</span><span class=kt>int</span> <span class=n>n</span><span class=p>,</span><span class=kt>int</span> <span class=n>r</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span><span class=p>(</span><span class=n>r</span><span class=o>==</span><span class=mi>0</span> <span class=o>||</span> <span class=n>r</span><span class=o>==</span><span class=n>n</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span><span class=k>else</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nf>combination</span><span class=p>(</span><span class=n>n</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span><span class=n>r</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span><span class=o>+</span><span class=nf>combination</span><span class=p>(</span><span class=n>n</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span><span class=n>r</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=問3-15>問3</h4><blockquote><p>関数の引数における値渡しと参照渡しの違いを説明しなさい。</p></blockquote><p>値渡しは、関数に渡す引数の値をコピーして渡す方法である。関数内で引数の値を変更しても、呼び出し元の変数の値は変わらない。参照渡しは、関数内で引数の値を変更すると、呼び出し元の変数の値も変わる。参照渡しは、値渡しに対して、メモリの使用量が少ない。</p><h4 id=問4-4>問4</h4><h3 id=情報数学-9>情報数学</h3><h4 id=問1-17>問1</h4><blockquote><p>（a) $aRb$ならば、$Ca=Cb$であることを示しなさい。</p></blockquote><p>$aRb$より、$Ca={a,b,x_1,x_2,\cdots,x_n}$と表すことができる。対称律の定義より、$Cb={b,a,x_1,x_2,\cdots,x_n}$である。よって、$Ca=Cb$である。</p><blockquote><p>(b) $aRb$でなければ、$Ca \cap Cb = \emptyset$であることを示しなさい。</p></blockquote><p>背理法で示す。$Ca$と$Cb$に共通の要素$x$があったとする。$aRx$と$bRx$の関係が成り立つので、推移律より$aRb$が成り立つ。これは$aRb$でないことに矛盾する。よって、$aRb$ではないとき、$Ca \cap Cb = \emptyset$である。</p><blockquote><p>(c) $2$つの整数$a,b$に対して、$a-b$が$3$の倍数であるとき、$a=_3b$とする。このとき、関係$=_3$は同値関係であることを示しなさい。</p></blockquote><ul><li>反射律：$a-a=0$は$3$の倍数であるので、$a=_3a$である。</li><li>対称律：$a-b=3k$ならば、$b-a=-3k$である。$-3k$は$3$の倍数なので、$b=_3a$である。</li><li>推移律：$a-b=3k$かつ$b-c=3l$ならば、$a-c=a-b+b-c=3k+3l=3(k+l)$である。$k+l$は整数なので、$a-c$は$3$の倍数である。よって、$a=_3c$である。</li><li>以上より、$=_3$は同値関係である。</li></ul><h4 id=問2-17>問2</h4><blockquote><p>二分木の木の高さは以下のように定義できる。</p><ul><li>空の二分木の高さは$0$である。</li><li>ノードが1つ以上ある二分木には根ノードがあり、その高さは以下で定義する。$\max(根ノードの左につながる部分木の高さ, 根ノードの右につながる部分木の高さ)+1$<br>さらに、全てのノードをみて、左右のノードにつながる部分木の高さの差が$1$以下である二分木を「近似的平衡二分木」と定義する。</li></ul></blockquote><blockquote><p>(a) 高さが3の近似的平衡二分木に含まれるノード数の最小値を答えなさい。さらに、高さが4の場合についても同様に答えなさい。</p></blockquote><p>高さが3の場合、ノード数の最小値は$4$である。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    o
+</span></span><span class=line><span class=cl>   / \
+</span></span><span class=line><span class=cl>  o   o
+</span></span><span class=line><span class=cl> / 
+</span></span><span class=line><span class=cl>o 
+</span></span></code></pre></td></tr></table></div></div><p>高さが4の場合、ノード数の最小値は$7$である。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    o
+</span></span><span class=line><span class=cl>   / \
+</span></span><span class=line><span class=cl>  o   o
+</span></span><span class=line><span class=cl> / \   \
+</span></span><span class=line><span class=cl>o   o   o
+</span></span><span class=line><span class=cl> \
+</span></span><span class=line><span class=cl>  o
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>(b)高さ$h$の木について、ノード数の最小値を$a_n$とする。漸化式で$a_n$を示しなさい。ただし、$a_0=0,a_1=1$とする。</p></blockquote><p>$n\geq 2$のとき、$a_n=a_{n-1}+n-1$</p><blockquote><p>$18$個ののーどが含まれる近似平衡二分木の高さの最大値を答え、その理由を説明しなさい。</p></blockquote><p>$a_n \leq 18$を満たす最大の$n$を求める。$a$を列挙すると、$a_1=1,a_2=2,a_3=4,a_4=7,a_5=11,a_6=16,a_7=22$であるので、高さは$6$である。</p><h4 id=問3-16>問3</h4><blockquote><figure><img src=img/h26-1.jpg></figure></blockquote><p>(a)</p><p>故障率を$p$と置く。</p><p>$$
+p^4 + 4\cdot p^3(1-p) + 2\cdot p^2(1-p)^2 = p^2(-p^2+2) = 0.00019999 = 2 \times 10^{-4}
+$$</p><p>(b)</p><p>$$
+1 - ((1-p)^4 + 4\cdot p(1-p)^3 + 2\cdot p^2(1-p)^2) = p^2(p-2)^2 = 0.00039601 = 4 \times 10^{-4}
+$$</p></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

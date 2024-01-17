@@ -1,0 +1,2569 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>メモ on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/categories/%E3%83%A1%E3%83%A2/</link><description>Recent content in メモ on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Thu, 25 May 2023 12:08:30 +0900</lastBuildDate><atom:link href="https://shibaken28.github.io/my-blog-4/categories/%E3%83%A1%E3%83%A2/index.xml" rel="self" type="application/rss+xml"/><item><title>山梨大学コンピュータ理工科過去問を解く</title><link>https://shibaken28.github.io/my-blog-4/contents/yamanashi_univ/</link><pubDate>Thu, 25 May 2023 12:08:30 +0900</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/yamanashi_univ/</guid><description>&lt;h2 id="はじめに">はじめに&lt;/h2>
+&lt;p>&lt;strong>解答はあくまで私が解いたものであり、正解を保証するものではありません。&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>途中で解答を書くのに飽きて雑になっているところがあります。問題文が不完全な場合があります。&lt;/strong>&lt;/p>
+&lt;p>山梨大学は編入試験を含め、入試問題を公開しています。神。
+&lt;a class="link" href="https://www.yamanashi.ac.jp/admission/293" target="_blank" rel="noopener"
+>山梨大学過去問集へのリンク&lt;/a>&lt;/p>
+&lt;h2 id="傾向と対策">傾向と対策&lt;/h2>
+&lt;p>コンピュータ理工科は成績証明書：口述試験：筆記試験の配点の比が1:1:8となっています(ただし、口述試験単体でも否だと、他の点数に関わらず不合格になります)。&lt;/p>
+&lt;h3 id="出題範囲">出題範囲&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>年度&lt;/th>
+&lt;th>プログラミング&lt;/th>
+&lt;th>計算機アーキテクチャ&lt;/th>
+&lt;th>情報数学&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>令和5年度&lt;/td>
+&lt;td>計算量、ソート、ハッシュ表、二分探索木&lt;/td>
+&lt;td>論理回路、ビット演算、仮想記憶&lt;/td>
+&lt;td>数学的帰納法、確率、グラフ理論&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>令和4年度&lt;/td>
+&lt;td>計算量、組み合わせの探索、動的計画法、リスト&lt;/td>
+&lt;td>論理回路、ノイマン型コンピュータ&lt;/td>
+&lt;td>エントロピー、行列&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>令和3年度&lt;/td>
+&lt;td>コンパイラ、二分木、基礎問題&lt;/td>
+&lt;td>仮想記憶、サブシステム&lt;/td>
+&lt;td>数論証明、確率、行列&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>令和2年度&lt;/td>
+&lt;td>二分木、基礎問題、ポインタ&lt;/td>
+&lt;td>基礎問題、プロセッサ&lt;/td>
+&lt;td>命題、関係、行列&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>平成31年度&lt;/td>
+&lt;td>二分探索、ヒープ、基礎問題&lt;/td>
+&lt;td>ビット演算、RISC/CISC、アセンブリ&lt;/td>
+&lt;td>集合、関係、行列、確率&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>平成30年度&lt;/td>
+&lt;td>逆ポーランド記法、双方向リスト、基礎問題、木構造、オブジェクト指向&lt;/td>
+&lt;td>アセンブリ、メモリ、ビット演算&lt;/td>
+&lt;td>命題、行列(+グラフ理論)、確率&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>平成29年度&lt;/td>
+&lt;td>テスト、オブジェクト指向、基本問題、双方向リスト&lt;/td>
+&lt;td>ノイマン型コンピュータ、論理回路、仮想記憶&lt;/td>
+&lt;td>整数、関係、確率&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>当たり前っちゃ当たり前ですが、基本情報や応用情報技術者試験と重なっている部分も多く、それらの試験の対策をしたことがあると解きやすいと思います。&lt;/p>
+&lt;h3 id="プログラミング">プログラミング&lt;/h3>
+&lt;ul>
+&lt;li>他の学校に比べ、難易度は高めだと思います。プログラミングの基礎知識、というよりはアルゴリズム寄りです。基本的なデータ構造やアルゴリズムはもちろん、計算量やプログラミング的な思考力が問われます。一方で、コンパイルの処理やオブジェクト指向について説明させる問題が出題されることもあり、多くの知識が求められます。&lt;/li>
+&lt;li>二分木に関する問題が頻出です。再帰処理に対する理解が必要です。&lt;/li>
+&lt;li>ポインタを扱うリスト構造も頻出です。ポインタの理解が必要です。&lt;/li>
+&lt;li>その他、ハッシュテーブルや動的計画法、ヒープ構造など、様々なアルゴリズムが出題されているため、対策が難しくなっています。
+&lt;ul>
+&lt;li>bit全探索や、部分和問題についての動的計画法あたりはAtCoder茶色以上のレベル感です。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>行きがけ順、帰りがけ順、分離チェイン法など、語句を知っておく必要があります。&lt;/li>
+&lt;li>たまにソフトウェア工学に関する問題(オブジェクト指向、テスト)が出題されます。&lt;/li>
+&lt;/ul>
+&lt;h3 id="計算機アーキテクチャ">計算機アーキテクチャ&lt;/h3>
+&lt;ul>
+&lt;li>出題範囲が広く、暗記の量が多いです。また、読解力が求められる問題も多く出題されています。&lt;/li>
+&lt;/ul>
+&lt;h3 id="情報数学">情報数学&lt;/h3>
+&lt;ul>
+&lt;li>命題、集合、関係、行列、確率などの特に離散数学に関する問題が出題されます。&lt;/li>
+&lt;li>命題：数学的帰納法での証明問題や、命題に関する基礎的な問題が出題されます。&lt;/li>
+&lt;li>行列：固有値と固有ベクトル、行列式、逆行列、行列の積などに関する問題が出題されます。&lt;/li>
+&lt;li>確率：基本的な確率の問題です。ベイズの定理や重複組合せが出題されることもあります。&lt;/li>
+&lt;li>関係：反射律、対称律、同値関係あたりの定義は覚えておいたほうが良いです。&lt;/li>
+&lt;li>集合：一度包除原理を使った問題が出題されましたが、基本的には高校数学レベルです。&lt;/li>
+&lt;li>グラフ理論：令和5年度、突如2部グラフと2彩色グラフに関する証明問題が出ました。&lt;/li>
+&lt;li>その他、情報エントロピーやハフマン符号化に関する問題が出題されています。&lt;/li>
+&lt;/ul>
+&lt;p>基本的に情報数学は他の科目に比べて優しいですが、稀に破天荒な問題が出題されることがあります。&lt;/p>
+&lt;h2 id="令和5年度">令和5年度&lt;/h2>
+&lt;ol>
+&lt;li>筆記試験
+プログラミング、計算機アーキテクチャ、情報数学の3科目を出題し、2科目の選択解答
+としました。試験時間は80分です。試験問題は別紙の通りです。&lt;/li>
+&lt;li>口述試験
+コンピュータ理工学に関する専門分野の基礎的事項、意欲、コミュニケーション力、思
+考力に関する口述試験を行いました。試験時間は10分です。&lt;/li>
+&lt;/ol>
+&lt;h3 id="プログラミング-1">プログラミング&lt;/h3>
+&lt;h4 id="問1">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>ソートアルゴリズムの安定性とは何かを説明しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>安定性とは、同じ値を持つ要素があった場合、ソート前とソート後でそれらの順番が入れ替わるかどうかのことである。ソート前とソート後で順番が変わらない場合、安定なソートであり、変わる場合、不安定なソートである。&lt;/p>
+&lt;blockquote>
+&lt;p>「挿入ソート」，「マージソート」，「クイックソート」の3つのアルゴリズムについて、安定かどうかを答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>挿入ソート：安定
+&lt;ul>
+&lt;li>数字を挿入するときに、確定部分を前から順番に見ていって、挿入する数字よりも大きい数字があったら、その数字の前に挿入するようにすると安定なソートになる。逆に、確定部分を後ろから見ていき、挿入する数字よりも小さい数字があったら、その数字の後ろに挿入するようにすると不安定なソート(同じ数字は逆順)になる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>マージソート：安定
+&lt;ul>
+&lt;li>要素を分割したときに、同じ値を持つ要素があった場合、左側の要素を優先してマージするようにすると安定なソートになる。逆に、右側の要素を優先してマージするようにすると不安定なソートになる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>クイックソート：不安定
+&lt;ul>
+&lt;li>ピボットの選択により、同じ値を持つ要素の順番が変わることがあるため、不安定なソートになる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>データ数が$n$のとき、「挿入ソート」，「マージソート」，「クイックソート」の3つのアルゴリズムの平均計算量、最悪計算量、最良計算量のオーダーを答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>
+&lt;p>挿入ソート&lt;/p>
+&lt;ul>
+&lt;li>平均計算量：$O(n^2)$&lt;/li>
+&lt;li>最悪計算量：$O(n^2)$
+&lt;ul>
+&lt;li>逆順の配列をソートする場合&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>最良計算量：$O(n)$
+&lt;ul>
+&lt;li>整列済みの配列をソートする場合&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>マージソート&lt;/p>
+&lt;ul>
+&lt;li>平均計算量：$O(n\log n)$
+&lt;ul>
+&lt;li>マージする際に、$n$回比較する。それを$\log n$回繰り返すので、$O(n\log n)$となる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>最悪計算量：$O(n\log n)$&lt;/li>
+&lt;li>最良計算量：$O(n\log n)$
+&lt;ul>
+&lt;li>数列がどのような形をしていても、比較回数は変わらない。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>クイックソート&lt;/p>
+&lt;ul>
+&lt;li>平均計算量：$O(n\log n)$
+&lt;ul>
+&lt;li>厳密な導出は結構難しいので、省略&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>最悪計算量：$O(n^2)$
+&lt;ul>
+&lt;li>ピボットが常に最大値または最小値の場合&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>最良計算量：$O(n\log n)$
+&lt;ul>
+&lt;li>ピボットの選択により、$n$回比較する。それを$\log n$回繰り返すので、$O(n\log n)$となる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>キー値が 0 から 15 までの整数値を取るとき，キー値の集合からハッシュ表を作成することを考えます．レコードはキー値のみで他にデータはないものとします．ハッシュ表のサイズ L を 5 とし，ハッシュ表の各要素は 0~4 の番地を持つものとします．ハッシュ関数 h(x)を h(x) = 3x mod L とします．&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>ハッシュ値が 2 で衝突するような 3 つの異なるキー値を挙げなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>$3x \mod 5 = 2$となるような$x$を求めると、$x=4,9,14$。&lt;/p>
+&lt;blockquote>
+&lt;p>空のハッシュ表に，(a)の 3 つのキー値を分離チェイン法（チェイン法，分離連鎖法）によって格納する様子を図示しなさい．ただし，キー値が格納されているところだけの様子が分かればよく，その他の部分は書き入れる必要はありません．&lt;/p>
+&lt;/blockquote>
+&lt;p>チェイン法は、結合リストを用いて同じ番地に複数のデータを入れる。(図は省略)&lt;/p>
+&lt;blockquote>
+&lt;p>空のハッシュ表に，(a)の 3 つのキー値を開番地法（空き番地法，オープンアドレス法）によって格納する様子を図示しなさい．ただし，代替ハッシュは線形走査法（線形探査法）で求めなさい．また，キー値が格納されているところだけの様子が分かればよく，その他の部分は書き入れる必要はありません．&lt;/p>
+&lt;/blockquote>
+&lt;p>オープンアドレス法は、衝突が起きた場合に、ひとつ後ろの番地に格納する方法である。その場所も衝突していた場合は、さらにひとつ後ろの番地に格納する。これを繰り返す。(図は省略)&lt;/p>
+&lt;h4 id="問3">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>データ数を n とする時，平衡２分探索木に格納されたデータの中から，特定のデータを探索する作業の平均計算量のオーダーを答えなさい．平衡２分探索木は「どのノードの左右部分木の高さの差も 1 以下」という条件を満たす２分探索木です．&lt;/p>
+&lt;/blockquote>
+&lt;p>木の高さのオーダーは$O(\log n)$であるため、平均計算量のオーダーも$O(\log n)$となる。&lt;/p>
+&lt;blockquote>
+&lt;p>次のプログラムは，２分探索木の実装の一部です．空欄（ア）～（ウ）に当てはまる，再帰を用いたコードを記述しなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>p&lt;/code>の子のうち、高い方の高さに1を加えたものが高さである。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">height&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">BinaryNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// p が指しているノードを根とする木の高さを返す．
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="nb">NULL&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="nf">height&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">left&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="nf">height&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">right&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="nf">height&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">left&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="nf">height&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">right&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>全てのノードについて検証をしなければならないということに注意。再帰関数に慣れていないと難しい。
+あるノードの子を根とする木が平衡２分探索木のバランス条件を満たしていて、かつ、そのノードの左右部分木の高さの差が1以下であるとき、そのノードを根とする木は平衡２分探索木のバランス条件を満たしている。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">bool&lt;/span> &lt;span class="nf">is_balanced&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">BinaryNode&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// p が指しているノードを根とする木が平衡２分探索木のバランス条件を満たしているかどうかを返す．
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">is_balanced&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">left&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nf">is_balanced&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">right&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">abs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">height&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">left&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="nf">height&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">right&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="o">&amp;lt;=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">false&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>main 関数の「エ」の時点での２分探索木を図示しなさい．この２分探索木を前順（行きかけ順，preorder）ならびに中順（通りがけ順，inorder）でなぞったときのノードの訪問順序を答えなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>二分探索木は次のようになる&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 2 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \ /
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1 3 6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>行きかけ順(preorder): 5, 2, 1, 3, 4, 7, 6&lt;/li>
+&lt;li>通りがけ順(inorder): 1, 2, 3, 4, 5, 6, 7&lt;/li>
+&lt;li>(帰りかけ順(postorder): 1, 4, 3, 2, 6, 7, 5)&lt;/li>
+&lt;/ul>
+&lt;h3 id="情報数学-1">情報数学&lt;/h3>
+&lt;h4 id="問1-1">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>$𝑛$ 個の元からなる集合 $𝐴$ には $2^n$ 個の部分集合があることを数学的帰納法を用いて証明しなさい．&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>$n=0$のとき。$2^0=2$である。$A$の部分集合は$\phi$の1つである。よって、$n=0$のとき成立する。&lt;/li>
+&lt;li>$n=k$のとき、$A= \lbrace a_1,a_2,\cdots a_k \rbrace $の部分集合は$2^k$個あると仮定する。$n=k+1$のとき、$A= \lbrace a_1,a_2,\cdots a_k,a_{k+1} \rbrace $の部分集合は、$a_{k+1}$を含まない部分集合は$2^k$個ある。$a_{k+1}$を含む部分集合は、$a_{k+1}$を含まない部分集合に$a_{k+1}$を加えたものである。よって、$2^k+2^k=2^{k+1}$個ある。よって、$n=k+1$のときも成立する。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-1">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>2 個の赤球と 18 個の白球が入った袋から，太郎，花子がこの順で 1 回ずつ球を取り出すとき，太郎が赤球を取り出す事象を 𝑇，花子が赤球を取り出す事象を 𝐻 とします．なお，取り出した球は袋に戻さないものとします．次の問いに答えなさい．&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>太郎が赤球を取り出した後，花子も赤球を取り出す確率 𝑃(𝑇∩ 𝐻) を求めなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+\frac{2}{20} \times \frac{1}{19} = \frac{1}{190}
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>太郎が赤球を取り出す確率 𝑃(𝑇) と花子が赤球を取り出す確率 𝑃(𝐻) は等しいことを証明しなさい．&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>太郎が赤球を取り出す確率は$\frac{2}{20}=\frac{1}{10}$である。&lt;/li>
+&lt;li>花子が赤球を取り出す確率は、
+&lt;ul>
+&lt;li>太郎が赤球を取り出した後、花子が赤球を取り出す確率は$\frac{2}{20} \times \frac{1}{19} = \frac{1}{190}$である。&lt;/li>
+&lt;li>太郎が白球を取り出した後、花子が赤球を取り出す確率は$\frac{18}{20} \times \frac{2}{19} = \frac{18}{190}$である。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>よって、花子が赤球を取り出す確率は$\frac{1}{190} + \frac{18}{190} = \frac{19}{190} = \frac{1}{10}$であり、太郎が赤球を取り出す確率と等しい。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-1">問3&lt;/h4>
+&lt;figure>&lt;img src="img/r5-1.png"/>
+&lt;/figure>
+&lt;ol>
+&lt;li>(i)$\rightarrow$(ii)について&lt;/li>
+&lt;/ol>
+&lt;p>$|C|=2$であるから、$C$の要素を$0,1$としたときに、頂点の集合$L,R$を次のように定める。$L=\lbrace v\in V|f(v)=0 \rbrace,R=\lbrace v\in V|f(v)=1 \rbrace$とする。このとき、$L,R$は$L\cup R=V$かつ$L\cap R=\phi$である。すなわち、$L\subseteq V$かつ$R=V\setminus L$であり、各辺$(v,w)\in E$に対して、$v\in L,w\in R$または$v\in R,w\in L$である。よって、$G$は二部グラフである。&lt;/p>
+&lt;ol start="2">
+&lt;li>(ii)$\rightarrow$(i)について&lt;/li>
+&lt;/ol>
+&lt;p>$f:V\rightarrow C$を次のように定める。$f(v)=0$ if $v\in L$、$f(v)=1$ if $v\in R$とする。このとき、各辺$(v,w)\in E$に対して、$f(v)\neq f(w)$である。よって、$G$は2彩色可能である。&lt;/p>
+&lt;ol start="3">
+&lt;li>(i)$\rightarrow$(iii)について&lt;/li>
+&lt;/ol>
+&lt;p>対偶を示す。「$G$に奇数の長さの閉路が存在する$\rightarrow$$G$が2彩色不可能である」を示す。
+長さが奇数の閉路が頂点$v_1,v_2,\cdots,v_{2k+1}$を通るとする。$f(v_1)=0$とする。このとき、$f(v_2)=1,f(v_3)=0,\cdots,f(v_{2k+1})=0,f(v_1)=0$となる。$f(v_1)=f(v_{2k+1})$となり、$G$は2彩色不可能である。&lt;/p>
+&lt;ol start="4">
+&lt;li>(iii)$\rightarrow$(i)について&lt;/li>
+&lt;/ol>
+&lt;p>長さが偶数の閉路の通る頂点を$v_1,v_2,\cdots,v_{2k}$とする。$f(v_1)=0$とする。このとき、$f(v_2)=1,f(v_3)=0,\cdots,f(v_{2k})=0,f(v_1)=0$となる。$f(v_1)\ne f(v_{2k})$となり、閉路は2彩色可能である。また、閉路でない頂点は明らかに2彩色可能である。よって、$G$は2彩色可能である。&lt;/p>
+&lt;h2 id="令和4年度">令和4年度&lt;/h2>
+&lt;ol>
+&lt;li>筆記試験
+プログラミング、計算機アーキテクチャ、情報数学から２科目を選択して解答してもら
+いました。解答時間は80分です。試験問題は別紙の通りです。&lt;/li>
+&lt;li>口述試験
+コンピュータ理工学に関する専門分野の基礎的事項、意欲、コミュニケーション力、思
+考力を試問しました。試験時間は10分です。&lt;/li>
+&lt;/ol>
+&lt;h3 id="プログラミング-2">プログラミング&lt;/h3>
+&lt;h4 id="問1-2">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>素数判定のプログラムの穴埋め&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">bool&lt;/span> &lt;span class="nf">isPrimeA&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="err">｛&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nb">false&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">｝&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">｝&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">bool&lt;/span> &lt;span class="n">isPrimeB&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="err">｛&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nb">false&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">｝&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>&lt;code>isPrimeA&lt;/code>と&lt;code>isPrimeB&lt;/code>について、それぞれのプログラムの最悪計算量を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>入力が素数であった場合に計算量が最悪となる。&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>isPrimeA&lt;/code>の最悪計算量は$O(\sqrt{N})$である。&lt;/li>
+&lt;li>&lt;code>isPrimeB&lt;/code>の最悪計算量は$O(N)$である。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>isPrimeA&lt;/code>の方が効率が良い。&lt;/p>
+&lt;h4 id="問2-2">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>部分和問題を解くプログラムについて、以下の問いに答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp"># include &amp;lt;iostream&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="k">using&lt;/span> &lt;span class="k">namespace&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">bool&lt;/span> &lt;span class="nf">isSubsetSum&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[],&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">W&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">bit&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">bit&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="n">bit&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">sum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">bit&lt;/span> &lt;span class="o">&amp;amp;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="n">sum&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sum&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">W&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nb">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">false&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">W&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">19&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">9&lt;/span>&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">isSubsetSum&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">W&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34;Yes&amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34;No&amp;#34;&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>関数boolisSubsetSum( )内の//(A)の行の｢bit&amp;amp;(1くくi)｣は,この部分和問題を解くためのどのような処理をおこなっているか.この中の｢&amp;amp;｣および｢くく｣の機能の説明を含めて, 150字程度で説明しなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>&amp;lt;&amp;lt;&lt;/code>は左シフト演算子、&lt;code>&amp;amp;&lt;/code>はAND演算子である。&lt;code>(1&amp;lt;&amp;lt;i)&lt;/code>は下から&lt;code>i&lt;/code>番目のビット(一番下を&lt;code>0&lt;/code>番目とする)のみが&lt;code>1&lt;/code>である数を表し、&lt;code>bit &amp;amp; (1&amp;lt;&amp;lt;i)&lt;/code>は&lt;code>bit&lt;/code>の下から&lt;code>i&lt;/code>番目のビットが&lt;code>1&lt;/code>であるかどうかを判定する。&lt;code>i&lt;/code>番目のビットが立っているときに、&lt;code>a[i]&lt;/code>を部分和の用いるとすると、&lt;code>bit&lt;/code>が$0$から$2^N-1$まで変化することで、全ての部分和を求めることができる。&lt;/p>
+&lt;blockquote>
+&lt;p>このプログラムの最悪時間計算量を求めなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>部分和問題の答えがNoだったときに、&lt;code>for&lt;/code>文が&lt;code>2^N&lt;/code>回実行される。よって、計算量は$O(2^N)$である。&lt;/p>
+&lt;blockquote>
+&lt;p>このソースコードのアルゴリズムの時間計算量よりも効率の良い、$O(NW)$の時間計算量のアルゴリズムを説明しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>動的計画法を説明する。&lt;/p>
+&lt;p>&lt;code>bool&lt;/code>型の二次元配列&lt;code>dp&lt;/code>を用意し、&lt;code>dp[i][j]&lt;/code>の値を「&lt;code>i&lt;/code>番目($a_0,a_1,\cdots a_{i-1}$)までの数からいくつかを選んで和を&lt;code>j&lt;/code>にすることができるか」の判定問題の答えとする。
+&lt;code>dp[0][0]&lt;/code>は&lt;code>true&lt;/code>とする。&lt;code>dp[i][j]&lt;/code>の値は、&lt;code>dp[i-1][j]&lt;/code>の値と&lt;code>dp[i-1][j-a[i]]&lt;/code>の値を用いて、&lt;code>dp[i][j] = dp[i-1][j] || dp[i-1][j-a[i]]&lt;/code>として求めることができる。&lt;code>dp[N][W]&lt;/code>の値が&lt;code>true&lt;/code>であれば、部分和問題の答えはYesである。&lt;/p>
+&lt;h4 id="問3-2">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>都県名の一覧を処理するソースコードについて、答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;figure>&lt;img src="img/r4-1.png"/>
+&lt;/figure>
+&lt;blockquote>
+&lt;p>このソースコードをコンパイルして実行したときの,標準出力への出力をすべて書き出しなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>この実装では、リスト構造を用いている。
+&lt;code>func1&lt;/code>では&lt;code>v&lt;/code>の&lt;code>next&lt;/code>を&lt;code>p&lt;/code>の&lt;code>next&lt;/code>に変更し、&lt;code>p&lt;/code>の&lt;code>next&lt;/code>を&lt;code>v&lt;/code>にしている。すなわち、&lt;code>p&lt;/code>の次の要素を&lt;code>v&lt;/code>に変更している。&lt;/p>
+&lt;p>&lt;code>func2&lt;/code>では、&lt;code>n&lt;/code>の次が指しているポインタを&lt;code>cur&lt;/code>とし、&lt;code>cur&lt;/code>の&lt;code>pref&lt;/code>を表示している。&lt;code>cur&lt;/code>は&lt;code>cur&lt;/code>の&lt;code>next&lt;/code>に変更し、&lt;code>cur&lt;/code>の&lt;code>next&lt;/code>が&lt;code>n&lt;/code>であれば終了する。&lt;/p>
+&lt;p>&lt;code>func3&lt;/code>では、&lt;code>n&lt;/code>以外のリストの要素を全削除している。&lt;/p>
+&lt;p>以上のことを踏まえると、&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Tokyo-&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Kanagawa-&amp;gt;Tokyo-&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Saitama-&amp;gt;Kanagawa-&amp;gt;Tokyo-&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Nagano-&amp;gt;Saitama-&amp;gt;Kanagawa-&amp;gt;Tokyo-&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Nagano-&amp;gt;Yamanashi-&amp;gt;Saitama-&amp;gt;Kanagawa-&amp;gt;Tokyo-&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>となる。&lt;/p>
+&lt;blockquote>
+&lt;p>main( )関数内の｢//(A)｣の行で呼び出されるfunc1( )について,このときに渡される実引数に基づく実行の様子を説明しなさい.必要であれば,図を用いてかまわない．&lt;/p>
+&lt;/blockquote>
+&lt;p>略&lt;/p>
+&lt;blockquote>
+&lt;p>このソースコードで都県名の一覧に用いられているデータ構造の代わりに配列の使用を考える.設問(b)の処理においては,時間計算量の観点から,配列の方が効率が悪い.その理由を150字程度で説明しなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>このソースコードのアルゴリズムでは、どの場所に挿入するのも$O(1)$で行うことができるが、配列は挿入する場合、挿入する場所以降の要素を全てずらす必要があるため、最悪で$O(N)$の計算量がかかる。&lt;/p>
+&lt;h3 id="情報数学-2">情報数学&lt;/h3>
+&lt;h4 id="問1-3">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>2種の記号AとBの発生確率がそれぞれ$0.8$と$0.2$である記憶のない情報源Sを考える.このとき,以下の設問に答えなさい.計算には $\log_2 10=3.322$を用いてよい.また,答えは小数点以下第4位を四捨五入して表しなさい．&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>$S$のエントロピーを求めなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+H(S) = -\sum p_i \log_2 p_i = -0.8 \log_2 0.8 - 0.2 \log_2 0.2 \simeq 0.722
+$$&lt;/p>
+&lt;p>$\log 0.2 = \log (2/10) = \log 2 - \log 10 = -2.322 $、$\log 0.8 = \log (8/10) = \log 8 - \log 10 = -0.322$であることに注意。&lt;/p>
+&lt;blockquote>
+&lt;p>$S$を2次に拡大してからハフマン符号化した場合に生成される符号を示しなさい。また、1情報源記号あたりの平均符号長を求めなさい。(b)&lt;/p>
+&lt;/blockquote>
+&lt;p>$S$を$2$次に拡大し、ハフマン符号化すると、以下のようになる($AB$と$BA$は逆でも良い)。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>情報源&lt;/th>
+&lt;th>AA&lt;/th>
+&lt;th>AB&lt;/th>
+&lt;th>BA&lt;/th>
+&lt;th>BB&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>発生確率&lt;/td>
+&lt;td>0.64&lt;/td>
+&lt;td>0.16&lt;/td>
+&lt;td>0.16&lt;/td>
+&lt;td>0.04&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>符号&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>10&lt;/td>
+&lt;td>110&lt;/td>
+&lt;td>111&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>また、1情報源記号あたりの平均符号長は、$0.64\times 1 + 0.16\times 2 + 0.16\times 3 + 0.04\times 3 = 1.56$となる。&lt;/p>
+&lt;blockquote>
+&lt;p>AとBの発生確率が偏っているので,ランレングス符号化を行う.ただし,Aは長さ4までのランを考え,Bは長さ1のランのみを考える.すなわち,下記の5種類のランを考える.これをハフマン符号化し,生成される符号を示しなさい.また, 1情報源記号当たりの平均符号長を求めなさい． (c)&lt;/p>
+&lt;/blockquote>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>情報源&lt;/th>
+&lt;th>AAAA&lt;/th>
+&lt;th>AAAB&lt;/th>
+&lt;th>AAB&lt;/th>
+&lt;th>AB&lt;/th>
+&lt;th>B&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>発生確率&lt;/td>
+&lt;td>0.4096&lt;/td>
+&lt;td>0.1024&lt;/td>
+&lt;td>0.128&lt;/td>
+&lt;td>0.16&lt;/td>
+&lt;td>0.2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>符号&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>110&lt;/td>
+&lt;td>111&lt;/td>
+&lt;td>100&lt;/td>
+&lt;td>101&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>1情報源記号あたりの平均符号長は、$0.4096\times 1 + 0.1024\times 3 + 0.128\times 3 + 0.16\times 3 + 0.2\times 3 = 2.08$となる。&lt;/p>
+&lt;blockquote>
+&lt;p>(c)の符号化は(b)の符号化に比べて,どれだけ符号化の効率(1情報源記号当たりの平均符号長に対するエントロピーの比)が改善されているか答えなさい．&lt;/p>
+&lt;/blockquote>
+&lt;p>$(b)$のエントロピーは$1.444$、$c$のエントロピーは$2.468$である。&lt;/p>
+&lt;p>エントロピーは「一つの情報源に対してどれほどの情報量があるか」を示す指標であるから、エントロピーを平均符号長で割ることで、一つの記号あたりの情報量を示すことができる。&lt;/p>
+&lt;ul>
+&lt;li>$b$の場合、$1.444/1.56 = 0.925$&lt;/li>
+&lt;li>$c$の場合、$2.468/2.08 = 1.186$&lt;/li>
+&lt;/ul>
+&lt;p>これらの差である$0.261$bit(binary unit)分だけ、符号化の効率が改善されている。&lt;/p>
+&lt;h4 id="問2-3">問2&lt;/h4>
+&lt;p>固有値の問題。詳細は省略する。
+$$
+A=\begin{pmatrix}
+2 &amp;amp; 1 &amp;amp; -1 \\
+1 &amp;amp; 0 &amp;amp; -1 \\
+1 &amp;amp; -1&amp;amp; 0
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$A$の固有値と固有ベクトルは、
+$$
+\lambda_1 = 1, \lambda_2 = -1, \lambda_3 = 2
+$$
+$$
+v_1 = (1,0,1)^T, v_2 = (0,1,1)^T, v_3 = (3,1,1)^T
+$$
+である。&lt;/p>
+&lt;p>$$
+x = (-1,-3,-1)^T = 2v_1-2v_2-v_3
+$$
+と表されるので、
+$$
+A^n x = 2 \cdot 1^n v_1 - 2 \cdot (-1)^n v_2 - 2^n v_3
+$$
+よって、
+$$
+A^n x = \begin{pmatrix}
+2-3\cdot 2^n \\
+-2\cdot (-1)^n - 2^n \\
+2 - 2 \cdot(-1)^n - 2^n
+\end{pmatrix}
+$$&lt;/p>
+&lt;h2 id="令和3年度">令和3年度&lt;/h2>
+&lt;h3 id="プログラミング-3">プログラミング&lt;/h3>
+&lt;h4 id="問1-4">問1&lt;/h4>
+&lt;p>なんと、アルゴリズムではなくコンパイルの仕組みが出ています。？？？？？？？？？&lt;/p>
+&lt;figure>&lt;img src="img/r3-1.jpg"/>
+&lt;/figure>
+&lt;ul>
+&lt;li>(ア)：プリプロセス
+&lt;ul>
+&lt;li>マクロの展開やヘッダファイルなどを処理する。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>(イ)：構文解析
+&lt;ul>
+&lt;li>字句解析では、&lt;code>if&lt;/code>や&lt;code>else&lt;/code>やセミコロン、括弧などを解析する。&lt;/li>
+&lt;li>構文解析では、字句解析をもとに構文構造をまとめる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>(ウ)：アセンブリファイル&lt;/li>
+&lt;li>(エ)：オブジェクトファイル&lt;/li>
+&lt;li>(オ)：ライブラリファイル&lt;/li>
+&lt;/ul>
+&lt;p>実行ファイルの実行速度を高速化するために、コンパイラは様々な最適化を行う。&lt;/p>
+&lt;ul>
+&lt;li>関数のインライン展開：関数呼び出しを関数の中身に置き換える。&lt;/li>
+&lt;li>定数の畳み込み：定数同士の計算を、計算結果に置き換える。&lt;/li>
+&lt;li>ループの展開(アンローリング)：ループ処理の内容を展開する。&lt;/li>
+&lt;li>無用命令の削除：冗長で無用な命令を削除する。&lt;/li>
+&lt;li>定数伝搬：変数を定数で置き換える。&lt;/li>
+&lt;li>共通部分式の削除：同じ計算を複数回行う場合、一度計算した結果を変数に格納しておき、再利用する。
+&lt;ul>
+&lt;li>例えば、&lt;code>a = b + c; d = b + c;&lt;/code>というコードがあった場合、&lt;code>b + c&lt;/code>を一度計算しておき、&lt;code>a = b + c; d = a;&lt;/code>とする。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ループ内不変式の移動：ループ内で変化しない変数の計算をループの外に移動する。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-4">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>二分木をC言語を用いて実装する。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>
+&lt;p>着目ノードの左の部分技のすべてのノードの値は、着目ノードの値より小さく&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>着目ノードの右の部分木のすべてのノードの値は、着目ノードの値より大きい&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>その声質から、木の最も右のノードが木に保持される値の最大値、ミットも左のノードの値が最小値である。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>入力データが&lt;code>1,2,3,4,5,6,7,8&lt;/code>のとき、&lt;code>1&lt;/code>が根で、右の子が&lt;code>2&lt;/code>、&lt;code>2&lt;/code>の右の子が&lt;code>3&lt;/code>、&lt;code>3&lt;/code>の右の子が&lt;code>4&lt;/code>、&lt;code>4&lt;/code>の右の子が&lt;code>5&lt;/code>、&lt;code>5&lt;/code>の右の子が&lt;code>6&lt;/code>、&lt;code>6&lt;/code>の右の子が&lt;code>7&lt;/code>、&lt;code>7&lt;/code>の右の子が&lt;code>8&lt;/code>となる。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>入力データが&lt;code>4,6,2,8,1,5,3,7,-1&lt;/code>のとき&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 2 6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \ / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1 3 5 8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 7
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>ある整数がノードに含まれるかどうかの処理の計算量は、木の高さに依存する。
+&lt;ul>
+&lt;li>最良の場合、木の高さが$O(\log n)$であるから、$O(\log n)$&lt;/li>
+&lt;li>最悪の場合、木の高さが$O(n)$であるから、$O(n)$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-3">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>大きさ3の配列&lt;code>v&lt;/code>を入力とし、次の条件を満たすような&lt;code>v&lt;/code>の要素を返す。&lt;/p>
+&lt;ul>
+&lt;li>一つ以上の他の要素よりも大きいかまたは等しい。&lt;/li>
+&lt;li>一つ以上の他の要素よりも小さいかまたは等しい。&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;p>要するに、中央値を求めれば良い。中央値を求める問題を10問も解かされる謎の問題。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>v[0]&lt;/th>
+&lt;th>v[1]&lt;/th>
+&lt;th>v[2]&lt;/th>
+&lt;th>中央値&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>5&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>5&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>5&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>5&lt;/td>
+&lt;td>5&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>5&lt;/td>
+&lt;td>5&lt;/td>
+&lt;td>5&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>-1&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>-2&lt;/td>
+&lt;td>-3&lt;/td>
+&lt;td>-4&lt;/td>
+&lt;td>-3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>-2&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>-2&lt;/td>
+&lt;td>-2&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;blockquote>
+&lt;p>CかC++で実装せよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>いくつか方法はある。&lt;/p>
+&lt;ul>
+&lt;li>バブルソートのようにスワップしながらソートし、真ん中の値を返す。&lt;/li>
+&lt;li>各v[i]について、それぞれ条件を満たすかを調べる。&lt;/li>
+&lt;li>最大値と最小値を求め、v[0]+v[1]+v[2]から最大値と最小値を引く。&lt;/li>
+&lt;/ul>
+&lt;p>一番実装が楽そうなのは3番目の方法。変な方法ではあるが、特に指定されていないので問題ないと思われる。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">func&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">])&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">max&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">min&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">sum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">max&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">max&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">min&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">min&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sum&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">sum&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">max&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">min&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="情報数学-3">情報数学&lt;/h3>
+&lt;p>問1から3のうち、2問選択して解答する。&lt;/p>
+&lt;h4 id="問1-5">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>$r(n+3)$と$r(n)$の差が$3$の倍数であることを証明せよ。
+$$
+r(n) = \sum_{i=1}^{m} d_i \quad (d_iは10進数表記でi番目の桁の数字を表し、mはnの桁数)
+$$&lt;/p>
+&lt;/blockquote>
+&lt;p>方針として、$n$を$3$で割ったあまりと、各位の数の和を$3$で割ったあまりが等しいことを証明すれば良い。&lt;/p>
+&lt;p>$$
+\begin{align}
+n &amp;amp;\equiv \sum_{i=1}^{m} 10^{i-1}d_i \pmod 3 \\
+&amp;amp;\equiv \sum_{i=1}^{m} (3\times 333\cdots 3 + 1)^{i-1}d_i \pmod 3 \\
+&amp;amp;\equiv \sum_{i=1}^{m} 1^{i-1}d_i \pmod 3 \\
+&amp;amp;\equiv \sum_{i=1}^{m} d_i \pmod 3 \\
+&amp;amp;\equiv r(n) \pmod 3
+\end{align}
+$$&lt;/p>
+&lt;p>よって、$n \equiv r(n) \pmod 3$、つまり$n$を$3$で割ったあまりと、各位の数の和を$3$で割ったあまりが等しい。
+$n$を$3$で割ったあまりを$a$と置けば、$n = 3k+a$と整数$k$を用いて表せる。
+$n+3=3k+a+3=3(k+1)+a$であるから、$n+3$を$3$で割ったあまりも$a$である。
+したがって、$r(n+3) - r(n) \equiv a - a \equiv 0 \pmod 3$である。&lt;/p>
+&lt;h4 id="問2-5">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>ある会社は、A,B,C社から同じ製品を2:3:5の比率で購入している。A,B,C社の製品にはそれぞれ2.5%,1.5%,1.0%の割合で不良品が含まれている。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>(a) 購入した製品の中から1つを選んだとき、不良品である確率を求めよ。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>A社の製品を選び、かつ不良品である確率は$\frac{2}{10}\times \frac{25}{1000} = \frac{1}{200}$&lt;/li>
+&lt;li>B社の製品を選び、かつ不良品である確率は$\frac{3}{10}\times \frac{15}{1000} = \frac{9}{2000}$&lt;/li>
+&lt;li>C社の製品を選び、かつ不良品である確率は$\frac{5}{10}\times \frac{10}{1000} = \frac{1}{200}$&lt;/li>
+&lt;li>したがって、不良品である確率は$\frac{1}{200} + \frac{9}{2000} + \frac{1}{200} = \frac{29}{2000}$&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>(b) 購入した製品の中から1つを選んだら不良品であった。この不良品が、A社、B社、C社の製品である確率をそれぞれ求めよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>ベイズの定理を用いる(個人的に、特にベイズの定理という名前を認識して使う必要はないと思う)。&lt;/p>
+&lt;ul>
+&lt;li>A社の製品である確率は$\frac{1}{200} \div \frac{29}{2000} = \frac{10}{29}$&lt;/li>
+&lt;li>B社の製品である確率は$\frac{9}{2000} \div \frac{29}{2000} = \frac{9}{29}$&lt;/li>
+&lt;li>C社の製品である確率は$\frac{1}{200} \div \frac{29}{2000} = \frac{10}{29}$
+&lt;ul>
+&lt;li>(ここで、$\frac{10}{29} + \frac{9}{29} + \frac{10}{29} = \frac{29}{29} = 1$であることを確認できる。)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-4">問3&lt;/h4>
+&lt;p>固有値に関する問題。詳細は省略する。
+$$
+A=\begin{pmatrix}
+3 &amp;amp; -2 &amp;amp; -1 \\
+0 &amp;amp; 1 &amp;amp; -1 \\
+2 &amp;amp; 1 &amp;amp; 5
+\end{pmatrix}
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>(a) 行列$A$の行列式を求めよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>$24$&lt;/p>
+&lt;blockquote>
+&lt;p>(b) 行列$A$の固有値を求めよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>$\lambda_1 = 2, \lambda_2 = 3, \lambda_3 = 4$
+$a_1= (-1,-1,1)^T, a_2 = (-3,-2,4)^T, a_3 = (-1,-1,3)^T$&lt;/p>
+&lt;blockquote>
+&lt;p>(c) 対角化する行列$P$とその逆行列$P^{-1}$を求めよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+P = \begin{pmatrix}
+-1 &amp;amp; -3 &amp;amp; -1 \\
+-1 &amp;amp; -2 &amp;amp; -1 \\
+1 &amp;amp; 4 &amp;amp; 3
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$$
+P^{-1} = \frac{1}{24}\begin{pmatrix}
+6 &amp;amp; 9 &amp;amp; 3 \\
+-2 &amp;amp; 17 &amp;amp; 3 \\
+-2 &amp;amp; -7 &amp;amp; 3
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>このとき、$P^{-1}AP = \begin{pmatrix}
+2 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 3 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 4
+\end{pmatrix}$
+である。&lt;/p>
+&lt;h2 id="令和2年度">令和2年度&lt;/h2>
+&lt;h3 id="プログラミング-4">プログラミング&lt;/h3>
+&lt;h4 id="問1-6">問1&lt;/h4>
+&lt;figure>&lt;img src="img/r2-1.jpg"/>
+&lt;/figure>
+&lt;blockquote>
+&lt;p>二分木について、「親から子へ」「左から右へ」の順番を原則に答えよ
+(a) 深さ優先探索、幅優先探索をしたとき、訪問する順番を答えよ。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>深さ優先探索: A,B,D,E,H,I,C,F,G,J&lt;/li>
+&lt;li>幅優先探索: A,B,C,D,E,F,G,H,I,J&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>(b) in-order, pre-order, post-orderで木を巡回したとき、訪問する順番を答えよ。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>pre-order(行きがけ順、前順): A,B,D,E,H,I,C,F,G,J&lt;/li>
+&lt;li>in-order(通りがけ順、中順): D,B,H,E,I,A,F,C,J,G&lt;/li>
+&lt;li>post-order(帰りがけ順、後順): D,H,I,E,B,F,J,G,C,A&lt;/li>
+&lt;/ul>
+&lt;figure>&lt;img src="img/r2-2.jpg"/>
+&lt;/figure>
+&lt;ul>
+&lt;li>stackを使っているので、右を先に探索するためには、&lt;strong>左、右の順番でpush&lt;/strong>する必要がある。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-6">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>&lt;code>d[]&lt;/code>には&lt;code>-10000&lt;/code>から&lt;code>10000&lt;/code>までの整数が格納される。&lt;code>d[]&lt;/code>の最大値と最小値を求めるプログラムを作成する。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">100&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">minimum&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">maximum&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// dに値を格納する処理
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">mininmum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">10000&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">maximum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">10000&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">maximum&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">maximum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="nf">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">minimum&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">minimum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>(a) 上記のプログラムでは最大値と最小値が正しく求められない場合がある。その場合を示せ。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>else&lt;/code>が使われているため、&lt;code>maximum&lt;/code>と&lt;code>minimum&lt;/code>が同時に更新されることがなくなっている。
+すなわち、&lt;code>d[0],d[1],d[2],...,d[99]&lt;/code>が常に増え続けるよう(ただし&lt;code>d[0]!=-10000&lt;/code>)な入力に対しては&lt;code>minimum&lt;/code>が更新されず、&lt;code>10000&lt;/code>のままとなってしまう。&lt;/p>
+&lt;blockquote>
+&lt;p>(b) 上記のプログラムを修正し、最大値と最小値を正しく求めるプログラムを作成せよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>単に、&lt;code>else if&lt;/code>を&lt;code>if&lt;/code>に変えるだけで良い。&lt;/p>
+&lt;blockquote>
+&lt;p>(c) &lt;code>d[]&lt;/code>の中に最小あるいは最大を取る値が複数個含まれていた場合に、最小値や最大値の値がそれぞれ何個含まれているかを求めるプログラムを作成せよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>ループを$2$回回せば良い。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">100&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">minimum&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">maximum&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">count_min&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">count_max&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// dに値を格納する処理
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">mininmum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">10000&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">maximum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">10000&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">maximum&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">maximum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">minimum&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">minimum&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">count_min&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">count_max&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">maximum&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">count_max&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">minimum&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">count_min&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="問3-5">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>(a) 値がコメントのようになるように(1),(2),(3),(4)を埋めよ。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">rotate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">z&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">tmp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// (1)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// (2)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// (3)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// (4)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">61&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">199&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// a=7, b=61, c=199
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">rotate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// a=61, b=199, c=7
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">rotate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// a=199, b=7, c=61
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>a,b,c&lt;/code>が&lt;code>b,c,a&lt;/code>の順番になれば良い。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">tmp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">tmp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">*&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">*&lt;/span>&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">z&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">*&lt;/span>&lt;span class="n">z&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">tmp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>(b) 関数定義において引数をポインタとする実装方法の特徴と有効な使い方について簡単に説明せよ。また、この実装方法の危険性についても説明せよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>ポインタを用いると、値をコピーせずに、関数内で値を変更することができる。また、値をコピーする必要がないため、メモリの節約になる。ただし、ポインタはアドレスを指すため、誤ってアドレスの変更やアドレスの指す値の変更をしてしまうと、予期せぬ動作をする可能性がある。&lt;/p>
+&lt;h3 id="情報数学-4">情報数学&lt;/h3>
+&lt;h4 id="問1-7">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>次の3つの命題を仮定したとき、これらの命題から得られる結論をすべて求めよ。&lt;/p>
+&lt;ul>
+&lt;li>$P_1$: ソクラテスは、人である。&lt;/li>
+&lt;li>$P_2$: 人はいつか死ぬ。&lt;/li>
+&lt;li>$P_3$: ベニクラゲは死なない。&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;p>整理すると、&lt;/p>
+&lt;ul>
+&lt;li>ソクラテス$\rightarrow$人間&lt;/li>
+&lt;li>人間$\rightarrow$死ぬ&lt;/li>
+&lt;li>ベニクラゲ$\rightarrow$死なない&lt;/li>
+&lt;/ul>
+&lt;p>また、これらの対偶も成り立つので、&lt;/p>
+&lt;ul>
+&lt;li>人間ではない$\rightarrow$ソクラテスではない&lt;/li>
+&lt;li>死なない$\rightarrow$人間ではない&lt;/li>
+&lt;li>死ぬ$\rightarrow$ベニクラゲではない&lt;/li>
+&lt;/ul>
+&lt;p>これらを組み合わせると、&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">ソクラテス -&amp;gt; 人間 -&amp;gt; 死ぬ -&amp;gt; ベニクラゲではない
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ベニクラゲ -&amp;gt; 死なない -&amp;gt; 人間ではない -&amp;gt; ソクラテスではない
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>よって、$P_1,P_2,P_3$の他に、&lt;/p>
+&lt;ul>
+&lt;li>ソクラテスは死ぬ&lt;/li>
+&lt;li>ソクラテスはベニクラゲではない&lt;/li>
+&lt;li>人間はベニクラゲではない&lt;/li>
+&lt;li>ベニクラゲは人間ではない&lt;/li>
+&lt;li>ベニクラゲはソクラテスではない&lt;/li>
+&lt;li>死なないならばソクラテスではない&lt;/li>
+&lt;/ul>
+&lt;p>の6つの結論が得られる。&lt;/p>
+&lt;h4 id="問2-7">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>$R$を集合$A$上の同値関係とする。各要素$a\in A$に対して$a$と同値関係にある要素の集合を同類値と呼び、$[a]$と表す。すなわち$[a]= \lbrace x|(a,x)\in R \rbrace$である。このとき、次を証明せよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>同値関係の定義は、関係が反射律、対称律、推移律を満たすことである。&lt;/p>
+&lt;blockquote>
+&lt;p>(a) $A$の各要素$a\in A$に対して、$a\in[a]$である。&lt;/p>
+&lt;/blockquote>
+&lt;p>同値類は反射律を満たすから、$(a,a)\in R$である。よって、$a\in[a]$である。&lt;/p>
+&lt;blockquote>
+&lt;p>(b) $[a]=[b]$のとき、かつこのときに限り、$(a,b)\in R$である。&lt;/p>
+&lt;/blockquote>
+&lt;p>$\rightarrow$の証明：
+(a)の結論より、$ a \in [a]$である。また、$[a]=[b]$であるので、$a \in [b]$である。よって、$(a,b)\in R$である。&lt;/p>
+&lt;p>$\leftarrow$の証明：
+$R$は同値関係であるため、$(a,b)\in R$のとき$a,b$は同値である。よって、$[a]=[b]$である。&lt;/p>
+&lt;blockquote>
+&lt;p>(c) $[a]\ne [b]$ならば、$[a]$と$[b]$は互いに素である。&lt;/p>
+&lt;/blockquote>
+&lt;p>対偶を示す。$a,b$が互いに素ではないとき、$a,b$は同値である。よって、(b)より$[a]=[b]$である。&lt;/p>
+&lt;h4 id="問3-6">問3&lt;/h4>
+&lt;p>固有値に関する問題。詳細は省略する。
+$$
+A=\begin{pmatrix}
+0 &amp;amp; 1 &amp;amp; 2 \\
+-4 &amp;amp; 1 &amp;amp; 4 \\
+-5 &amp;amp; 1 &amp;amp; 7
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>行列式は$10$&lt;/p>
+&lt;p>固有値と固有ベクトルは、$1$に対して$(1,-1,1)^T$、$2$に対して$(1,0,1)^T$、$5$に対して$(1,1,2)^T$である。&lt;/p>
+&lt;h2 id="平成31年度">平成31年度&lt;/h2>
+&lt;h3 id="プログラミング-5">プログラミング&lt;/h3>
+&lt;h4 id="問1-8">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>$n$子の整数より構成される配列$x$から整数$t$を探索する関数&lt;code>search&lt;/code>を作る。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">search&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">lower&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">upper&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">middle&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lower&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">upper&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">n01&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">lower&lt;/span> &lt;span class="o">&amp;lt;=&lt;/span> &lt;span class="n">upper&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">middle&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">lower&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">upper&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">middle&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lower&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">middle&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">//(1)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">middle&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">upper&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">middle&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">//(2)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">middle&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>(a)このプログラムが正しく動作するのに、&lt;code>x&lt;/code>は昇順と降順どちらである必要があるか(ただし、狭義単調増加、狭義単調減少を指す)。&lt;/p>
+&lt;/blockquote>
+&lt;p>プログラムでは、二分探索を行っている。&lt;code>x[middle]&lt;/code>が&lt;code>t&lt;/code>より小さいときに、下限&lt;code>lower&lt;/code>が&lt;code>middle&lt;/code>におきかわっている。&lt;code>middle&lt;/code>より前を見る必要がない、ということだから、&lt;code>x&lt;/code>は昇順である必要があることがわかる。&lt;/p>
+&lt;blockquote>
+&lt;p>(b)入力によって、プログラムが停止しない場合がある。例えば、&lt;code>x={1,2,3}&lt;/code>で、&lt;code>t=3&lt;/code>のときに停止しない。プログラム中の&lt;code>(1),(2)&lt;/code>の部分を変更して、このような場合にも停止するようにせよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>lower = middle + 1&lt;/code>、&lt;code>upper = middle - 1&lt;/code>とすればよい。(要検証)&lt;/p>
+&lt;blockquote>
+&lt;p>(c)&lt;code>x&lt;/code>が(a)とは逆の順序である場合に、&lt;code>(1),(2)&lt;/code>の部分を修正してプログラムが動作するようにせよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>(b)&lt;/code>で、&lt;code>(1)&lt;/code>と&lt;code>(2)&lt;/code>を逆にすればよい。&lt;/p>
+&lt;blockquote>
+&lt;p>(d) このプログラムの計算量が$O(\log n)$になることを説明せよ。&lt;/p>
+&lt;/blockquote>
+&lt;p>一回で半分になるので、ループはおよそ$\log_2 n$回実行される。&lt;/p>
+&lt;h4 id="問2-8">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>(a) ヒープに関する説明の穴埋め問題&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>ヒープは、要素の「あつまり」を表す ?型のデータ構造である。抽象的機能として、要素の並びを保持し、挿入と削除が可能な優先度付きキューの実装の一つと位置づけられる。一般に以下の2つの性質を持つ2分木と定義され、性質1より最小要素は必ず根頂点に格納される。&lt;/li>
+&lt;li>性質1：略&lt;/li>
+&lt;li>性質2：略&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>(b)&lt;code>n&lt;/code>子の整数より構成される配列&lt;code>x&lt;/code>に対し、以下の&amp;lt;対応付け規則&amp;gt;から構成される2分木を&lt;code>x&lt;/code>の2分木と呼ぶ。配列&lt;code>x={20,18,13,19,24,15,28,40}&lt;/code>(この順番どおりに格納されている)の2分木を図示しなさい。&lt;/p>
+&lt;ul>
+&lt;li>規則1:x[0]を根頂点とする。&lt;/li>
+&lt;li>規則2:$0\leq i \leq (n-1)/2$を満たす整数$i$に対し、&lt;code>x[2*i+1]&lt;/code>を&lt;code>x[i]&lt;/code>の左の子とする。&lt;/li>
+&lt;li>規則3:$0\leq i \leq (n-2)/2$を満たす整数$i$に対し、&lt;code>x[2*i+2]&lt;/code>を&lt;code>x[i]&lt;/code>の右の子とする。&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;p>具体例を考えれば良い。&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>x[0]&lt;/code>が根である。&lt;/li>
+&lt;li>&lt;code>x[0]&lt;/code>の左の子が&lt;code>x[1]&lt;/code>で、右の子は&lt;code>x[2]&lt;/code>である。&lt;/li>
+&lt;li>&lt;code>x[1]&lt;/code>の左の子が&lt;code>x[3]&lt;/code>で、右の子は&lt;code>x[4]&lt;/code>である。&lt;/li>
+&lt;li>&lt;code>x[2]&lt;/code>の左の子が&lt;code>x[5]&lt;/code>で、右の子は&lt;code>x[6]&lt;/code>である。&lt;/li>
+&lt;li>以下同様&lt;/li>
+&lt;/ul>
+&lt;p>これは単に、上から下へ、左から右に、順番に並べたものと一致する。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 18 13
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \ / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 19 24 15 28
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">40
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>(c) 次ページのC言語のプログラムは、配列&lt;code>x&lt;/code>の各要素を移動する関数&lt;code>shift&lt;/code>を表している。(b)の配列&lt;code>x={20,18,13,19,24,15,28,40}&lt;/code>について、&lt;code>shift(0,x,8)&lt;/code>実行したときの&lt;code>x&lt;/code>を答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">shift&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">parent&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">child&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">child&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">parent&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">child&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">parent&lt;/span>&lt;span class="p">]){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">parent&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">parent&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">child&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">child&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">parent&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>&lt;span class="k">else&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>初期は&lt;code>x={20,18,13,19,24,15,28,40}&lt;/code>で&lt;code>parent = 0, child = 1&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>x[1] &amp;lt; x[0]&lt;/code>なので、&lt;code>x={18,20,13,19,24,15,28,40}&lt;/code>で&lt;code>parent = 1, child = 3&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>x[3] &amp;lt; x[1]&lt;/code>なので、&lt;code>x={18,19,13,20,24,15,28,40}&lt;/code>で&lt;code>parent = 3, child = 7&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>x[7] &amp;lt; x[3]&lt;/code>なので、変化はなく&lt;code>x={18,19,13,20,24,15,28,40}&lt;/code>で終了&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>(d) (c)の結果の&lt;code>x&lt;/code>を、二分木をヒープにするには、プログラムにどのような処理を追加すればよいか。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>任意の配列&lt;code>x&lt;/code>ではなく、少なくとも(c)で回答した&lt;code>x&lt;/code>についてヒープになれば良い。
+余談ではあるが、任意の&lt;code>x&lt;/code>についてヒープにする必要があると勘違いをし、非常に悩んだ。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">shift&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">parent&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">child&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">child&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">parent&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">child&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">])&lt;/span>&lt;span class="n">child&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">parent&lt;/span>&lt;span class="p">]){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">child&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">parent&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">parent&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">child&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">child&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">parent&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>&lt;span class="k">else&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="問3-7">問3&lt;/h4>
+&lt;p>省略&lt;/p>
+&lt;h3 id="情報数学-5">情報数学&lt;/h3>
+&lt;h4 id="問1-9">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>40名のクラスについて、選択科目A,B,Cの履修状況は以下のとおりである。&lt;/p>
+&lt;ul>
+&lt;li>A,B,Cのそれぞれの履修者は18名&lt;/li>
+&lt;li>少なくともAとBを履修している者は9名&lt;/li>
+&lt;li>少なくともAとCを履修している者は8名&lt;/li>
+&lt;li>少なくともBとCを履修している者は5名&lt;/li>
+&lt;li>一課目以上履修している学生は35名&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>(a)1科目も履修していない学生
+(b)A,B,Cの3科目をすべて履修している学生
+(c)A,Bのみを履修している学生
+(d)A,Cのみを履修している学生
+(e)Aのみを履修している学生、をそれぞれ求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>ベン図を書いて、パズルチックに解く。あるいは、包除原理を用いる。
+3要素の場合の包除原理は以下の通り。
+$$
+|A\cup B\cup C| = |A| + |B| + |C| - |A\cap B| - |B\cap C| - |C\cap A| + |A\cap B\cap C|
+$$
+これを今わかっている情報に当てはめる。
+$$
+35 = 18 + 18 + 18 - 9 - 8 - 5 + |A\cap B\cap C|
+$$
+よって、$|A\cap B\cap C| = 3$である。&lt;/p>
+&lt;p>なお、この程度の数字の大きさであれば、適当に数を当てはめていって辻褄が合うようなものを探すという方法でも良いだろう。&lt;/p>
+&lt;p>あとは、単純な足し算や引き算で求められ、$(a)5,(b)3,(c)6,(d)5,(e)4$&lt;/p>
+&lt;h4 id="問2-9">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>$R$を集合$A$上の二項関係とする。
+(a) $R$が同値関係であるときに満たされる$3$つの性質について、空欄を埋めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>任意の$a\in A$に対して$aRa$が成立するとき、$R$は反射的である。&lt;/li>
+&lt;li>任意の$a,b\in A$に対して$aRb\Rightarrow bRa$が成立するとき、$R$は対称的である。&lt;/li>
+&lt;li>任意の$a,b,c\in A$に対して$aRb\land bRc\Rightarrow aRc$が成立するとき、$R$は推移的である。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>(b) 整数$m&amp;gt;1$について、$2$つの整数$x,y$に対して、$x-y$が$m$で割り切れるとき、$x$と$y$は$m$は法として合同であると言い、$x\equiv y\pmod{m}$と表す。この関係が、整数の集合$\mathbb{Z}$上の同値関係であることを示しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>反射的であること
+&lt;ul>
+&lt;li>任意の$x$について、$x-x=0$は$m$で割り切れるので、$x\equiv x\pmod{m}$である。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>対称的であること
+&lt;ul>
+&lt;li>整数$k$を用いると$x-y=mk$と表され、$y-x=-mk$は$m$で割り切れるので、$y\equiv x\pmod{m}$である。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>推移的であること
+&lt;ul>
+&lt;li>整数$k,l$を用いると$x-y=mk,y-z=ml$と表され、$x-z=(x-y)+(y-z)=m(k+l)$は$m$で割り切れるので、$x\equiv z\pmod{m}$である。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-8">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>行列$A$に関して答えなさい&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+A = \begin{pmatrix}
+1 &amp;amp; 1 &amp;amp; 1 \\
+1 &amp;amp; 1 &amp;amp; 2 \\
+1 &amp;amp; 2 &amp;amp; 0
+\end{pmatrix}
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>(a) $A$の逆行列は存在するか。存在するならば、求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>$|A|=-1\ne 0$なので、$A$は正則である。よって、$A^{-1}$が存在する。&lt;/p>
+&lt;p>$$
+A^{-1} = \begin{pmatrix}
+4 &amp;amp; -2 &amp;amp; -1 \\
+-2 &amp;amp; 1 &amp;amp; 1 \\
+-1 &amp;amp; 1 &amp;amp; 0
+\end{pmatrix}
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>(b) $A$を隣接行列としてもつ多重グラフ$G=(V,E)$を描きなさい。ただし、頂点集合$V={v_1,v_2,v_3}$とする。&lt;/p>
+&lt;/blockquote>
+&lt;figure>&lt;img src="img/r2-3.svg"/>
+&lt;/figure>
+&lt;h4 id="問4">問4&lt;/h4>
+&lt;blockquote>
+&lt;p>(a) 正$4$面体サイコロの、出目を確率変数$X$とすると、確率分布表は以下の通りである。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">$X$&lt;/th>
+&lt;th style="text-align:center">$1$&lt;/th>
+&lt;th style="text-align:center">$2$&lt;/th>
+&lt;th style="text-align:center">$3$&lt;/th>
+&lt;th style="text-align:center">$4$&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">$P(X=x)$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{4}$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{4}$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{4}$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{4}$&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>2つのサイコロを振り、2つの出目の和を$Y$とすると、$Y$の確率分布表と、期待値を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>$Y=2$は$(1,1)$&lt;/li>
+&lt;li>$Y=3$は$(1,2),(2,1)$&lt;/li>
+&lt;li>$Y=4$は$(1,3),(2,2),(3,1)$&lt;/li>
+&lt;li>$Y=5$は$(1,4),(2,3),(3,2),(4,1)$&lt;/li>
+&lt;li>$Y=6$は$(2,4),(3,3),(4,2)$&lt;/li>
+&lt;li>$Y=7$は$(3,4),(4,3)$&lt;/li>
+&lt;li>$Y=8$は$(4,4)$&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">$Y$&lt;/th>
+&lt;th style="text-align:center">$2$&lt;/th>
+&lt;th style="text-align:center">$3$&lt;/th>
+&lt;th style="text-align:center">$4$&lt;/th>
+&lt;th style="text-align:center">$5$&lt;/th>
+&lt;th style="text-align:center">$6$&lt;/th>
+&lt;th style="text-align:center">$7$&lt;/th>
+&lt;th style="text-align:center">$8$&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">$P(Y=y)$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{16}$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{8}$&lt;/td>
+&lt;td style="text-align:center">$\frac{3}{16}$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{4}$&lt;/td>
+&lt;td style="text-align:center">$\frac{3}{16}$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{8}$&lt;/td>
+&lt;td style="text-align:center">$\frac{1}{16}$&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>期待値は、
+$$
+E[Y]= 2\cdot \frac{1}{16} + 3\cdot \frac{1}{8} + 4\cdot \frac{3}{16} + 5\cdot \frac{1}{4} + 6\cdot \frac{3}{16} + 7\cdot \frac{1}{8} + 8\cdot \frac{1}{16} = \frac{40}{8} = 5
+$$&lt;/p>
+&lt;blockquote>
+&lt;p>(b) $n$人いるとき、少なくとも$2$人が同じ誕生日である確率を求めなさい。ただし、$1&amp;lt;n&amp;lt;365$であり、閏年は考えないとする。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;strong>少なくとも&lt;/strong>は、余事象を考えるとやりやすい。すなわち、$n$人とも誕生日が異なる確率を求め、それを$1$から引けばよい。&lt;/p>
+&lt;p>$$
+1-\frac{365}{365}\cdot \frac{364}{365}\cdot \frac{363}{365}\cdots \frac{365-n+1}{365} = 1-\frac{365!}{(365-n)!365^n}
+$$&lt;/p>
+&lt;h2 id="平成30年度">平成30年度&lt;/h2>
+&lt;h3 id="プログラミング-6">プログラミング&lt;/h3>
+&lt;h4 id="問1-10">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>次の算術式を逆ポーランド記法(後置記法)で表しなさい。 &lt;br>
+(a) $((A+B)\times C)\div (D-(E\div F))$ &lt;br>
+(b) $(A+B)\div (C-D)+(E-F) \div G$&lt;/p>
+&lt;/blockquote>
+&lt;p>逆ポーランド記法とは、演算子を後ろに置く記法である。例えば、$A+B$は$AB+$と表される。括弧や乗算除算の順序に注意する。&lt;/p>
+&lt;ul>
+&lt;li>(a): $A B + C \times D E F \div - \div$&lt;/li>
+&lt;li>(b): $A B + C D - \div E F - G \div +$&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-10">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>逆ポーランド記法で書かれた四則演算の算術式を計算することを考える。スタックを用いる方法を説明しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>スタックを用いる方法は、以下の通りである。&lt;/p>
+&lt;ul>
+&lt;li>前から順に、処理をしていく。&lt;/li>
+&lt;li>被演算子(数値)が現れたら、スタックに積む。&lt;/li>
+&lt;li>演算子が現れたら、スタックから2つ取り出し、演算子に関する計算を行い、結果をスタックに積む。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-9">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>次の手続きを実行したとき、手続きが終了するまでに、比較「&lt;code>x &amp;lt;= 5000&lt;/code>」が何回行われるかとその理由とともに答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="mi">5000&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>具体的な処理をみていく。&lt;/p>
+&lt;ul>
+&lt;li>初期値は&lt;code>x=y=0&lt;/code>&lt;/li>
+&lt;li>&lt;code>x&amp;lt;=5000&lt;/code>であり、&lt;code>x&lt;/code>に&lt;code>y&lt;/code>が加算され、&lt;code>y&lt;/code>に&lt;code>1&lt;/code>が加算される。&lt;code>x=0,y=1&lt;/code>&lt;/li>
+&lt;li>&lt;code>x&amp;lt;=5000&lt;/code>であり、&lt;code>x&lt;/code>に&lt;code>y&lt;/code>が加算され、&lt;code>y&lt;/code>に&lt;code>1&lt;/code>が加算される。&lt;code>x=1,y=2&lt;/code>&lt;/li>
+&lt;li>&lt;code>x&amp;lt;=5000&lt;/code>であり、&lt;code>x&lt;/code>に&lt;code>y&lt;/code>が加算され、&lt;code>y&lt;/code>に&lt;code>1&lt;/code>が加算される。&lt;code>x=3,y=3&lt;/code>&lt;/li>
+&lt;li>&lt;code>x&amp;lt;=5000&lt;/code>であり、&lt;code>x&lt;/code>に&lt;code>y&lt;/code>が加算され、&lt;code>y&lt;/code>に&lt;code>1&lt;/code>が加算される。&lt;code>x=6,y=4&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>このコードは&lt;code>x&lt;/code>が&lt;code>5000&lt;/code>以下の間、&lt;code>x&lt;/code>に&lt;code>0,1,2,3,...&lt;/code>を加算し続けるプログラムである。
+&lt;code>y=101&lt;/code>まで足されたときに、&lt;code>x=5050&lt;/code>となり、&lt;code>x&amp;lt;=5000&lt;/code>が&lt;code>false&lt;/code>となる。よって、比較は&lt;code>103&lt;/code>回行われる(&lt;code>0&lt;/code>から加算を始めていること、&lt;code>5000&lt;/code>を超えたときにも比較が一度行われることに注意)。&lt;/p>
+&lt;h4 id="問4-1">問4&lt;/h4>
+&lt;blockquote>
+&lt;p>双方向リスト構造に関する問題(詳細は省略)。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">if (root = p){ /*削除対象のセルがリストの先頭のとき*/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (1) root = root.next;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (root != nil) //リストに要素があるとき
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (2) p.next.prev = nil;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}else if (tail = p){ /*削除対象のセルがリストの末尾のとき*/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> tail = tail.prev;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if ( (3) tail != nil) //リストに要素があるとき
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (4) p.prev.next = nil;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}else{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (5) p.prev.next = p.next;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (6) p.next.prev = p.prev;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="問5">問5&lt;/h4>
+&lt;blockquote>
+&lt;p>根付き木に関する問題(詳細は省略)。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">v = (1) FirstChild[Parent[v]];
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">while( v != nil ){
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> write Info[v];
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> v = (2) NextBrother[v];
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>v&lt;/code>が親の第1子であるとは限らないため、一度親を参照し、その第1子を参照する必要がある。&lt;/p>
+&lt;h4 id="問6">問6&lt;/h4>
+&lt;blockquote>
+&lt;p>次の主手続きを実行した後の変数$x$と$y$のの値をその理由とともに答えなさい。ただし、手続き&lt;code>addsub(x,y)&lt;/code>の仮引数&lt;code>x&lt;/code>は値呼び出し、仮引数&lt;code>y&lt;/code>は参照呼び出しを家庭留守。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//主手続き
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">10&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">addsub&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//手続き addsub(x,y)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>引数&lt;code>(x,y)&lt;/code>が逆になっていてややこしいので、&lt;code>addsub(a,b)&lt;/code>を考える。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//手続き addsub(a,b) aはコピー、bは参照
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>a=5,b=10&lt;/code>だから、&lt;code>a=15,b=5&lt;/code>となる。&lt;code>a&lt;/code>はコピーなので、&lt;code>y&lt;/code>には影響しない。&lt;code>b&lt;/code>は参照なので、&lt;code>x&lt;/code>に影響する。
+よて、&lt;code>x=5,y=5&lt;/code>となる。&lt;/p>
+&lt;h4 id="問7">問7&lt;/h4>
+&lt;blockquote>
+&lt;p>オブジェクト指向設計における、継承とポリモルフィズムの考え方を説明し、それらを利用する利点を述べなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>継承とは、特定のオブジェクトの機能を引き継いで使用することであrう。同じ機能を持つオブジェクトが複数ある場合、それらの機能を共通化することで、プログラムの見通しを良くすることができる。&lt;/p>
+&lt;p>ポリモーフィズムとは、目的が同じ機能だが、処理内容が異なる場合に、同じ名前をつけて処理を行うことである。ポリモーフィズムにより操作方法を統一することで、プログラムの見通しを良くすることができる。&lt;/p>
+&lt;h3 id="情報数学-6">情報数学&lt;/h3>
+&lt;h4 id="問1-11">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>(a) $p,q$を命題とする、$p\rightarrow q$が真であることを証明するための、直接法、対偶法、背理法を説明しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>直接法：$p$を真と仮定して、$q$が真であることを示す。&lt;/li>
+&lt;li>対偶法：$\lnot q$を仮定して、$\lnot p$が真であることを示す。&lt;/li>
+&lt;li>背理法：$p \land \lnot q$を仮定して、矛盾が生じる(偽となる)ことを示す。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>(b) 命題関数$P(n)$を「最初の$n$個の正の奇数の和は$n^2$である」とする。全ての正の奇数$n$に対して$P(n)$が真であることを数学的帰納法を用いて証明しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>なぜか正の奇数$n$に限定されているが、$n$が正の偶数の場合も成り立つので、$n$が正の整数のときに成り立つことを示せば良い。&lt;/p>
+&lt;ul>
+&lt;li>$n=1$のとき、始めの1個の正の奇数の和は$1$であり、$1^2=1$であるから、$P(1)$は真である。&lt;/li>
+&lt;li>$n=k$のとき、最初の$k$個の正の奇数$1,3,5,&amp;hellip;,2k-1$の和は$k^2$であると仮定する。$n=k+1$のとき、最初の$k+1$個の正の奇数$1,3,5,&amp;hellip;,2k-1,2k+1$の和は、$k^2+2k+1=(k+1)^2$であるから、$P(k+1)$は真である。&lt;/li>
+&lt;li>以上より、数学的帰納法より全ての正の整数$n$に対して$P(n)$が真であることが示された。よって全ての正の奇数$n$に対して$P(n)$が真であることが示された。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-11">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>行列に関する問題(詳細は省略)。&lt;/p>
+&lt;/blockquote>
+&lt;p>$$
+A = \begin{pmatrix}
+1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 2 \\
+1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 2 &amp;amp; 0
+\end{pmatrix}
+$$&lt;/p>
+&lt;p>$|A|=2$&lt;/p>
+&lt;p>$$
+A^2 = \begin{pmatrix}
+2 &amp;amp; 3 &amp;amp; 6 &amp;amp; 2 \\
+2 &amp;amp; 1 &amp;amp; 1 &amp;amp; 2 \\
+3 &amp;amp; 2 &amp;amp; 2 &amp;amp; 2 \\
+3 &amp;amp; 3 &amp;amp; 2 &amp;amp; 0
+\end{pmatrix}
+$$&lt;/p>
+&lt;figure>&lt;img src="img/h30-1.svg"/>
+&lt;/figure>
+&lt;p>v1からv3への長さ3のパスの本数は、$A^3$の1行3列目の要素と等しい。よって、12本である。&lt;/p>
+&lt;h4 id="問3-10">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>2つの箱A,Bがあって、箱Aには赤玉1個と白玉5個、箱Bには赤玉5個と白玉1個がある。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>(a) 任意に箱を選んで1個の玉を取り出したとき、その玉が赤色である確率を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>$$\frac{1}{2}\times\frac{1}{6}+\frac{1}{2}\times\frac{5}{6}=\frac{1}{2}$$&lt;/p>
+&lt;blockquote>
+&lt;p>(b) 任意に箱を選んで1個玉を取り出し元の箱に戻し、もう一度同じ箱から取り出す、二回連続で取り出した玉が赤色である確率を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>$$\frac{1}{2}\times\frac{1}{6}\times\frac{1}{6} + \frac{1}{2}\times\frac{5}{6}\times\frac{5}{6}=\frac{13}{36}$$&lt;/p>
+&lt;blockquote>
+&lt;p>(c) 任意に箱を選んで1個取り出したら赤玉であった。その玉を元の箱に戻し、もう一度同じ箱から取り出して赤玉である確率を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>赤→白の順で取り出す場合 $\frac{1}{2}\times\frac{1}{6}\times\frac{5}{6}+\frac{1}{2}\times\frac{5}{6}\times\frac{1}{6}=\frac{5}{36}$&lt;/li>
+&lt;li>赤→赤の順で取り出す場合 $\frac{1}{2}\times\frac{1}{6}\times\frac{1}{6}+\frac{1}{2}\times\frac{5}{6}\times\frac{5}{6}=\frac{13}{36}$&lt;/li>
+&lt;/ul>
+&lt;p>よって、ベイズの定理より
+$$
+\frac{\frac{5}{36}}{\frac{5}{36}+\frac{13}{36}}=\frac{5}{18}
+$$&lt;/p>
+&lt;h2 id="平成29年度">平成29年度&lt;/h2>
+&lt;h3 id="プログラミング-7">プログラミング&lt;/h3>
+&lt;h4 id="問1-12">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>(a) ホワイトボックステストについて答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>命令網羅：全ての命令(条件分岐を除く)を最低1回は通すようにするテスト。&lt;/li>
+&lt;li>判定条件網羅(分岐網羅)：それぞれの判定条件の結果が真となるケース、負となるケースを作成し、全ての分岐を最低1回は通すようにするテスト。&lt;/li>
+&lt;li>複数条件網羅：全ての判定条件の組み合わせにおける全ての可能な組み合わせを網羅し、かつ全ての命令を一度は実行する。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>(b)
+&lt;figure>&lt;img src="img/h29-1.jpg"/>
+&lt;/figure>
+&lt;/p>
+&lt;/blockquote>
+&lt;p>次の２つを用意すればいい。命令網羅であるため、命令がない②を通る必要はない。&lt;/p>
+&lt;ul>
+&lt;li>1 -&amp;gt; 3 -&amp;gt; 5 -&amp;gt; 6 -&amp;gt; 8&lt;/li>
+&lt;li>1 -&amp;gt; 4 -&amp;gt; 5 -&amp;gt; 7 -&amp;gt; 8&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-12">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>オブジェクト指向プログラミング言語に関する説明文を埋めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>クラスは階層構造をもってそのｎ属性や操作を継承できる。継承して新たに定義されたクラスを元のクラスの下位クラス(サブクラス)とよび、その元のクラスを上位クラス(スーパークラス)とよぶ。このような階層構造をもつクラスの間の県警には、「自動車-トラック」のような「is-a」関係と、「自動車-タイヤ」のような「has-a」関係がある。&lt;/p>
+&lt;h4 id="問3-11">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>以下のCで書かれた関数&lt;code>f_a,f_b,f_c&lt;/code>のそれぞれについて、引数に&lt;code>N=6&lt;/code>が渡されたとときの戻り値を求めよ。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">f_a&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;=&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">+=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">+=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">f_b&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="k">return&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nf">f_b&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="nf">f_b&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">f_c&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>&lt;code>f_a(6)&lt;/code>：関数の目的がよくわからないが、&lt;code>i=3,5&lt;/code>のときに&lt;code>i==j&lt;/code>になるので、戻り値は&lt;code>3&lt;/code>となる。&lt;/li>
+&lt;li>&lt;code>f_b(6)&lt;/code>：フィボナッチ数列を計算している。&lt;code>f_b(0),f_b(1),...&lt;/code>と順番に計算していくとわかりやすい。戻り値は&lt;code>8&lt;/code>。&lt;/li>
+&lt;li>&lt;code>f_c(6)&lt;/code>：6+7=13を2進数にすると1101であり、右に3ビットシフトすると1で、左に3ビットシフトすると1000である。戻り値は&lt;code>8&lt;/code>。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問4-2">問4&lt;/h4>
+&lt;blockquote>
+&lt;p>(a)&lt;code>initList(&amp;amp;list, N, data)&lt;/code>によって作成されるリスト構造、(b)&lt;code>func1()&lt;/code>と&lt;code>func2()&lt;/code>のそれぞれの時間計算量について説明しなさい。
+&lt;figure>&lt;img src="img/h29-2.jpg"/>
+&lt;/figure>
+&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>
+&lt;p>(a) Node構造体は次のNodeを指す&lt;code>next&lt;/code>と&lt;code>prev&lt;/code>のポインタと要素&lt;code>value&lt;/code>を持っている。先頭と末尾が連結している双方向リストを生成する&lt;code>initList(&amp;amp;list, N, data)&lt;/code>により、&lt;code>list&lt;/code>の&lt;code>next&lt;/code>が&lt;code>data[0]&lt;/code>を&lt;code>value&lt;/code>に持つノード、その次が&lt;code>data[1]&lt;/code>を&lt;code>value&lt;/code>に持つノード、&amp;hellip;と続き、最後のノードの&lt;code>next&lt;/code>が&lt;code>list&lt;/code>を指すようになる。また、&lt;code>prev&lt;/code>は前の要素を指し、最初のノードの&lt;code>prev&lt;/code>は最後のノードを指すようになる。(図は省略)。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>(b) &lt;code>func1()&lt;/code>は&lt;code>list&lt;/code>の先頭から末尾まで順番に要素を取り出し、&lt;code>v&lt;/code>と等しい要素があれば&lt;code>n&lt;/code>に加算している。これは、リストに含まれる&lt;code>v&lt;/code>の個数をカウントする関数であり、計算量はノードの長さをNとすると$O(N)$。&lt;code>func2()&lt;/code>は&lt;code>list&lt;/code>が空ではない場合に、&lt;code>list&lt;/code>の一つ前の要素を削除する関数である。計算量は$O(1)$。(図は省略)。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="情報数学-7">情報数学&lt;/h3>
+&lt;h4 id="問1-13">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>(a) 3変数$x,y,z$からなる方程式$x+y+z=10$を考える。。$x,y,z$が非負整数とすると、この方程式の解である$(x,y,z)$の組の個数はいくつか。&lt;/p>
+&lt;/blockquote>
+&lt;p>$10$個のボールと$2$個の仕切りを一列に並べる場合の数と等しい。よって、$_{10+2}\mathrm{C}_{2}=66$通り。&lt;/p>
+&lt;blockquote>
+&lt;p>(b) 2変数$x,y$と実定数$\alpha,\beta$に関した、$x+y=1$と$\alpha,\beta&amp;gt;0$が成り立っている。&lt;br>
+(1) $x,y$が実数であるとき、$\alpha x + \beta xy$の最大値とそのときの$x$を求めなさい。&lt;br>
+(2) $x,y\in \lbrace 0,1 \rbrace$であるとき、$\alpha x + \beta xy$の最大値とそのときの$x$を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>(1) $y=1-x$を代入し、平方完成すれば良い。
+$$
+\begin{align}
+\alpha x + \beta xy &amp;amp;= \alpha x + \beta x(1-x) \\
+&amp;amp;= \alpha x + \beta x - \beta x^2 \\
+&amp;amp;= -\beta x^2 + (\alpha + \beta)x \\
+&amp;amp;= -\beta \left(x^2 - \frac{\alpha + \beta}{\beta}x + \frac{(\alpha + \beta)^2}{4\beta^2} \right) + \frac{\beta(\alpha + \beta)^2}{4\beta^2} \\
+&amp;amp;= -\beta \left(x - \frac{\alpha + \beta}{2\beta} \right)^2 + \frac{(\alpha + \beta)^2}{4\beta} \\
+\end{align}
+$$
+よって、$\beta&amp;gt;0$より、$x=\frac{\alpha + \beta}{2\beta}$のとき、$\alpha x + \beta xy$は最大値$\frac{(\alpha + \beta)^2}{4\beta}$をとる。&lt;/p>
+&lt;p>(2) 場合分けする。&lt;/p>
+&lt;ul>
+&lt;li>$x=0,y=0$のとき、$\alpha x + \beta xy=0$&lt;/li>
+&lt;li>$x=0,y=1$のとき、$\alpha x + \beta xy=0$&lt;/li>
+&lt;li>$x=1,y=0$のとき、$\alpha x + \beta xy=\alpha$&lt;/li>
+&lt;li>$x=1,y=1$のとき、$\alpha x + \beta xy=\alpha + \beta$&lt;/li>
+&lt;/ul>
+&lt;p>よって、$\alpha x + \beta xy$の最大値は$\alpha + \beta$であり、そのときの$x$は$1$である。&lt;/p>
+&lt;h4 id="問2-13">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>無向グラフ$G=(V,E)$で、$2$頂点$u,v\in V$を結ぶパスが存在することを$uRv$で表す。このとき、$R$は同値関係であることを示しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>反射律：明らかにパス$[u]$が存在するので、$uRu$が成り立つ。&lt;/li>
+&lt;li>対称律：$uRv$が成り立つとき、$u$から$v$へのパス$[u,a_1,a_2,&amp;hellip;,a_n,v]$が存在する。このとき、$v$から$u$へのパス$[v,a_n,a_{n-1},&amp;hellip;,a_1,u]$が存在するので、$vRu$が成り立つ。&lt;/li>
+&lt;li>推移律：$uRv$かつ$vRw$が成り立つとき、$u$から$v$へのパス$[u,a_1,a_2,&amp;hellip;,a_n,v]$と$v$から$w$へのパス$[v,b_1,b_2,&amp;hellip;,b_m,w]$が存在する。このとき、$u$から$w$へのパス$[u,a_1,a_2,&amp;hellip;,a_n,v,b_1,b_2,&amp;hellip;,b_m,w]$が存在するので、$uRw$が成り立つ。&lt;/li>
+&lt;li>よって、$R$は同値関係である。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-12">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>次のようなテストを受験し、合格する必要がある。&lt;/p>
+&lt;ul>
+&lt;li>無限の数の問題が用意されており、一問ずつ出題され、解答を行う。&lt;/li>
+&lt;li>各問に正解すると得点1を得て、不正解すると得点-1を得る。&lt;/li>
+&lt;li>得点の合計が3になるとテストに合格となり、受験が終了する。&lt;br>
+各問に正解する確率が$2/3$とするとき、次の設問に答えなさい。&lt;br>
+(a) 5問に解答した時点で、テストに合格する確率はいくらか。&lt;br>
+(b) 6問に解答した時点で、得点の合計が2である確率を求めなさい。&lt;br>
+(c) テストに合格するまでに8問以上に解答する必要がある確率を求めてください。&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;p>$i$問目を解いたときに$j$点を獲得している場合の数を求める。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">得点&lt;/th>
+&lt;th style="text-align:center">1問&lt;/th>
+&lt;th style="text-align:center">2問&lt;/th>
+&lt;th style="text-align:center">3問&lt;/th>
+&lt;th style="text-align:center">4問&lt;/th>
+&lt;th style="text-align:center">5問&lt;/th>
+&lt;th style="text-align:center">6問&lt;/th>
+&lt;th style="text-align:center">7問&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">3&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">3&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">9&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">2&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">3&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">9&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">3&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">9&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">28&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">0&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">2&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">6&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">19&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">-1&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">3&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">10&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">34&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">-2&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">15&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">-3&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">5&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">21&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">-4&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">6&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">-5&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">7&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">-6&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">-7&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">&lt;/td>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>$i$問目まで解いたときに$j$点を獲得している場合の数$A_{ij}$は、次の漸化式で計算できる。&lt;/p>
+&lt;ul>
+&lt;li>$A_{0j}=0 \quad (全てのj)$&lt;/li>
+&lt;li>$A_{i2} = A_{i-1,1} \quad (全てのi)$&lt;/li>
+&lt;li>$A_{ij}=A_{i-1,j-1}+A_{i-1,j+1} \quad (その他の場合)$&lt;/li>
+&lt;/ul>
+&lt;p>(a) 表より、$A_{5,3}=3$である。また、4問正解して1問不正解だから、
+$$
+\left( \frac{2}{3} \right)^4 \times \left( \frac{1}{3} \right)^1 \times 3 = \frac{16}{81}
+$$&lt;/p>
+&lt;p>(b) 表より、$A_{6,2}=9$である。また、6問正解して2問不正解だから、
+$$
+\left( \frac{2}{3} \right)^4 \times \left( \frac{1}{3} \right)^2 \times 9 = \frac{16}{81}
+$$&lt;/p>
+&lt;p>(c) 余事象は、$7$問目までに合格する確率であり、その確率は、表を見ながら、
+$$
+\left( \frac{2}{3} \right)^3 \times \left( \frac{1}{3} \right) ^0 \times 1
++ \left( \frac{2}{3} \right)^4 \times \left( \frac{1}{3} \right) ^1 \times 3 \\
++ \left( \frac{2}{3} \right)^5 \times \left( \frac{1}{3} \right) ^2 \times 9 = \frac{152}{243}
+$$
+よって、答えは
+$$
+1 - \frac{152}{243} = \frac{91}{243}
+$$&lt;/p>
+&lt;h2 id="平成28年度">平成28年度&lt;/h2>
+&lt;p>問題が見つかりませんでした！&lt;/p>
+&lt;h2 id="平成27年度">平成27年度&lt;/h2>
+&lt;h3 id="プログラミング-8">プログラミング&lt;/h3>
+&lt;h4 id="問1-14">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>浮動小数点で表現された多くの数を加算する。加算結果に含まれる誤差をもっとも小さくなるようにするには、以下のいずれの方法が良いかを、その理由とともに100～150字程度で述べなさい。&lt;/p>
+&lt;ol>
+&lt;li>数を絶対値の小さい順に整列し、絶対値の小さい数から始めて順に絶対値の大きい数へと加算してゆく。&lt;/li>
+&lt;li>絶対値の大きい数から始めて順に絶対値の小さい数へと加算してゆく。&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>2の絶対値を大きい数から順に加算する方法が良い。\&lt;/p>
+&lt;p>浮動小数点型は、絶対値の大きな数と小さな数を加算したときに、下の方の桁の精度が崩れ、誤差が生じる情報落ちが起こる。絶対値の大きな数から順に加算しておくと、符号が異なり絶対値が近い数同士の加算が行われる可能性があり、その結果が絶対値の小さな数であれば情報落ちの度合いが小さくなる。&lt;/p>
+&lt;p>以下のコードを試してみるとよくわかる。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.1111&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.1111&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">123456.0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">d&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mf">123456.0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">0.0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">s&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%f&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%f&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// s = 0.218750
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// t = 0.222200
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="問2-14">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>&lt;code>N=10&lt;/code>としたとき、次の関数&lt;code>fa(),fb(),fc(),fd()&lt;/code>の実行結果を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">fa&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">kcount&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">fb&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="k">return&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">fb&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nf">fb&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">fc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">fd&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">count&lt;/span> &lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">j&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>&lt;code>fa()&lt;/code>：$N^3 = 1000$&lt;/li>
+&lt;li>&lt;code>fb()&lt;/code>：$2^N = 1024$&lt;/li>
+&lt;li>&lt;code>fc()&lt;/code>：&lt;code>if&lt;/code>文を無視すれば、$N^2$であり、$i=1,3,5,7,9$のときにそれぞれ$10$回加算されるので、$100+5\times 10=150$&lt;/li>
+&lt;li>&lt;code>fd()&lt;/code>：$j$は$2,4,8,16$と変化していき、$16$になったときに&lt;code>while&lt;/code>を抜ける。これを$N$回繰り返しているため、$4\times 10+10=50$&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-13">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>以下のような完全二分木$T$を考える。(問題文省略)&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4 6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7 5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/blockquote>
+&lt;p>(a)&lt;/p>
+&lt;ul>
+&lt;li>根：3&lt;/li>
+&lt;li>節点6の親：3&lt;/li>
+&lt;li>節点4の兄弟：6&lt;/li>
+&lt;li>木の高さ：2&lt;/li>
+&lt;li>木の大きさ：5&lt;/li>
+&lt;/ul>
+&lt;p>(b)&lt;/p>
+&lt;ul>
+&lt;li>inoder：7-&amp;gt;4-&amp;gt;5-&amp;gt;3-&amp;gt;6&lt;/li>
+&lt;li>(preorder：3-&amp;gt;4-&amp;gt;7-&amp;gt;5-&amp;gt;6)&lt;/li>
+&lt;li>(postorder：7-&amp;gt;5-&amp;gt;4-&amp;gt;6-&amp;gt;3)&lt;/li>
+&lt;/ul>
+&lt;p>(c)&lt;/p>
+&lt;ul>
+&lt;li>根のみからなる木$T$はヒープ木である。&lt;/li>
+&lt;li>ヒープ木$T$の「$T$の根以外を、根とする部分木」はまたヒープ木である。&lt;/li>
+&lt;li>ヒープ木$t$の根の数値は、その全ての「$T$の根以外を、根とする部分木」の根の数値よりも「小さい」。&lt;/li>
+&lt;/ul>
+&lt;p>(d)&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \ /
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7 5 6
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>(e)&lt;/p>
+&lt;p>$N\log N$回&lt;/p>
+&lt;p>(f)&lt;/p>
+&lt;p>節点は、その節点の持つ値、子の節点へのポインタが2つ、親へのポインタが1つ、計4つのデータを持つ。よって、16byte。&lt;/p>
+&lt;p>(g)&lt;/p>
+&lt;p>配列を用いて、$i$番目の要素の親は$\lfloor i/2 \rfloor$番目の要素、左の子は$2i$番目の要素、右の子は$2i+1$番目の要素と表現することで、4byteで済む。&lt;/p>
+&lt;h4 id="問4-3">問4&lt;/h4>
+&lt;blockquote>
+&lt;p>$N=10^9$個の数からなる一次元配列が与えられる。その中から、$p$個の数をその値の小さいものから順に取り出すとき、どのようなアルゴリズムを用いると、最も効率よく$p$個の数を取り出すことができるか。&lt;br>
+(a)$p=1$のとき (b)$p=10^8$のとき&lt;/p>
+&lt;/blockquote>
+&lt;p>(a)&lt;/p>
+&lt;p>配列を&lt;code>A&lt;/code>とする。&lt;code>m=A[0]&lt;/code>とおき、&lt;code>for&lt;/code>文で&lt;code>A&lt;/code>を走査し、&lt;code>m&lt;/code>より小さい値があれば&lt;code>m&lt;/code>をその値に置き換える。これを&lt;code>A&lt;/code>の最後まで繰り返す。このとき、&lt;code>m&lt;/code>には&lt;code>A&lt;/code>の最小値が格納されている。計算量は$O(N)$。&lt;/p>
+&lt;p>(b)&lt;/p>
+&lt;p>昇順にソート(マージソートやヒープソートなどの最悪計算量が$O(N\log N)$のソート)を行い、&lt;code>A&lt;/code>の最初の$p$個の要素を取り出す。計算量は$O(N\log N)$。
+(a)のように、最小値を求める方法を用いると、計算量は$O(Np)$とり、$\log N &amp;lt; p$であるから、前者の方が効率的である。&lt;/p>
+&lt;h3 id="情報数学-8">情報数学&lt;/h3>
+&lt;h4 id="問1-15">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>集合$A$上の二項関係$R$を直積集合$A\times A$の部分集合として定義する。また、$x,y\in A$に対して、$(x,y)\in R$であるとき$xRy$と表記する。いま、自然数全体の集合を$A=\mathbb{N}$とし、次の$\mathbb{N}$上の二項関係$D={(x,y)|x,y\in \mathbb{N},xはyの約数}$を考える。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>(a) $xDy$を満たす$(x,y)$の組を具体的に3つあげなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>$(1,1),(1,2),(1,3)$&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>(b) 順序$R$とは、$A$の任意の要素$x,y,z$に対して反射律、推移律、反対称律を満たす二項関係のことである。$D$が順序であることを示しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>反射律：明らかに$x$は$x$の約数であるから、$xDx$である。&lt;/li>
+&lt;li>推移律：$xDy$かつ$yDz$であるとき、整数$a,b$を用いて$ax=y,by=z$と表せる。このとき、$abx=z$であるから、$x$は$z$の約数である。よって、$xDz$である。&lt;/li>
+&lt;li>反対称律：$xDy$かつ$yDx$であるとき、整数$a,b$を用いて$ax=y,by=x$と表せる。このとき、$abx=x$であるから、$ab=1$である。よって、$x=y$である。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>集合$A$と$A$上の順序$\preceq$ の対を順序集合と呼び、$\left&amp;lt;A,\preceq\right&amp;gt;$と表記する。$A$のある要素$a$と、$A$の任意の要素$x,y,z$に対して、以下の条件が成り立つとき、$x$を$a$の直後の要素という。&lt;br>
+(1) $a\preceq x$&lt;br>
+(2) $a\prec z \preceq x$ならば$z=x$&lt;br>
+ただし、$x \preceq y$かつ$x\ne y$であるとき$x\prec y$と表記する。
+順序集合$\left&amp;lt;N,D\right&amp;gt;$では、任意の$k\in \mathbb{N}$に対して、$k$の直後の要素が無限に存在することが知られている。$k$の値を具体的に定め、その直後の要素の例を$3$つあげなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>$k=1$のとき、$2,3,5$は$k$の直後の要素である。&lt;/p>
+&lt;h4 id="問2-15">問2&lt;/h4>
+&lt;figure>&lt;img src="img/h27-1.jpg"/>
+&lt;/figure>
+&lt;p>包除原理を使えば良い。英語、中国語、ドイツ語をそれぞれ履修している人の集合を$A,B,C$とする。&lt;/p>
+&lt;p>$$
+|A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|B\cap C|-|C\cap A|+|A\cap B\cap C|
+$$
+わかっている情報を代入すると、&lt;/p>
+&lt;p>$$
+|A\cup B\cup C|=50+35+25-15-15-10+|A\cap B\cap C| = 70+|A\cap B\cap C|
+$$&lt;/p>
+&lt;p>どれも履修していない人数が$5$人だから、$|A\cup B\cup C|=75$である。よって、$|A\cap B\cap C|=5$である。&lt;/p>
+&lt;p>あとは、適当に足し算引き算していけば良い。&lt;/p>
+&lt;ul>
+&lt;li>英語のみ：$30$&lt;/li>
+&lt;li>中国語のみ：$10$&lt;/li>
+&lt;li>ドイツ語のみ：$5$&lt;/li>
+&lt;li>中国語とドイツ語を両方登録しているが、英語は登録していない：$10$&lt;/li>
+&lt;li>全部登録している人：$5$&lt;/li>
+&lt;/ul>
+&lt;h4 id="問3-14">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>&lt;figure>&lt;img src="img/h27-2.jpg"/>
+&lt;/figure>
+&lt;figure>&lt;img src="img/h27-3.jpg"/>
+&lt;/figure>
+&lt;/p>
+&lt;/blockquote>
+&lt;p>(a) $B_4$&lt;/p>
+&lt;p>(b)図のようになる。
+&lt;figure>&lt;img src="img/h27-4.jpg"/>
+&lt;/figure>
+&lt;/p>
+&lt;ul>
+&lt;li>$B_1$：$8$&lt;/li>
+&lt;li>$B_2$：$12$&lt;/li>
+&lt;li>$B_3$：$12$&lt;/li>
+&lt;li>$B_4$：$18$&lt;/li>
+&lt;/ul>
+&lt;p>(c) $B_6$
+&lt;figure>&lt;img src="img/h27-5.jpg"/>
+&lt;/figure>
+&lt;/p>
+&lt;p>(d)
+区切られたグリットを挟んだところに最も近い基地局があると、この探索方法だとその基地局が選ばれないことがある。&lt;/p>
+&lt;h2 id="平成26年度">平成26年度&lt;/h2>
+&lt;h3 id="プログラミング-9">プログラミング&lt;/h3>
+&lt;h4 id="問1-16">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>選択ソートのプログラムの穴埋め&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">selectSort&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">min&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">min&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">min&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">min&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">swap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">min&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">swap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">tmp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tmp&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">data&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">data&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">tmp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>(b)計算量を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>$O(N^2)$&lt;/p>
+&lt;blockquote>
+&lt;p>(c) &lt;code>N=8,data[N]={5,8,7,3,6,1,4,2}&lt;/code>であった場合を考える。プログラムの実行時、変数&lt;code>i&lt;/code>の値がインクリメントされ、&lt;code>i=2&lt;/code>となった直後の&lt;code>data&lt;/code>の値を求めなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;code>i=0&lt;/code>のとき：&lt;code>{1,8,7,3,6,5,4,2}&lt;/code>&lt;/li>
+&lt;li>&lt;code>i=1&lt;/code>のとき：&lt;code>{1,2,7,3,6,5,4,8}&lt;/code>&lt;/li>
+&lt;li>&lt;code>i=2&lt;/code>のとき：&lt;code>{1,2,3,7,6,5,4,8}&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-16">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>異なる$n$個の候補から$r$個を選択する組み合わせの総数を求める、次の条件を満たす関数を作成しなさい。&lt;/p>
+&lt;ul>
+&lt;li>$n,r$を引数とする。&lt;/li>
+&lt;li>再帰呼び出しを用いる。&lt;/li>
+&lt;li>$n,r$の大小関係に関するエラー処理はしなくてよい。&lt;/li>
+&lt;/ul>
+&lt;p>また、次の性質を利用して良い&lt;/p>
+&lt;ul>
+&lt;li>$_n\mathrm{C}_0 = _n\mathrm{C}_n = 1$&lt;/li>
+&lt;li>$_n\mathrm{C}_r = _{n-1}\mathrm{C}_{r-1} + _{n-1}\mathrm{C}_r$&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">combination&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>&lt;span class="k">else&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nf">combination&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="nf">combination&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="問3-15">問3&lt;/h4>
+&lt;blockquote>
+&lt;p>関数の引数における値渡しと参照渡しの違いを説明しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>値渡しは、関数に渡す引数の値をコピーして渡す方法である。関数内で引数の値を変更しても、呼び出し元の変数の値は変わらない。参照渡しは、関数内で引数の値を変更すると、呼び出し元の変数の値も変わる。参照渡しは、値渡しに対して、メモリの使用量が少ない。&lt;/p>
+&lt;h4 id="問4-4">問4&lt;/h4>
+&lt;h3 id="情報数学-9">情報数学&lt;/h3>
+&lt;h4 id="問1-17">問1&lt;/h4>
+&lt;blockquote>
+&lt;p>（a) $aRb$ならば、$Ca=Cb$であることを示しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>$aRb$より、$Ca={a,b,x_1,x_2,\cdots,x_n}$と表すことができる。対称律の定義より、$Cb={b,a,x_1,x_2,\cdots,x_n}$である。よって、$Ca=Cb$である。&lt;/p>
+&lt;blockquote>
+&lt;p>(b) $aRb$でなければ、$Ca \cap Cb = \emptyset$であることを示しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>背理法で示す。$Ca$と$Cb$に共通の要素$x$があったとする。$aRx$と$bRx$の関係が成り立つので、推移律より$aRb$が成り立つ。これは$aRb$でないことに矛盾する。よって、$aRb$ではないとき、$Ca \cap Cb = \emptyset$である。&lt;/p>
+&lt;blockquote>
+&lt;p>(c) $2$つの整数$a,b$に対して、$a-b$が$3$の倍数であるとき、$a=_3b$とする。このとき、関係$=_3$は同値関係であることを示しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>反射律：$a-a=0$は$3$の倍数であるので、$a=_3a$である。&lt;/li>
+&lt;li>対称律：$a-b=3k$ならば、$b-a=-3k$である。$-3k$は$3$の倍数なので、$b=_3a$である。&lt;/li>
+&lt;li>推移律：$a-b=3k$かつ$b-c=3l$ならば、$a-c=a-b+b-c=3k+3l=3(k+l)$である。$k+l$は整数なので、$a-c$は$3$の倍数である。よって、$a=_3c$である。&lt;/li>
+&lt;li>以上より、$=_3$は同値関係である。&lt;/li>
+&lt;/ul>
+&lt;h4 id="問2-17">問2&lt;/h4>
+&lt;blockquote>
+&lt;p>二分木の木の高さは以下のように定義できる。&lt;/p>
+&lt;ul>
+&lt;li>空の二分木の高さは$0$である。&lt;/li>
+&lt;li>ノードが1つ以上ある二分木には根ノードがあり、その高さは以下で定義する。$\max(根ノードの左につながる部分木の高さ, 根ノードの右につながる部分木の高さ)+1$&lt;br>
+さらに、全てのノードをみて、左右のノードにつながる部分木の高さの差が$1$以下である二分木を「近似的平衡二分木」と定義する。&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>(a) 高さが3の近似的平衡二分木に含まれるノード数の最小値を答えなさい。さらに、高さが4の場合についても同様に答えなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>高さが3の場合、ノード数の最小値は$4$である。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> o
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> o o
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>高さが4の場合、ノード数の最小値は$7$である。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> o
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> o o
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> / \ \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o o o
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> o
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>(b)高さ$h$の木について、ノード数の最小値を$a_n$とする。漸化式で$a_n$を示しなさい。ただし、$a_0=0,a_1=1$とする。&lt;/p>
+&lt;/blockquote>
+&lt;p>$n\geq 2$のとき、$a_n=a_{n-1}+n-1$&lt;/p>
+&lt;blockquote>
+&lt;p>$18$個ののーどが含まれる近似平衡二分木の高さの最大値を答え、その理由を説明しなさい。&lt;/p>
+&lt;/blockquote>
+&lt;p>$a_n \leq 18$を満たす最大の$n$を求める。$a$を列挙すると、$a_1=1,a_2=2,a_3=4,a_4=7,a_5=11,a_6=16,a_7=22$であるので、高さは$6$である。&lt;/p>
+&lt;h4 id="問3-16">問3&lt;/h4>
+&lt;blockquote>
+&lt;figure>&lt;img src="img/h26-1.jpg"/>
+&lt;/figure>
+&lt;/blockquote>
+&lt;p>(a)&lt;/p>
+&lt;p>故障率を$p$と置く。&lt;/p>
+&lt;p>$$
+p^4 + 4\cdot p^3(1-p) + 2\cdot p^2(1-p)^2 = p^2(-p^2+2) = 0.00019999 = 2 \times 10^{-4}
+$$&lt;/p>
+&lt;p>(b)&lt;/p>
+&lt;p>$$
+1 - ((1-p)^4 + 4\cdot p(1-p)^3 + 2\cdot p^2(1-p)^2) = p^2(p-2)^2 = 0.00039601 = 4 \times 10^{-4}
+$$&lt;/p></description></item></channel></rss>

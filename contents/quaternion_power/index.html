@@ -1,0 +1,228 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="おことわり 数論群論ともに独学素人なので表現方法が間違っているかもしれない。
+前提知識 素数$p$について、剰余類の集合$\mathbb{Z}/p\mathbb{Z}$上での四則演算の性質 行列、行列式の性質 これはなに 四元数$w=a+bi+cj+dk \ (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}))$を累乗していくと、単位元$1$になることを示す。 ただし、$p$は素数で$\mathbb{Z}/p\mathbb{Z}$は剰余類の集合である。厳密には次を示す。
+$$ w= a+bi+cj+dk \quad (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land 何かしらの条件) \\ \Rightarrow w^k=1 \quad (\exists k \in \mathbb{N}) $$
+なお、「かつ何かしらの条件」というのは、例えば$0$のように成り立たないものを除外するための条件である。詳しい条件がまだ不明なため、こう書いておく。
+また、具体的な$k$の値がいくつであるかも示す。最小の$k$を求めるわけではないので注意。
+四元数とは 虚数単位$i$は$i^2=-1$を満たす数であるが、その他に$j,k$を持ってきて、次の式が成り立つようにする。 $$ i^2=j^2=k^2=ijk=-1 $$
+上記の式を変形すると、各$i,j,k$同士の掛け算が以下の 表のようになることがわかる。なお、$ij=k,ji=-k$などのように掛け算の順番によって結果が変わる(非可換)であることに注意。
+1 $i$ $j$ $k$ 1 1 $i$ $j$ $k$ $i$ $i$ $-1$ $k$ $-j$ $j$ $j$ $-k$ $-1$ $i$ $k$ $k$ $j$ $-i$ $-1$ $a_1+b_1i+c_1j+d_1k$と$a_2+b_2i+c_2j+d_2k$の掛け算(この掛け算の仕方をハミルトン積と呼ぶらしい)は以下のようになる。
+$$ a_1a_2-b_1b_2-c_1c_2-d_1d_2 \\ +(a_1b_2+b_1a_2+c_1d_2-d_1c_2)i \\ +(a_1c_2-b_1d_2+c_1a_2+d_1b_2)j \\ +(a_1d_2+b_1c_2-c_1b_2+d_1a_2)k $$
+ハミルトン積の定義から、$w e = e w = w$となる単位元$e$は$e=1$であることがわかる。"><title>係数が剰余類Z/pZの四元数を累乗していくと単位元になるのなぁぜなぁぜ</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/quaternion_power/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="係数が剰余類Z/pZの四元数を累乗していくと単位元になるのなぁぜなぁぜ"><meta property="og:description" content="おことわり 数論群論ともに独学素人なので表現方法が間違っているかもしれない。
+前提知識 素数$p$について、剰余類の集合$\mathbb{Z}/p\mathbb{Z}$上での四則演算の性質 行列、行列式の性質 これはなに 四元数$w=a+bi+cj+dk \ (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}))$を累乗していくと、単位元$1$になることを示す。 ただし、$p$は素数で$\mathbb{Z}/p\mathbb{Z}$は剰余類の集合である。厳密には次を示す。
+$$ w= a+bi+cj+dk \quad (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land 何かしらの条件) \\ \Rightarrow w^k=1 \quad (\exists k \in \mathbb{N}) $$
+なお、「かつ何かしらの条件」というのは、例えば$0$のように成り立たないものを除外するための条件である。詳しい条件がまだ不明なため、こう書いておく。
+また、具体的な$k$の値がいくつであるかも示す。最小の$k$を求めるわけではないので注意。
+四元数とは 虚数単位$i$は$i^2=-1$を満たす数であるが、その他に$j,k$を持ってきて、次の式が成り立つようにする。 $$ i^2=j^2=k^2=ijk=-1 $$
+上記の式を変形すると、各$i,j,k$同士の掛け算が以下の 表のようになることがわかる。なお、$ij=k,ji=-k$などのように掛け算の順番によって結果が変わる(非可換)であることに注意。
+1 $i$ $j$ $k$ 1 1 $i$ $j$ $k$ $i$ $i$ $-1$ $k$ $-j$ $j$ $j$ $-k$ $-1$ $i$ $k$ $k$ $j$ $-i$ $-1$ $a_1+b_1i+c_1j+d_1k$と$a_2+b_2i+c_2j+d_2k$の掛け算(この掛け算の仕方をハミルトン積と呼ぶらしい)は以下のようになる。
+$$ a_1a_2-b_1b_2-c_1c_2-d_1d_2 \\ +(a_1b_2+b_1a_2+c_1d_2-d_1c_2)i \\ +(a_1c_2-b_1d_2+c_1a_2+d_1b_2)j \\ +(a_1d_2+b_1c_2-c_1b_2+d_1a_2)k $$
+ハミルトン積の定義から、$w e = e w = w$となる単位元$e$は$e=1$であることがわかる。"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/quaternion_power/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2023-09-20T12:08:30+09:00"><meta property="article:modified_time" content="2023-09-20T12:08:30+09:00"><meta name=twitter:title content="係数が剰余類Z/pZの四元数を累乗していくと単位元になるのなぁぜなぁぜ"><meta name=twitter:description content="おことわり 数論群論ともに独学素人なので表現方法が間違っているかもしれない。
+前提知識 素数$p$について、剰余類の集合$\mathbb{Z}/p\mathbb{Z}$上での四則演算の性質 行列、行列式の性質 これはなに 四元数$w=a+bi+cj+dk \ (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}))$を累乗していくと、単位元$1$になることを示す。 ただし、$p$は素数で$\mathbb{Z}/p\mathbb{Z}$は剰余類の集合である。厳密には次を示す。
+$$ w= a+bi+cj+dk \quad (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land 何かしらの条件) \\ \Rightarrow w^k=1 \quad (\exists k \in \mathbb{N}) $$
+なお、「かつ何かしらの条件」というのは、例えば$0$のように成り立たないものを除外するための条件である。詳しい条件がまだ不明なため、こう書いておく。
+また、具体的な$k$の値がいくつであるかも示す。最小の$k$を求めるわけではないので注意。
+四元数とは 虚数単位$i$は$i^2=-1$を満たす数であるが、その他に$j,k$を持ってきて、次の式が成り立つようにする。 $$ i^2=j^2=k^2=ijk=-1 $$
+上記の式を変形すると、各$i,j,k$同士の掛け算が以下の 表のようになることがわかる。なお、$ij=k,ji=-k$などのように掛け算の順番によって結果が変わる(非可換)であることに注意。
+1 $i$ $j$ $k$ 1 1 $i$ $j$ $k$ $i$ $i$ $-1$ $k$ $-j$ $j$ $j$ $-k$ $-1$ $i$ $k$ $k$ $j$ $-i$ $-1$ $a_1+b_1i+c_1j+d_1k$と$a_2+b_2i+c_2j+d_2k$の掛け算(この掛け算の仕方をハミルトン積と呼ぶらしい)は以下のようになる。
+$$ a_1a_2-b_1b_2-c_1c_2-d_1d_2 \\ +(a_1b_2+b_1a_2+c_1d_2-d_1c_2)i \\ +(a_1c_2-b_1d_2+c_1a_2+d_1b_2)j \\ +(a_1d_2+b_1c_2-c_1b_2+d_1a_2)k $$
+ハミルトン積の定義から、$w e = e w = w$となる単位元$e$は$e=1$であることがわかる。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#おことわり>おことわり</a></li><li><a href=#前提知識>前提知識</a></li><li><a href=#これはなに>これはなに</a></li><li><a href=#四元数とは>四元数とは</a></li><li><a href=#フェルマーの小定理>フェルマーの小定理</a><ol><li><a href=#数論での定理>数論での定理</a></li><li><a href=#証明数論の世界>証明(数論の世界)</a></li><li><a href=#群論での定理>群論での定理</a></li><li><a href=#証明群論の世界>証明(群論の世界)</a></li></ol></li><li><a href=#四元数の話に戻る>四元数の話に戻る</a><ol><li><a href=#群であるかの条件>群であるかの条件</a></li><li><a href=#位数を求める>位数を求める</a></li><li><a href=#4次正則正方行列の部分集合である>$4$次正則正方行列の部分集合である</a></li><li><a href=#mathrmgl_4mathbbzpmathbbzの位数を求める>$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$の位数を求める</a></li><li><a href=#まとめ>まとめ</a></li><li><a href=#余談>余談</a></li></ol></li><li><a href=#参考文献>参考文献</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/%E6%95%B0%E5%AD%A6/>数学</a>
+<a href=/my-blog-4/categories/%E6%95%B0%E8%AB%96/>数論</a>
+<a href=/my-blog-4/categories/%E7%BE%A4%E8%AB%96/>群論</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/quaternion_power/>係数が剰余類Z/pZの四元数を累乗していくと単位元になるのなぁぜなぁぜ</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Sep 20, 2023</time></div></footer></div></header><section class=article-content><h2 id=おことわり>おことわり</h2><p>数論群論ともに独学素人なので表現方法が間違っているかもしれない。</p><h2 id=前提知識>前提知識</h2><ul><li>素数$p$について、剰余類の集合$\mathbb{Z}/p\mathbb{Z}$上での四則演算の性質</li><li>行列、行列式の性質</li></ul><h2 id=これはなに>これはなに</h2><p>四元数$w=a+bi+cj+dk \ (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}))$を累乗していくと、単位元$1$になることを示す。
+ただし、$p$は素数で$\mathbb{Z}/p\mathbb{Z}$は剰余類の集合である。厳密には次を示す。</p><blockquote><p>$$
+w= a+bi+cj+dk \quad (a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land 何かしらの条件) \\
+\Rightarrow
+w^k=1 \quad (\exists k \in \mathbb{N})
+$$</p></blockquote><p>なお、「かつ何かしらの条件」というのは、例えば$0$のように成り立たないものを除外するための条件である。詳しい条件がまだ不明なため、こう書いておく。</p><p>また、具体的な$k$の値がいくつであるかも示す。<strong>最小</strong>の$k$を求めるわけではないので注意。</p><h2 id=四元数とは>四元数とは</h2><p>虚数単位$i$は$i^2=-1$を満たす数であるが、その他に$j,k$を持ってきて、次の式が成り立つようにする。
+$$
+i^2=j^2=k^2=ijk=-1
+$$</p><p>上記の式を変形すると、各$i,j,k$同士の掛け算が以下の
+表のようになることがわかる。なお、$ij=k,ji=-k$などのように掛け算の順番によって結果が変わる(非可換)であることに注意。</p><div class=table-wrapper><table><thead><tr><th style=text-align:center></th><th style=text-align:center>1</th><th style=text-align:center>$i$</th><th style=text-align:center>$j$</th><th style=text-align:center>$k$</th></tr></thead><tbody><tr><td style=text-align:center>1</td><td style=text-align:center>1</td><td style=text-align:center>$i$</td><td style=text-align:center>$j$</td><td style=text-align:center>$k$</td></tr><tr><td style=text-align:center>$i$</td><td style=text-align:center>$i$</td><td style=text-align:center>$-1$</td><td style=text-align:center>$k$</td><td style=text-align:center>$-j$</td></tr><tr><td style=text-align:center>$j$</td><td style=text-align:center>$j$</td><td style=text-align:center>$-k$</td><td style=text-align:center>$-1$</td><td style=text-align:center>$i$</td></tr><tr><td style=text-align:center>$k$</td><td style=text-align:center>$k$</td><td style=text-align:center>$j$</td><td style=text-align:center>$-i$</td><td style=text-align:center>$-1$</td></tr></tbody></table></div><p>$a_1+b_1i+c_1j+d_1k$と$a_2+b_2i+c_2j+d_2k$の掛け算(この掛け算の仕方をハミルトン積と呼ぶらしい)は以下のようになる。</p><p>$$
+a_1a_2-b_1b_2-c_1c_2-d_1d_2 \\
++(a_1b_2+b_1a_2+c_1d_2-d_1c_2)i \\
++(a_1c_2-b_1d_2+c_1a_2+d_1b_2)j \\
++(a_1d_2+b_1c_2-c_1b_2+d_1a_2)k
+$$</p><p>ハミルトン積の定義から、$w e = e w = w$となる単位元$e$は$e=1$であることがわかる。</p><h2 id=フェルマーの小定理>フェルマーの小定理</h2><h3 id=数論での定理>数論での定理</h3><p>数論の世界には、フェルマーの小定理と呼ばれる定理がある。</p><blockquote><p>$$
+a^{p-1} \equiv 1 \pmod{p} \quad (pは素数、aとpは互いに素)
+$$</p></blockquote><p>要するに、$a$を$p-1$回掛けて$p$で割ったあまりを取ると$1$に戻ってくるということである。</p><p>これは数学的帰納法で証明できる(階乗がでてくるスマートな証明方法もあるが、ちょっとテクニカルなので愚直にできるこちらを採用した)。</p><h3 id=証明数論の世界>証明(数論の世界)</h3><p>両辺に$a$を掛け算した$a^p \equiv a \pmod{p}$を示す。</p><p>$a=1$のとき、$1^p \equiv 1 \pmod{p}$は明らかに成り立つ。</p><p>$a=k$のとき、$k^p \equiv k \pmod{p}$が成り立つと仮定すると、$a=k+1$のとき、</p><p>$$
+\begin{align}
+(左辺) &\equiv (k+1)^p \\
+&\equiv \sum_{i=0}^p {}_p \mathrm{C}_i k^i \\
+&\equiv k^p + {}_p \mathrm{C}_1 k^{p-1} + {}_p \mathrm{C}_2 k^{p-2} + \cdots + {}_p \mathrm{C}_{p-1} k + 1 \\
+&\equiv k^p + 1 \\
+&\equiv k + 1 \\
+\end{align}
+$$</p><p>途中で二項係数${}_p\mathrm{C}_1,{}_p\mathrm{C}_2,\cdots,{}_p\mathrm{C}_{p-1}$の値が$p$の倍数になることを使った。</p><p>よって、数学的帰納法により、$a^p \equiv a \pmod{p}$、つまり$a^{p-1} \equiv 1 \pmod{p}$が成り立つ。</p><h3 id=群論での定理>群論での定理</h3><p>さて、上記の定理では普通の数論の世界でしか使えないが、これを群論の世界に拡張する。
+群の定義を確認しておく。</p><blockquote><p>群とは、集合$G$と二項演算$\circ$の組$(G,\circ)$で、以下の条件を満たすものである。</p><p>(G1) 任意の$a,b\in G$に対して、$a\circ b\in G$が成り立つ(閉じている)。<br>(G2) 任意の$a,b,c\in G$に対して、$(a\circ b)\circ c = a\circ (b\circ c)$が成り立つ(結合律)。<br>(G3) ある$e\in G$が存在して、任意の$a\in G$に対して、$a\circ e = e\circ a = a$が成り立つ(単位元の存在)。<br>(G4) 任意の$a\in G$に対して、ある$b\in G$が存在して、$a\circ b = b\circ a = e$が成り立つ(逆元の存在)。</p></blockquote><p>そして、群論の世界におけるフェルマーの小定理は次のようになる。</p><blockquote><p>$p$を素数とする。$a$を有限群$G$の元とすると次が成り立つ。</p><p>$$
+g^{|G|} = e
+$$
+ただし、$e$は$G$の単位元で、$|G|$は$G$の位数である。</p></blockquote><p>なお、$g^n$というのは$(G,\circ)$での$g$を$n$回掛け算したものである。また、数論の世界でのフェルマーの小定理は、$G$を$\mathbb{Z}/p\mathbb{Z}$、演算を掛け算とした特殊な場合を指していた。</p><p>さて、これも証明をする。</p><h3 id=証明群論の世界>証明(群論の世界)</h3><p>おやくそく</p><ul><li>$G$の位数を$n$とする。</li><li>$g$は$G$の元である。</li><li>$g$の逆元を$g^{-1}$とする。</li><li>$g^k$は$g$を$k$回掛け算したものである。</li></ul><p>まず、$g^k=e$となる$k$は必ず存在することを示す。</p><p>$G$の元は有限個なので、$g,g^2,g^3,\cdots,g^{n},g^{n+1}$の$n+1$個の計算結果を持ってきたときに、少なくとも$1$組は同じ値になる。<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup></p><p>これにより$g^a=g^b$を満たす$ a>b $が存在するので、両辺に$(g^{-1})^b$を掛けると$g^{a-b}=e$となる。よって、$k=a-b$とすれば$g^k=e$となる$k$が存在することがわかった。</p><p>$g,g^2,g^3,\cdots$を延々と列挙していくと、ループすることがわかる。このループの周期を$k$個として、$G$の部分集合$H$</p><p>$$
+H=\lbrace g,g^2,g^3,\cdots,g^{k-1},g^k \rbrace
+$$</p><p>を考える。
+次のように$H$は群になっていることがわかる。</p><ul><li>$g$のべき乗同士の積も$g$のべき乗になるので、閉じている。</li><li>結合法則は$G$で成り立つので、当然$H$でも成り立つ。</li><li>$G$での単位元$e$は$H$でも存在($g^k$)する。</li><li>$g^i$の逆元は$g^{k-i}$である。</li></ul><p>また、$H$の定義から$H$の位数は$g$の位数$k$と等しい。</p><p>さて、$G$を$m$個の集合$H_1,H_2,\cdots,H_m$に分割する。今の段階で、$m$が具体的にどういう数であるかは一旦考えないでおく(有限であることは明らかである)。
+分割するというのは、厳密には次のようなことを言っている。
+$$
+G=H_1 \cup H_2 \cup \cdots \cup H_m \quad \\
+H_i \cap H_j = \emptyset \quad (i\neq j)
+$$
+適当に$g_0\in G$を持ってきて、$H_1=\lbrace g_0,g_0^2,g_0^3,\cdots ,g_0^k\rbrace$とすると、$H_2,H_3,\cdots$は$H_1$の各要素をある数$g_i$で掛け算すると得ることができる。
+この分割により、$G$の位数は$mk$となる。</p><p>これを厳密に示す。</p><p>(a). $|H_1|=|H_2|=\cdots=|H_m|=k$であることを示す。</p><blockquote><p>$|H_1|=k$であることがわかっているので、$H_1$にある数$g_i$を掛け算したときに数字に重複がないことを示せばよい。
+相異なる2つの要素$h_1,h_2\in H_1$で$g_ih_1 = g_ih_2$となってしまうことはありえない。両辺に$g_i^{-1}$を掛けると$h_1=h_2$となってしまうからである。</p></blockquote><p>(b). $H_i \cap H_j = \emptyset \quad (i\neq j)$であることを示す。</p><blockquote><p>対偶の$H_i \cap H_j \neq \emptyset \Rightarrow i=j$を示す。
+仮定より $g_ih_1 = g_jh_2$となる$h_1,h_2\in H_1$が存在する。<br>(1) 両辺に$h_1^{-1}h$を掛ける ($h$は$H_1$の任意の要素)と、$g_ih = g_jh_2h_1^{-1}h$となる。これは、$H_i$の任意の元が$H_j$の元となる(なぜなら、左辺は$H_i$の任意の元を表すことができ、右辺は$h_2h_1^{-1}h$が$H_1$の元で、$g_j$を掛け算することにより$H_j$の元になるから)ことを意味する。つまり$H_i \subset H_j$を意味する。<br>(2) 同様に、両辺に$h_2^{-1}h$を掛けると、$g_jh = g_ih_1h_2^{-1}h$となる。これは、$H_j$の任意の元が$H_i$の元となることを意味する。つまり$H_j \subset H_i$を意味する。<br>(1),(2)より、$H_i=H_j$となる。</p></blockquote><p>あとは、任意の$g\in G$が$H_1,H_2,\cdots,H_m$のどれかに含まれるかが気になる。</p><blockquote><p>$km = |G|$を満たすような$m$で、$m$個作ることができることを示す。これは簡単で、次の手順で簡単に作れる。</p><ol><li>適当に$g_0\in G$を持ってきて、$H_1=\lbrace g_0,g_0^2,g_0^3,\cdots ,g_0^k\rbrace$とする。</li><li>$H_1$に含まれていない$g_1\in G$を持ってきて、$H_1$の各要素を$g_1$で掛け算したものを$H_2$とする。$H_1$と$H_2$は(b)より互いに素である。</li><li>$H_1,H_2$に含まれていない$g_2\in G$を持ってきて、$H_1,H_2$の各要素を$g_2$で掛け算したものを$H_3$とする。$H_1,H_2,H_3$は(b)より互いに素である。
+&mldr;これを繰り返すことで、$n$個の元を全て使い切ることができる。</li></ol></blockquote><p>以上より、$G$は$H_1,H_2,\cdots,H_m$の集合に分割できることがわかった。</p><p>この性質はラグランジュの定理と呼ばれている。</p><blockquote><p>$G$を群として、$H$を$G$の部分集合とすると、
+$$
+|G| = |H| \times [G:H]
+$$
+が成り立つ。</p></blockquote><p>$[G:H]$はさっきの説明で言うところの$m$にあたる数の表記方法である。</p><p>さて、ついにフィナーレである。</p><p>$$
+\begin{align}
+g^{|G|} &= g^{|H| \times [G:H]} \\
+&= (g^{|H|})^{[G:H]} \\
+&= e^{[G:H]} \\
+&= e
+\end{align}
+$$</p><p>途中、$g^{|H|}=g^k=e$を使った。</p><p>以上より、$g^{|G|}=e$が成り立つことがわかった。</p><h2 id=四元数の話に戻る>四元数の話に戻る</h2><p>さて、十分に材料が整ったので、例の四元数$w=a+bi+cj+dk$を$p^4$乗すると単位元になることを考えよう。
+まず、先程のフェルマーの小定理(群論)が使えるかどうかを調べる。考えたい四元数の集合を$\mathbb{H}_p$、演算はハミルトン積とする。</p><p>群であるかの条件は、(G1)演算が閉じている、(G2)結合律、(G3)単位元の存在、(G4)逆元の存在である。</p><p>また、$\mathbb{H}_p$を必要に応じて条件を追加することで、群の条件を満たすように細工していく。</p><h3 id=群であるかの条件>群であるかの条件</h3><p>実は、これは四元数を行列で表すと解決する。</p><p>四元数$w=a+bi+cj+dk \in \mathbb{H}_p$を</p><p>$$
+W =
+\begin{pmatrix}
+a & b & c & d \\
+-b & a & -d & c \\
+-c & d & a & -b \\
+-d & -c & b & a
+\end{pmatrix}
+$$
+と表すと、行列の掛け算と四元数の掛け算(ハミルトン積)は対応する。</p><p>行列の掛け算は、(G2)結合律を満たし<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>、(G3)単位元も単位行列として存在する。</p><p>ただし、(G4)逆元の存在については注意が必要である。正則行列、すなわち行列式の値が$0$でない行列については、逆行列が存在することが知られているが、行列式の値が$0$の行列については、逆行列がない。</p><p>すなわち、
+$$
+\begin{align}
+\det W &= a^2+b^2+c^2+d^2 \\
+&\neq 0
+\end{align}
+$$</p><p>が条件となる。</p><p>よって、$\mathbb{H}_p$を次のように再定義すれば、(G2),(G3),(G4)を満たす。</p><p>$$
+\mathbb{H}_p = \lbrace a+bi+cj+dk \mid a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land a^2+b^2+c^2+d^2 \neq 0 \rbrace
+$$</p><p>最後に、(G1)であるが、これも行列式の性質$\det(AB)=\det(A)\det(B)$を使えば、$W_1,W_2\in \mathbb{H}_p$に対して$\det(W_1W_2)=\det(W_1)\det(W_2)\neq 0$となることがわかるので、$W_1W_2\in \mathbb{H}_p$となる。</p><p>以上より、$\mathbb{H}_p$は群であることがわかった。</p><h3 id=位数を求める>位数を求める</h3><p>定義式をもう一度みる。
+$$
+\mathbb{H}_p = \lbrace a+bi+cj+dk \mid a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land a^2+b^2+c^2+d^2 \neq 0 \rbrace
+$$</p><p>$\mathbb{H}_p$の位数は、次の式を満たすような$0$以上$p-1$以下の整数の組$(a,b,c,d)$の個数である。</p><p>$$
+a^2+b^2+c^2+d^2 \neq 0 \color{red}{\pmod p}
+$$</p><p>$p^4$通りの組み合わせがあるので、各平方数の和が$p$の倍数になる場合の数を引けばよい。
+が、$\mod p$が存在しているせいで、簡単ではなさそうだ。
+$a=b=c=d=0$は明らかに満たさないが、他にも満たさない数が存在するかもしれない。</p><p>例えば、$p=5$のとき、$a=1,b=2,c=0,d=0$では平方数の和が$5$となってしまう。</p><p>ちなみに、ラグランジュの四元数定理というものが存在し、任意の自然数は必ず$4$つの平方数の和として表す方法が$1$通り以上あることが知られている。よって、$a=b=c=d=0$のように自明な場合以外を考える必要が生じていて、これは難しそうである。</p><p>$p$が小さければ計算機を使って数え上げることができるので、$p=17$について調べてみた。雑にプログラムを書いてみると、</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=mi>17</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cnt</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>a</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=n>p</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>b</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=n>p</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>c</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=n>p</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=n>d</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=n>p</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                <span class=n>x</span> <span class=o>=</span> <span class=n>a</span><span class=o>*</span><span class=n>a</span><span class=o>+</span><span class=n>b</span><span class=o>*</span><span class=n>b</span><span class=o>+</span><span class=n>c</span><span class=o>*</span><span class=n>c</span><span class=o>+</span><span class=n>d</span><span class=o>*</span><span class=n>d</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>x</span> <span class=o>%</span> <span class=n>p</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=n>cnt</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>cnt</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>$78336$が得られる。sagemathで、適当な四元数の$78336$乗を計算すると、</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>os</span>
+</span></span><span class=line><span class=cl><span class=c1># from Crypto.Util.number import getPrime</span>
+</span></span><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=mi>17</span>
+</span></span><span class=line><span class=cl><span class=n>Q</span> <span class=o>=</span> <span class=n>QuaternionAlgebra</span><span class=p>(</span><span class=n>Zmod</span><span class=p>(</span><span class=n>p</span><span class=p>),</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>i</span><span class=p>,</span> <span class=n>j</span><span class=p>,</span> <span class=n>k</span> <span class=o>=</span> <span class=n>Q</span><span class=o>.</span><span class=n>gens</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=mi>14</span>
+</span></span><span class=line><span class=cl><span class=n>c</span> <span class=o>=</span> <span class=mi>15</span>
+</span></span><span class=line><span class=cl><span class=n>d</span> <span class=o>=</span> <span class=mi>9</span>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>a</span> <span class=o>+</span> <span class=n>b</span><span class=o>*</span><span class=n>i</span> <span class=o>+</span> <span class=n>c</span><span class=o>*</span><span class=n>j</span> <span class=o>+</span> <span class=n>d</span><span class=o>*</span><span class=n>k</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span> <span class=p>(</span><span class=n>a</span><span class=o>*</span><span class=n>a</span><span class=o>+</span><span class=n>b</span><span class=o>*</span><span class=n>b</span><span class=o>+</span><span class=n>c</span><span class=o>*</span><span class=n>c</span><span class=o>+</span><span class=n>d</span><span class=o>*</span><span class=n>d</span><span class=p>)</span> <span class=o>%</span> <span class=n>p</span> <span class=o>!=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>e</span> <span class=o>=</span> <span class=mi>78336</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>x</span><span class=o>^</span><span class=n>e</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>$1$が得られる。得られることがわかった。</p><p>ただ、この$78336$は$p$によって変わるので、$p$が大きくなると計算機では数え上げることができない。</p><p>次の節では一般的な行列に考えを拡張して、位数を求めやすくする。</p><h3 id=4次正則正方行列の部分集合である>$4$次正則正方行列の部分集合である</h3><p>四元数が$4$次の正方行列を用いた表現を再掲する。</p><p>$$
+W =
+\begin{pmatrix}
+a & b & c & d \\
+-b & a & -d & c \\
+-c & d & a & -b \\
+-d & -c & b & a
+\end{pmatrix}
+$$</p><p>先程の$\mathbb{H}_p$を行列の集合に変換した$\mathbb{H}^\prime_p$を定義する。</p><p>$$
+\mathbb{H}^\prime_p = \left\lbrace
+W =
+\begin{pmatrix}
+a & b & c & d \\
+-b & a & -d & c \\
+-c & d & a & -b \\
+-d & -c & b & a
+\end{pmatrix}
+\mid a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land \det W \neq 0 \right\rbrace
+$$</p><p>また、$4$次の正則で正方行列の集合を$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$とする。</p><p>$$
+\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z}) = \left\lbrace
+A = 各要素が\mathbb{Z}/p\mathbb{Z}の元である4次正方行列
+\mid \land \det A \neq 0 \right\rbrace
+$$</p><p>このとき、定義より明らかに$\mathbb{H}^\prime_p \subset \mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$である。
+また、先程の議論より、$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$は群であり、$\mathbb{H}^\prime_p$は$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$の部分群である。</p><p>つまり、$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$の位数が分かれば、フェルマーの小定理(群論)より、任意の$A\in \mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$に対して、</p><p>$$
+A^{|\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})|} = E
+$$</p><p>が成り立ち、当然$\mathbb{H}^\prime_p$の元$A$に対しても成り立つ。</p><p>問題なのは$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$の位数を求める = 正則な$4$次正方行列の個数を求めることである。</p><p>ここでのポイントは、$\mathbb{H}^\prime_p$の元の中で、正則である行列の個数を求めることは困難であるが、$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$の元の中で、正則である行列の個数はより数えやすいということである。</p><h3 id=mathrmgl_4mathbbzpmathbbzの位数を求める>$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$の位数を求める</h3><p>行列が正則であることは、各行ベクトルが線形独立であることと同値である。行ベクトルを$A=(a_1,a_2,a_3,a_4)$とすると、</p><ul><li>$a_1$は$p^4$通りの組み合わせがあり、それぞれの場合について、$p$通りの線形従属な$a_2$が存在する。</li><li>よって、$a_1$と$a_2$の組み合わせは$p^4 (p^4-p)$通りある。</li><li>さらに、整数係数で$c_1a_1+c_2a_2$と表される$a_3$は$p^2$通りあるから、$a_1,a_2,a_3$の組み合わせは$p^4(p^4-p)(p^4-p^2)$通りある。</li><li>さらに、整数係数で$c_1a_1+c_2a_2+c_3a_3$と表される$a_4$は$p^3$通りあるから、$a_1,a_2,a_3,a_4$の組み合わせは$p^4(p^4-p)(p^4-p^2)(p^4-p^3)$通りある。</li></ul><p>よって、$\mathrm{GL}_4(\mathbb{Z}/p\mathbb{Z})$の位数は、$p^4(p^4-p)(p^4-p^2)(p^4-p^3)$である。</p><p>先程の難しい数え上げの問題を解く必要がなくなり、単純な$p$の多項式を計算すれば単位元になることがわかった。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>os</span>
+</span></span><span class=line><span class=cl><span class=c1># from Crypto.Util.number import getPrime</span>
+</span></span><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=mi>17</span>
+</span></span><span class=line><span class=cl><span class=n>Q</span> <span class=o>=</span> <span class=n>QuaternionAlgebra</span><span class=p>(</span><span class=n>Zmod</span><span class=p>(</span><span class=n>p</span><span class=p>),</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>i</span><span class=p>,</span> <span class=n>j</span><span class=p>,</span> <span class=n>k</span> <span class=o>=</span> <span class=n>Q</span><span class=o>.</span><span class=n>gens</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=mi>14</span>
+</span></span><span class=line><span class=cl><span class=n>c</span> <span class=o>=</span> <span class=mi>15</span>
+</span></span><span class=line><span class=cl><span class=n>d</span> <span class=o>=</span> <span class=mi>9</span>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>a</span> <span class=o>+</span> <span class=n>b</span><span class=o>*</span><span class=n>i</span> <span class=o>+</span> <span class=n>c</span><span class=o>*</span><span class=n>j</span> <span class=o>+</span> <span class=n>d</span><span class=o>*</span><span class=n>k</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span> <span class=p>(</span><span class=n>a</span><span class=o>*</span><span class=n>a</span><span class=o>+</span><span class=n>b</span><span class=o>*</span><span class=n>b</span><span class=o>+</span><span class=n>c</span><span class=o>*</span><span class=n>c</span><span class=o>+</span><span class=n>d</span><span class=o>*</span><span class=n>d</span><span class=p>)</span> <span class=o>%</span> <span class=n>p</span> <span class=o>!=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>e</span> <span class=o>=</span> <span class=n>p</span><span class=o>^</span><span class=mi>4</span><span class=o>*</span><span class=p>(</span><span class=n>p</span><span class=o>^</span><span class=mi>4</span><span class=o>-</span><span class=n>p</span><span class=p>)</span><span class=o>*</span><span class=p>(</span><span class=n>p</span><span class=o>^</span><span class=mi>4</span><span class=o>-</span><span class=n>p</span><span class=o>^</span><span class=mi>2</span><span class=p>)</span><span class=o>*</span><span class=p>(</span><span class=n>p</span><span class=o>^</span><span class=mi>4</span><span class=o>-</span><span class=n>p</span><span class=o>^</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>x</span><span class=o>^</span><span class=n>e</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>お疲れ様でした。</p><h3 id=まとめ>まとめ</h3><p>四元数バージョンのフェルマーの小定理っぽいやつを最後にまとめておく。</p><p>$$
+\mathbb{H}_p = \lbrace a+bi+cj+dk \mid a,b,c,d\in(\mathbb{Z}/p\mathbb{Z}) \land a^2+b^2+c^2+d^2 \neq 0 \rbrace \\
+\Rightarrow \forall w\in \mathbb{H}_p, w^{p^4(p^4-p)(p^4-p^2)(p^4-p^3)} = 1
+$$</p><h3 id=余談>余談</h3><p>本当は、$w$の指数はもっと小さくできることができるらしいのだが、証明方法がわからなかった。</p><h2 id=参考文献>参考文献</h2><ul><li><a class=link href=https://ja.wikipedia.org/wiki/%E5%9B%9B%E5%85%83%E6%95%B0 target=_blank rel=noopener>四元数 - Wikipedia</a></li><li><a class=link href=https://note.com/anoare314/n/n70d3c2d062c1 target=_blank rel=noopener>有限体上の正方行列が正則になる確率 - あのあれ</a></li><li><a class=link href=https://tsujimotter.hatenablog.com/entry/fermat-little-theorem-by-group-theory target=_blank rel=noopener>群論におけるフェルマーの小定理 - tsujimotterのノートブック</a></li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>鳩ノ巣原理による&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p>結合律は、単純に計算するだけで証明することはできるので、わざわざ行列に表す必要はあまりない。&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/kosen-math-diff/><div class=article-details><h2 class=article-title>高専数学と高校数学の違い</h2></div></a></article><article><a href=/my-blog-4/contents/shiba-ctf-writeup/><div class=article-details><h2 class=article-title>ShibaCTF Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/ricercactf/><div class=article-details><h2 class=article-title>RicercaCTF 2023 Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/fermat/><div class=article-details><h2 class=article-title>フェルマーの小定理に関する暗号の問題まとめ</h2></div></a></article><article><a href=/my-blog-4/contents/processing/><div class=article-details><h2 class=article-title>2D画面になんちゃって3Dを書く</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

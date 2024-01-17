@@ -1,0 +1,394 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="DeZeroの使い方 関数の最小値(勾配降下法) 次の式で，$z$の最小値となる$x$と$y$を求める($x,y$は実数)． $$ z = (x-2)^2 + (y-3)^2 $$ $z=x^2+y^2$のグラフの形がこちらであるため， これを$x$軸正の方向に$2$，$y$軸正の方向に$3$だけ平行移動させたものがこのグラフの形である．
+次のコードで，$x$と$y$の初期値を$0$として，z.backward()をしたあとに，x.gradとy.gradを表示する．これは何を表しているのか．
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 import numpy as np from dezero import Variable def f(x,y): z = (x-2)**2 + (y-3)**2 return z x = Variable(np.array(0.0)) y = Variable(np.array(0.0)) z = f(x,y) z.backward() print(x, y, z) print(x.grad, y.grad) 1 2 variable(0.0) variable(0.0) variable(13.0) variable(-4.0) variable(-6.0) backwardメソッドでは，$z$の各変数についての偏微分を計算している．この場合は，次のようになる． $$ \frac{\partial z}{\partial x} = 2(x-2) = 2x-4 $$ $$ \frac{\partial z}{\partial y} = 2(y-3) = 2y-6 $$ そして，gradは，変数がその値であるときの偏微分を表している． $$ \frac{\partial z}{\partial x} (0,0) = -4 $$ $$ \frac{\partial z}{\partial y} (0,0) = -6 $$"><title>強化学習勉強メモ #6 ニューラルネットワーク(基本編)</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/rl-6/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="強化学習勉強メモ #6 ニューラルネットワーク(基本編)"><meta property="og:description" content="DeZeroの使い方 関数の最小値(勾配降下法) 次の式で，$z$の最小値となる$x$と$y$を求める($x,y$は実数)． $$ z = (x-2)^2 + (y-3)^2 $$ $z=x^2+y^2$のグラフの形がこちらであるため， これを$x$軸正の方向に$2$，$y$軸正の方向に$3$だけ平行移動させたものがこのグラフの形である．
+次のコードで，$x$と$y$の初期値を$0$として，z.backward()をしたあとに，x.gradとy.gradを表示する．これは何を表しているのか．
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 import numpy as np from dezero import Variable def f(x,y): z = (x-2)**2 + (y-3)**2 return z x = Variable(np.array(0.0)) y = Variable(np.array(0.0)) z = f(x,y) z.backward() print(x, y, z) print(x.grad, y.grad) 1 2 variable(0.0) variable(0.0) variable(13.0) variable(-4.0) variable(-6.0) backwardメソッドでは，$z$の各変数についての偏微分を計算している．この場合は，次のようになる． $$ \frac{\partial z}{\partial x} = 2(x-2) = 2x-4 $$ $$ \frac{\partial z}{\partial y} = 2(y-3) = 2y-6 $$ そして，gradは，変数がその値であるときの偏微分を表している． $$ \frac{\partial z}{\partial x} (0,0) = -4 $$ $$ \frac{\partial z}{\partial y} (0,0) = -6 $$"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/rl-6/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2023-01-08T15:00:36+09:00"><meta property="article:modified_time" content="2023-01-08T15:00:36+09:00"><meta name=twitter:title content="強化学習勉強メモ #6 ニューラルネットワーク(基本編)"><meta name=twitter:description content="DeZeroの使い方 関数の最小値(勾配降下法) 次の式で，$z$の最小値となる$x$と$y$を求める($x,y$は実数)． $$ z = (x-2)^2 + (y-3)^2 $$ $z=x^2+y^2$のグラフの形がこちらであるため， これを$x$軸正の方向に$2$，$y$軸正の方向に$3$だけ平行移動させたものがこのグラフの形である．
+次のコードで，$x$と$y$の初期値を$0$として，z.backward()をしたあとに，x.gradとy.gradを表示する．これは何を表しているのか．
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 import numpy as np from dezero import Variable def f(x,y): z = (x-2)**2 + (y-3)**2 return z x = Variable(np.array(0.0)) y = Variable(np.array(0.0)) z = f(x,y) z.backward() print(x, y, z) print(x.grad, y.grad) 1 2 variable(0.0) variable(0.0) variable(13.0) variable(-4.0) variable(-6.0) backwardメソッドでは，$z$の各変数についての偏微分を計算している．この場合は，次のようになる． $$ \frac{\partial z}{\partial x} = 2(x-2) = 2x-4 $$ $$ \frac{\partial z}{\partial y} = 2(y-3) = 2y-6 $$ そして，gradは，変数がその値であるときの偏微分を表している． $$ \frac{\partial z}{\partial x} (0,0) = -4 $$ $$ \frac{\partial z}{\partial y} (0,0) = -6 $$"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#dezeroの使い方>DeZeroの使い方</a><ol><li><a href=#関数の最小値勾配降下法>関数の最小値(勾配降下法)</a></li><li><a href=#線形回帰>線形回帰</a><ol><li><a href=#問題設定>問題設定</a></li><li><a href=#実装>実装</a></li></ol></li><li><a href=#非線形なデータ>非線形なデータ</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/>強化学習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/rl-6/>強化学習勉強メモ #6 ニューラルネットワーク(基本編)</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Jan 08, 2023</time></div></footer></div></header><section class=article-content><h2 id=dezeroの使い方>DeZeroの使い方</h2><h3 id=関数の最小値勾配降下法>関数の最小値(勾配降下法)</h3><p>　次の式で，$z$の最小値となる$x$と$y$を求める($x,y$は実数)．
+$$
+z = (x-2)^2 + (y-3)^2
+$$
+$z=x^2+y^2$のグラフの形が<a class=link href=https://www.geogebra.org/3d/dfrzwv6g target=_blank rel=noopener>こちら</a>であるため，
+これを$x$軸正の方向に$2$，$y$軸正の方向に$3$だけ平行移動させたものがこのグラフの形である．</p><p>次のコードで，$x$と$y$の初期値を$0$として，<code>z.backward()</code>をしたあとに，<code>x.grad</code>と<code>y.grad</code>を表示する．これは何を表しているのか．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>dezero</span> <span class=kn>import</span> <span class=n>Variable</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>f</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>z</span> <span class=o>=</span> <span class=p>(</span><span class=n>x</span><span class=o>-</span><span class=mi>2</span><span class=p>)</span><span class=o>**</span><span class=mi>2</span> <span class=o>+</span> <span class=p>(</span><span class=n>y</span><span class=o>-</span><span class=mi>3</span><span class=p>)</span><span class=o>**</span><span class=mi>2</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>z</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=mf>0.0</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=mf>0.0</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>z</span> <span class=o>=</span> <span class=n>f</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>z</span><span class=o>.</span><span class=n>backward</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>z</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>grad</span><span class=p>,</span> <span class=n>y</span><span class=o>.</span><span class=n>grad</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>variable</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span> <span class=n>variable</span><span class=p>(</span><span class=mf>0.0</span><span class=p>)</span> <span class=n>variable</span><span class=p>(</span><span class=mf>13.0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>variable</span><span class=p>(</span><span class=o>-</span><span class=mf>4.0</span><span class=p>)</span> <span class=n>variable</span><span class=p>(</span><span class=o>-</span><span class=mf>6.0</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>backward</code>メソッドでは，$z$の各変数についての偏微分を計算している．この場合は，次のようになる．
+$$
+\frac{\partial z}{\partial x} = 2(x-2) = 2x-4
+$$
+$$
+\frac{\partial z}{\partial y} = 2(y-3) = 2y-6
+$$
+そして，gradは，変数がその値であるときの偏微分を表している．
+$$
+\frac{\partial z}{\partial x} (0,0) = -4
+$$
+$$
+\frac{\partial z}{\partial y} (0,0) = -6
+$$</p><p>偏微分の図形的な意味は勾配(gradient)である．点$(0,0)$から，これらの偏微分をベクトルとして表した$(-4,-6)$の方向に移動すると，$z$の値が最も大きくなる．これを勾配ベクトルと呼び，次のように記号$\nabla$で表す．
+$$
+\nabla z = \left( \frac{\partial z}{\partial x}, \frac{\partial z}{\partial y} \right) = \left( -4, -6 \right)
+$$
+まとめると，勾配ベクトル$\nabla z(x,y)$は，次の意味を持つ(証明<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>)．</p><ul><li>$(x,y)$からちょっと動いたときに，$z$の値が最も大きくなる方向を示す．</li><li>その方向に，$C$だけ動くと，$z$の値が$C||\nabla z||$くらい増える．<ul><li>$||\nabla z||$は勾配ベクトルの大きさである．</li></ul></li></ul><p>この性質を利用すると，できるだけ小さい値$z$を求めるためには，$z$の勾配ベクトルの逆の方向に少し動くことを繰り返せば良いと考えられる．この手法を勾配降下法と呼ぶ．</p><p>これをDeZeroで実装すると，次のようになる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>dezero</span> <span class=kn>import</span> <span class=n>Variable</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>f</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>z</span> <span class=o>=</span> <span class=p>(</span><span class=n>x</span><span class=o>-</span><span class=mi>2</span><span class=p>)</span><span class=o>**</span><span class=mi>2</span> <span class=o>+</span> <span class=p>(</span><span class=n>y</span><span class=o>-</span><span class=mi>3</span><span class=p>)</span><span class=o>**</span><span class=mi>2</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>z</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=mf>0.0</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=mf>0.0</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>lr</span> <span class=o>=</span> <span class=mf>0.001</span> <span class=c1># learning rate</span>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=mi>10000</span> <span class=c1># iteration</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>n</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>z</span> <span class=o>=</span> <span class=n>f</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#print(x, y, z)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>x</span><span class=o>.</span><span class=n>cleargrad</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span><span class=o>.</span><span class=n>cleargrad</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>z</span><span class=o>.</span><span class=n>backward</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>x</span><span class=o>.</span><span class=n>data</span> <span class=o>-=</span> <span class=n>lr</span> <span class=o>*</span> <span class=n>x</span><span class=o>.</span><span class=n>grad</span><span class=o>.</span><span class=n>data</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span><span class=o>.</span><span class=n>data</span> <span class=o>-=</span> <span class=n>lr</span> <span class=o>*</span> <span class=n>y</span><span class=o>.</span><span class=n>grad</span><span class=o>.</span><span class=n>data</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>variable(1.9999999959594266) variable(2.9999999939391397)
+</span></span></code></pre></td></tr></table></div></div><p>注意するべきは，</p><ul><li><code>x.cleargrad()</code>と<code>y.cleargrad()</code>で，<code>x.grad</code>と<code>y.grad</code>を初期化している．</li><li><code>x.grad</code>ではなく<code>x.grad.data</code>を使っている．<ul><li><code>x.grad</code>が整数型ではなく，<code>Variable</code>という型であるため．</li></ul></li></ul><h3 id=線形回帰>線形回帰</h3><h4 id=問題設定>問題設定</h4><p>　$y=ax+b$のような線形関数で，与えられた点$(x_i,y_i)$の集合を「最もよく近似する」$a$と$b$を求める問題を線形回帰と呼ぶ．まず，次のようなデータセットで試す．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>matplotlib.pyplot</span> <span class=k>as</span> <span class=nn>plt</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>dezero</span> <span class=kn>import</span> <span class=n>Variable</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>dezero.functions</span> <span class=k>as</span> <span class=nn>F</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># トイ・データセット</span>
+</span></span><span class=line><span class=cl><span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>seed</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>rand</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=mi>5</span> <span class=o>+</span> <span class=mi>2</span> <span class=o>*</span> <span class=n>x</span> <span class=o>+</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>rand</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>x</span><span class=p>),</span> <span class=n>Variable</span><span class=p>(</span><span class=n>y</span><span class=p>)</span>  <span class=c1># 省略可能</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Plot</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>scatter</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>data</span><span class=p>,</span> <span class=n>y</span><span class=o>.</span><span class=n>data</span><span class=p>,</span> <span class=n>s</span><span class=o>=</span><span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>xlabel</span><span class=p>(</span><span class=s1>&#39;x&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>ylabel</span><span class=p>(</span><span class=s1>&#39;y&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src=/my-blog-4/contents/rl-6/img/linear.png width=386 height=262 srcset="/my-blog-4/contents/rl-6/img/linear_hua2743177af1d3e5daa0615c115c34639_6395_480x0_resize_box_3.png 480w, /my-blog-4/contents/rl-6/img/linear_hua2743177af1d3e5daa0615c115c34639_6395_1024x0_resize_box_3.png 1024w" loading=lazy alt=作成したデータセット class=gallery-image data-flex-grow=147 data-flex-basis=353px></p><p>人間の感覚により，なんとなく真ん中に直線が引けそうなことはわかる．</p><p>　問題となるのが，何をもって「最もよく近似している」直線であると判断するかである．これは，いくつかの指標が考えられる．今回は，次の式で表される「平均二乗誤差」(mean squared error)を用いる．
+$$
+L = \frac{1}{N} \sum_{i=1}^N (y_i - (ax_i + b))^2
+$$
+この値が小さいほど，直線がデータに近似しているということにする．このような予測したパラメータの悪さを表す指標を損失関数(loss function)と呼ぶ．</p><h4 id=実装>実装</h4><p>　複数の点$(x_i,y_i)$があるが，これをまとめて一つの変数として扱うために，行列を用いる．
+$y=ax+b$の式を行列で表すと，次のようになる．行列を扱うことのできるライブラリを使うと，簡単に計算ができる．
+$$
+\begin{pmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_N
+\end{pmatrix}
+=
+a
+\begin{pmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_N
+\end{pmatrix}
++
+\begin{pmatrix}
+b \\
+b \\
+\vdots \\
+b
+\end{pmatrix}
+$$
+一次関数の計算を<code>predict</code>関数で行うとすれば，次のようになる．ここでは，$a$の代わりにWで実装している．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>matplotlib.pyplot</span> <span class=k>as</span> <span class=nn>plt</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>dezero</span> <span class=kn>import</span> <span class=n>Variable</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>dezero.functions</span> <span class=k>as</span> <span class=nn>F</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>seed</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>rand</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=mi>5</span> <span class=o>+</span> <span class=mi>2</span> <span class=o>*</span> <span class=n>x</span> <span class=o>+</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>rand</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>W</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>zeros</span><span class=p>((</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>zeros</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>predict</span><span class=p>(</span><span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>matmul</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>W</span><span class=p>)</span> <span class=o>+</span> <span class=n>b</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>y</span>
+</span></span></code></pre></td></tr></table></div></div><p>また，numpyの機能を使うと損失関数は次のように実装できる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>def</span> <span class=nf>mean_squared_error</span><span class=p>(</span><span class=n>x0</span><span class=p>,</span> <span class=n>x1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>diff</span> <span class=o>=</span> <span class=n>x0</span> <span class=o>-</span> <span class=n>x1</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>F</span><span class=o>.</span><span class=n>sum</span><span class=p>(</span><span class=n>diff</span> <span class=o>**</span> <span class=mi>2</span><span class=p>)</span> <span class=o>/</span> <span class=nb>len</span><span class=p>(</span><span class=n>diff</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>あとは，損失関数上での勾配ベクトルを求め，パラメータを更新するだけである．</p><p>勘違いをしがちなのが，次の点だ．</p><ul><li>$x_1,x_2,\dots,x_N,y_1,y_2,\dots,y_N$は，変数ではなく<strong>定数である</strong>．</li><li>変数であるのは，$y=ax+b$における$a$と$b$のみである．</li><li>つまり，損失関数は，$a$と$b$の関数である．その損失関数は，係数や定数項に$x_i,y_i$がたくさん入っている複雑な関数である．</li></ul><h3 id=非線形なデータ>非線形なデータ</h3><p>　この世の全てのデータが線形の関係にあるわけではない．$y=\sin x$のような非線形なデータに対して，線形な関数を使って予測すると，次のような結果になる．</p><p><img src=/my-blog-4/contents/rl-6/img/nonlinear.png width=394 height=262 srcset="/my-blog-4/contents/rl-6/img/nonlinear_hu593451b372720b6281f0968ff596c751_9620_480x0_resize_box_3.png 480w, /my-blog-4/contents/rl-6/img/nonlinear_hu593451b372720b6281f0968ff596c751_9620_1024x0_resize_box_3.png 1024w" loading=lazy alt=非線形なデータ class=gallery-image data-flex-grow=150 data-flex-basis=360px></p><p>三角関数に準じたデータであるが，線形の形で近似するとなんともアバウトな結果になる．</p><p>　ここでニューラルネットワークの概念が登場する．ニューラルネットワークは，線形な関数(線形変換，あるいはアフィン変換)と非線形な関数(<strong>活性化関数</strong>と呼ばれる)を組み合わせることで，非線形な関数を表現することができる．
+　活性化関数の例としては，シグモイド関数やReLU関数などがある．
+$$
+\begin{align*}
+\text{シグモイド関数} \quad &\sigma(x) = \frac{1}{1 + \exp(-x)} \\
+\text{ReLU関数} \quad &\text{ReLU}(x) = \max(0, x)
+\end{align*}
+$$
+DeZeroでは，これらの関数は<code>dezero.functions</code>に実装されている．線形関数も<code>F.linear</code>で実装されている．さっきのコード<code>F.matmul(x, W) + b</code>は，<code>F.linear(x, W, b)</code>と書き換えられる．今回は，線形関数，シグモイド関数，線形関数の3つの層を組み合わせる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>I</span><span class=p>,</span> <span class=n>H</span><span class=p>,</span> <span class=n>O</span> <span class=o>=</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=n>W1</span><span class=p>,</span> <span class=n>b1</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=mf>0.01</span> <span class=o>*</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>I</span><span class=p>,</span> <span class=n>H</span><span class=p>)),</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>zeros</span><span class=p>(</span><span class=n>H</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>W2</span><span class=p>,</span> <span class=n>b2</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=mf>0.01</span> <span class=o>*</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>H</span><span class=p>,</span> <span class=n>O</span><span class=p>)),</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>zeros</span><span class=p>(</span><span class=n>O</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>predict</span><span class=p>(</span><span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>linear</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>W1</span><span class=p>,</span> <span class=n>b1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>sigmoid</span><span class=p>(</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>linear</span><span class=p>(</span><span class=n>y</span><span class=p>,</span> <span class=n>W2</span><span class=p>,</span> <span class=n>b2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>y</span>
+</span></span></code></pre></td></tr></table></div></div><p>各層で起こっていることを順に説明をする．入力と出力の次元はそれぞれ1と1である．中間層(隠れ層)の次元は10とする．</p><ul><li>第$1$層．入力は$1$次元で，$10$次元の$W$と$b$を用いて線形変換され，$y_1,y_2,y_3,\cdots,y_{10}$が得られる．</li></ul><p>$$
+\begin{pmatrix}
+y_1 & y_2 & \cdots & y_{10}
+\end{pmatrix}
+=
+\begin{pmatrix}
+x
+\end{pmatrix}
+\begin{pmatrix}
+w_{1} & w_{2} & \cdots & w_{10}
+\end{pmatrix}
++
+\begin{pmatrix}
+b_{1} & b_{2} & \cdots & b_{10}
+\end{pmatrix}
+$$</p><ul><li>次に，第$2$層目で，$y_1,y_2,y_3,\cdots,y_{10}$をそれぞれシグモイド関数に入力する．
+$$
+y_1 \leftarrow \sigma(y_1) \\
+y_2 \leftarrow \sigma(y_2) \\
+\vdots \\
+y_{10} \leftarrow \sigma(y_{10})
+$$</li><li>最後に，第$3$層目で，$y_1,y_2,y_3,\cdots,y_{10}$をそれぞれ線形変換する．</li></ul><p>$$
+\begin{pmatrix}
+y
+\end{pmatrix}
+=
+\begin{pmatrix}
+y_1 & y_2 & \cdots & y_{10}
+\end{pmatrix}
+\begin{pmatrix}
+w_1 \\
+w_2 \\
+\vdots \\
+w_{10}
+\end{pmatrix}
++
+\begin{pmatrix}
+b
+\end{pmatrix}
+$$</p><p>注意するべきは，数式で$x$はスカラー量のように見えているが，実際は，<code>x = np.random.rand(100, 1)</code>のような行列であることである(この場合$100$行$1$列の行列)．</p><p>最終的には次のようなコードになる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>matplotlib.pyplot</span> <span class=k>as</span> <span class=nn>plt</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>dezero</span> <span class=kn>import</span> <span class=n>Variable</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>dezero.functions</span> <span class=k>as</span> <span class=nn>F</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># トイ・データセット</span>
+</span></span><span class=line><span class=cl><span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>seed</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>rand</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>sin</span><span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=n>np</span><span class=o>.</span><span class=n>pi</span> <span class=o>*</span> <span class=n>x</span><span class=p>)</span> <span class=o>+</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>rand</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=n>x</span><span class=p>),</span> <span class=n>Variable</span><span class=p>(</span><span class=n>y</span><span class=p>)</span>  <span class=c1># 省略可能</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>I</span><span class=p>,</span> <span class=n>H</span><span class=p>,</span> <span class=n>O</span> <span class=o>=</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=n>W1</span><span class=p>,</span> <span class=n>b1</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=mf>0.01</span> <span class=o>*</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>I</span><span class=p>,</span> <span class=n>H</span><span class=p>)),</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>zeros</span><span class=p>(</span><span class=n>H</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>W2</span><span class=p>,</span> <span class=n>b2</span> <span class=o>=</span> <span class=n>Variable</span><span class=p>(</span><span class=mf>0.01</span> <span class=o>*</span> <span class=n>np</span><span class=o>.</span><span class=n>random</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>H</span><span class=p>,</span> <span class=n>O</span><span class=p>)),</span> <span class=n>Variable</span><span class=p>(</span><span class=n>np</span><span class=o>.</span><span class=n>zeros</span><span class=p>(</span><span class=n>O</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>predict</span><span class=p>(</span><span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>linear</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>W1</span><span class=p>,</span> <span class=n>b1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>sigmoid</span><span class=p>(</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>linear</span><span class=p>(</span><span class=n>y</span><span class=p>,</span> <span class=n>W2</span><span class=p>,</span> <span class=n>b2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>y</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>mean_squared_error</span><span class=p>(</span><span class=n>x0</span><span class=p>,</span> <span class=n>x1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>diff</span> <span class=o>=</span> <span class=n>x0</span> <span class=o>-</span> <span class=n>x1</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>F</span><span class=o>.</span><span class=n>sum</span><span class=p>(</span><span class=n>diff</span> <span class=o>**</span> <span class=mi>2</span><span class=p>)</span> <span class=o>/</span> <span class=nb>len</span><span class=p>(</span><span class=n>diff</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>lr</span> <span class=o>=</span> <span class=mf>0.2</span>
+</span></span><span class=line><span class=cl><span class=n>iters</span> <span class=o>=</span> <span class=mi>10000</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>iters</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>y_pred</span> <span class=o>=</span> <span class=n>predict</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>loss</span> <span class=o>=</span> <span class=n>mean_squared_error</span><span class=p>(</span><span class=n>y</span><span class=p>,</span> <span class=n>y_pred</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>W1</span><span class=o>.</span><span class=n>cleargrad</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>b1</span><span class=o>.</span><span class=n>cleargrad</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>W2</span><span class=o>.</span><span class=n>cleargrad</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>b2</span><span class=o>.</span><span class=n>cleargrad</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>loss</span><span class=o>.</span><span class=n>backward</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>W1</span><span class=o>.</span><span class=n>data</span> <span class=o>-=</span> <span class=n>lr</span> <span class=o>*</span> <span class=n>W1</span><span class=o>.</span><span class=n>grad</span><span class=o>.</span><span class=n>data</span>
+</span></span><span class=line><span class=cl>    <span class=n>b1</span><span class=o>.</span><span class=n>data</span> <span class=o>-=</span> <span class=n>lr</span> <span class=o>*</span> <span class=n>b1</span><span class=o>.</span><span class=n>grad</span><span class=o>.</span><span class=n>data</span>
+</span></span><span class=line><span class=cl>    <span class=n>W2</span><span class=o>.</span><span class=n>data</span> <span class=o>-=</span> <span class=n>lr</span> <span class=o>*</span> <span class=n>W2</span><span class=o>.</span><span class=n>grad</span><span class=o>.</span><span class=n>data</span>
+</span></span><span class=line><span class=cl>    <span class=n>b2</span><span class=o>.</span><span class=n>data</span> <span class=o>-=</span> <span class=n>lr</span> <span class=o>*</span> <span class=n>b2</span><span class=o>.</span><span class=n>grad</span><span class=o>.</span><span class=n>data</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>i</span> <span class=o>%</span> <span class=mi>10</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=n>loss</span><span class=o>.</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Plot</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>scatter</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>data</span><span class=p>,</span> <span class=n>y</span><span class=o>.</span><span class=n>data</span><span class=p>,</span> <span class=n>s</span><span class=o>=</span><span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>xlabel</span><span class=p>(</span><span class=s1>&#39;x&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>ylabel</span><span class=p>(</span><span class=s1>&#39;y&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>t</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>arange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mf>.01</span><span class=p>)[:,</span> <span class=n>np</span><span class=o>.</span><span class=n>newaxis</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>y_pred</span> <span class=o>=</span> <span class=n>predict</span><span class=p>(</span><span class=n>t</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>plot</span><span class=p>(</span><span class=n>t</span><span class=p>,</span> <span class=n>y_pred</span><span class=o>.</span><span class=n>data</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=s1>&#39;r&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p><a class=link href=https://manabitimes.jp/math/1237 target=_blank rel=noopener>https://manabitimes.jp/math/1237</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/puyo-dqn/><div class=article-details><h2 class=article-title>強化学習でぷよぷよを学習させたかった(願望)</h2></div></a></article><article><a href=/my-blog-4/contents/rl-0/><div class=article-details><h2 class=article-title>強化学習勉強メモ (目次)</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

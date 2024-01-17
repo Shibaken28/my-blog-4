@@ -1,0 +1,129 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="今回は、式$(1)$で表されるベルマン方程式の導出をする． $$ \begin{align} v_{\pi}(s) = \sum _{a} \pi(a|s) \sum _{s&amp;rsquo;} p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v_{\pi}(s&amp;rsquo;) \right\} \end{align} $$
+無限に続く式 ベルマン方程式がどのようなものかを想像しやすいように，例え話をする． 本題ではないので読み飛ばしても問題はない． 強化学習において，終わりがないエンドレスな環境(連続タスク)を考えることがある． こういった無限に続く環境は，ある行動の価値を求めるためには，その行動をとってからの無限の手数の報酬を考慮する必要がある．計算機には無限を扱うことができず，厄介である．
+しかし，数学には無限を解決する方法がある． 例えば式$(2)$だ．この式は無限に続く． $$ \begin{equation} x = \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{ 1 + \cdots}}}}}}} \end{equation} $$ このままでは計算が困難であるが，$x$の中には$x$自身が含まれているため，式$(3)$から式$(7)$のように変形し，$x$の値が求められる．
+$$ \begin{align} x &amp;amp;= \sqrt{1 + x} \\ x^2 &amp;amp;= 1 + x \\ x^2 - x - 1 &amp;amp;= 0 \\ \therefore x &amp;amp;= \frac{1 \pm \sqrt{5}}{2} \\ \end{align} $$"><title>強化学習勉強メモ #2 ベルマン方程式</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/rl-2/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="強化学習勉強メモ #2 ベルマン方程式"><meta property="og:description" content="今回は、式$(1)$で表されるベルマン方程式の導出をする． $$ \begin{align} v_{\pi}(s) = \sum _{a} \pi(a|s) \sum _{s&amp;rsquo;} p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v_{\pi}(s&amp;rsquo;) \right\} \end{align} $$
+無限に続く式 ベルマン方程式がどのようなものかを想像しやすいように，例え話をする． 本題ではないので読み飛ばしても問題はない． 強化学習において，終わりがないエンドレスな環境(連続タスク)を考えることがある． こういった無限に続く環境は，ある行動の価値を求めるためには，その行動をとってからの無限の手数の報酬を考慮する必要がある．計算機には無限を扱うことができず，厄介である．
+しかし，数学には無限を解決する方法がある． 例えば式$(2)$だ．この式は無限に続く． $$ \begin{equation} x = \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{ 1 + \cdots}}}}}}} \end{equation} $$ このままでは計算が困難であるが，$x$の中には$x$自身が含まれているため，式$(3)$から式$(7)$のように変形し，$x$の値が求められる．
+$$ \begin{align} x &amp;amp;= \sqrt{1 + x} \\ x^2 &amp;amp;= 1 + x \\ x^2 - x - 1 &amp;amp;= 0 \\ \therefore x &amp;amp;= \frac{1 \pm \sqrt{5}}{2} \\ \end{align} $$"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/rl-2/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2023-01-06T21:54:35+09:00"><meta property="article:modified_time" content="2023-01-06T21:54:35+09:00"><meta name=twitter:title content="強化学習勉強メモ #2 ベルマン方程式"><meta name=twitter:description content="今回は、式$(1)$で表されるベルマン方程式の導出をする． $$ \begin{align} v_{\pi}(s) = \sum _{a} \pi(a|s) \sum _{s&amp;rsquo;} p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v_{\pi}(s&amp;rsquo;) \right\} \end{align} $$
+無限に続く式 ベルマン方程式がどのようなものかを想像しやすいように，例え話をする． 本題ではないので読み飛ばしても問題はない． 強化学習において，終わりがないエンドレスな環境(連続タスク)を考えることがある． こういった無限に続く環境は，ある行動の価値を求めるためには，その行動をとってからの無限の手数の報酬を考慮する必要がある．計算機には無限を扱うことができず，厄介である．
+しかし，数学には無限を解決する方法がある． 例えば式$(2)$だ．この式は無限に続く． $$ \begin{equation} x = \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{ 1 + \cdots}}}}}}} \end{equation} $$ このままでは計算が困難であるが，$x$の中には$x$自身が含まれているため，式$(3)$から式$(7)$のように変形し，$x$の値が求められる．
+$$ \begin{align} x &amp;amp;= \sqrt{1 + x} \\ x^2 &amp;amp;= 1 + x \\ x^2 - x - 1 &amp;amp;= 0 \\ \therefore x &amp;amp;= \frac{1 \pm \sqrt{5}}{2} \\ \end{align} $$"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#無限に続く式>無限に続く式</a></li><li><a href=#ベルマン方程式とは>ベルマン方程式とは</a></li><li><a href=#導出>導出</a></li><li><a href=#行動価値関数を用いたベルマン方程式>行動価値関数を用いたベルマン方程式</a></li><li><a href=#状態価値関数における最適方程式>状態価値関数における最適方程式</a></li><li><a href=#行動価値関数における最適方程式>行動価値関数における最適方程式</a></li><li><a href=#最適方策>最適方策</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/>強化学習</a>
+<a href=/my-blog-4/categories/%E6%95%B0%E5%AD%A6/>数学</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/rl-2/>強化学習勉強メモ #2 ベルマン方程式</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Jan 06, 2023</time></div></footer></div></header><section class=article-content><p>　今回は、式$(1)$で表されるベルマン方程式の導出をする．
+$$
+\begin{align}
+v_{\pi}(s) = \sum _{a} \pi(a|s) \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v_{\pi}(s&rsquo;) \right\}
+\end{align}
+$$</p><h2 id=無限に続く式>無限に続く式</h2><p>　ベルマン方程式がどのようなものかを想像しやすいように，例え話をする．
+本題ではないので読み飛ばしても問題はない．
+強化学習において，終わりがないエンドレスな環境(連続タスク)を考えることがある．
+こういった無限に続く環境は，ある行動の価値を求めるためには，その行動をとってからの無限の手数の報酬を考慮する必要がある．計算機には無限を扱うことができず，厄介である．</p><p>しかし，数学には無限を解決する方法がある．
+例えば式$(2)$だ．この式は無限に続く．
+$$
+\begin{equation}
+x = \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{1 + \sqrt{ 1 + \cdots}}}}}}}
+\end{equation}
+$$
+このままでは計算が困難であるが，$x$の中には$x$自身が含まれているため，式$(3)$から式$(7)$のように変形し，$x$の値が求められる．</p><p>$$
+\begin{align}
+x &= \sqrt{1 + x} \\
+x^2 &= 1 + x \\
+x^2 - x - 1 &= 0 \\
+\therefore x &= \frac{1 \pm \sqrt{5}}{2} \\
+\end{align}
+$$</p><p>　このように，無限に続く式の中に自分自身が入っていれば，工夫して計算が可能になりことがある．
+これの似たようなことを複数の変数で行ったものがベルマン方程式のイメージである<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>．強化学習では，実際に式$(7)$に示すような無限につづく式が登場する．
+$$
+\begin{align}
+G_t &= R_t + \gamma R_{t+1} + \gamma^2 R_{t+2} + \gamma^3 R_{t+3} + \cdots
+\end{align}
+$$</p><p>　無限限定の話をしたが，有限のエピソードタスクであったとしても，それが長いものであれば，計算量が膨大になってしまう．その場合もベルマン方程式は，現在の状態と次以降の状態の関係を示してくれる頼れる存在なのだ．</p><h2 id=ベルマン方程式とは>ベルマン方程式とは</h2><p>　方程式，という名前から分かる通り，未知数を含む式である．未知数は，$v_\pi(s)$である．様々な$s$で$v_\pi(s)$についての方程式が立ち，連立方程式として解くことにより各値が求められる．</p><p>なお，この式を使って様々な問題を解くとき，組合せ爆発により，連立方程式の数が莫大になり，素直に解くことは厳しいことが多い．</p><p>しかし，この式をベースにすることで，動的計画法，モンテカルロ法，TD法，SARSA法，Q学習法などの強化学習のアルゴリズムの説明や導出が可能になる．</p><h2 id=導出>導出</h2><p>　前回のマルコフ決定過程で出てきた状態価値関数と収益の式を思い出してもらいたい．式$(8)$$(9)$に示す．</p><p>$$
+\begin{align}
+v_\pi(s) &= \mathbb{E}_\pi[G_t|S_t=s] \\
+G_t &= R_t + \gamma R_{t+1} + \gamma^2 R_{t+2} + \cdots
+\end{align}
+$$
+$G_t$は無限に続くため，式$(10)$に変形できる．
+$$
+\begin{align}
+G_t &= R_t + \gamma G_{t+1}
+\end{align}
+$$
+これを状態価値関数の式に代入すると，式$(11)$になる．
+$$
+\begin{align}
+v_\pi(s) &= \mathbb{E}_\pi[R_t+\gamma G_{t+1} |S_t=s] \\
+\end{align}
+$$</p><p>期待値の線形性により，式$(12)$が成り立つ．</p><p>$$
+\begin{align}
+\mathbb{E}_\pi[R_t+\gamma G_{t+1} |S_t=s] = \mathbb{E}_\pi[R_t |S_t=s] + \gamma \mathbb{E}_\pi[G_{t+1} |S_t=s] \\
+\end{align}
+$$</p><p>式$(12)$の右辺の第一項目の$\mathbb{E}_\pi[R_t |S_t=s]$は，期待値の定義から次のように書ける．</p><p>$$
+\mathbb{E}_\pi[R_t |S_t=s] = \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a)r(s,a,s&rsquo;)
+$$</p><p>各関数について一度確認しよう．</p><ul><li>$\pi(a|s)$は，状態$s$で行動$a$をとる確率．</li><li>$p(s&rsquo;|s,a)$は，状態$s$で行動$a$をとったときに，状態$s&rsquo;$に遷移する確率．</li><li>$r(s,a,s&rsquo;)$は，状態$s$で行動$a$をとったときに，状態$s&rsquo;$に遷移したときに得られる報酬．</li></ul><p>つまり，$\pi(a|s) p(s&rsquo;|s,a)$は，状態$s$から行動$a$をしたときに，状態$s&rsquo;$に遷移する確率である．そのときの報酬が$r(s,a,s&rsquo;)$であり，確率に報酬を掛け算されたものの和が$\mathbb{E}_\pi[R_t |S_t=s]$である．</p><p>第二項目の$\mathbb{E}_\pi[G_{t+1} |S_t=s]$についても同様に考えると，式$(13)$$(14)$となる．</p><p>$$
+\begin{align}
+\mathbb{E}_\pi[G_{t+1} |S_t=s] &= \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a) \mathbb{E}_\pi[G_{t+1} |S_{t+1}=s&rsquo;] \\
+&= \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a) v_\pi(s&rsquo;)
+\end{align}
+$$</p><p>第二項目は，収益$G_{t+1}$の期待値であるため，状態$s$から行動$a$をしたときに状態$s&rsquo;$に遷移する確率$\pi(a|s) p(s&rsquo;|s,a)$に，その場合の収益$\mathbb{E}_\pi[G_{t+1} |S_{t+1}=s&rsquo;]$を掛け算している．$\mathbb{E}_\pi[G_{t+1} |S_{t+1}=s&rsquo;]$は状態価値関数$v_\pi(s&rsquo;)$そのものであるため，置き換えることができる．</p><p>さて，これらをまとめると，次のようになる．</p><p>$$
+\begin{align}
+v_\pi(s) &= \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a)r(s,a,s&rsquo;) + \gamma \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a) v_\pi(s&rsquo;) \\
+&= \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v_\pi(s&rsquo;) \right\}
+\end{align}
+$$</p><p>以上でベルマン方程式の導出は終わりである．</p><h2 id=行動価値関数を用いたベルマン方程式>行動価値関数を用いたベルマン方程式</h2><p>　状態価値関数でベルマン方程式を示したが，今度は行動価値関数について導出する．
+$$
+\begin{align}
+q_\pi(s,a) &= \mathbb{E}_\pi[G_t|S_t=s,A_t=a] \\
+&= \mathbb{E}_\pi[R_{t} + \gamma G_{t+1} |S_t=s,A_t=a] \\
+&= \mathbb{E}_\pi[R_{t} |S_t=s,A_t=a] + \gamma \mathbb{E}_\pi[G_{t+1} |S_t=s,A_t=a] \\
+&= \sum _{s&rsquo;} p(s&rsquo;|s,a) r(s,a,s&rsquo;) + \gamma \sum _{s&rsquo;} p(s&rsquo;|s,a) \mathbb{E}_\pi[G_{t+1} |S_{t+1}=s&rsquo;] \\
+&= \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma \mathbb{E}_\pi[G_{t+1} |S_{t+1}=s&rsquo;] \right\} \\
+&= \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v_\pi(s&rsquo;) \right\} \\
+\end{align}
+$$
+この式変形は，状態価値関数の式変形とよく似ている．$1$行ずつ説明すると，</p><ul><li>$2$行目，$G_t$を$R_{t+1}+\gamma G_{t+1}$に置き換えた．</li><li>$3$行目，期待値の線形性より$2$項に分ける．</li><li>$4$行目，期待値の定義に従いシグマ記号で表す．<ul><li>状態価値関数の場合と異なり，シグマに$a$が含まれないことに注目．</li></ul></li><li>$5$行目，括弧でくくる．</li><li>$6$行目，状態価値関数$v$を使って表す．</li></ul><p>さらに，式$(23)$であることを使うと，式$(24)(25)$と変形でき，状態価値関数$v$が消される．
+$$
+\begin{align}
+v_\pi(s) = \sum_a \pi(a|s) q_\pi(s,a)
+\end{align}
+$$
+$$
+\begin{align}
+q_\pi(s,a) &= \sum_{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v_\pi(s&rsquo;) \right\} \\
+&= \sum_{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma \sum_{a&rsquo;} \pi(a&rsquo;|s&rsquo;) q_\pi(s&rsquo;,a&rsquo;) \right\} \\
+\end{align}
+$$</p><h2 id=状態価値関数における最適方程式>状態価値関数における最適方程式</h2><p>　式$(26)$のように，ベルマン方程式の方策$\pi$を最適方策$\pi^*$に置き換える．</p><p>$$
+\begin{align}
+v_*(s) = \sum _{a} \sum _{s&rsquo;}\pi_* (a|s) p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v_*(s&rsquo;) \right\}
+\end{align}
+$$</p><p>ここで，$\pi_*$は最適方策であるため，状態$s$における行動$a$の確率$\pi_*(a|s)$は，1つの行動$a$だけが1で他は0であるはずである．よって式$(27)$のように書き換えることができる．
+$$
+\begin{align}
+v_*(s) = \max _{a} \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v_*(s&rsquo;) \right\}
+\end{align}
+$$
+これは，状態価値観数における<strong>最適方程式</strong>である．</p><h2 id=行動価値関数における最適方程式>行動価値関数における最適方程式</h2><p>　状態価値関数の最適方程式と同様に，方策$\pi$における行動価値のベルマン方程式である式$(28)$を，最適方策$\pi^*$に置き換えると，式$(29)$となる．
+$$
+\begin{align}
+q_\pi(s,a) &= \sum_{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma \sum_{a&rsquo;} \pi(a&rsquo;|s&rsquo;) q_\pi(s&rsquo;,a&rsquo;) \right\} \\
+\end{align}
+$$
+$$
+\begin{align}
+q_* (s,a) &= \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma \max _{a&rsquo;} q_* (s&rsquo;,a&rsquo;) \right\} \\
+\end{align}
+$$</p><h2 id=最適方策>最適方策</h2><p>　最後に，最適方策を返す関数$\mu_*$を定義する．$\mu_*(s)$は，状態$s$における，最適な行動を返すような関数である．これは，状態$s$における行動価値関数$q_*(s,a)$の最大値を取るような行動$a$を返すように定義すればよい．よって，
+$$
+\begin{align}
+\mu_*(s) = \text{argmax} _{a} q_* (s,a)
+\end{align}
+$$
+と表せる．ただし，$\text{argmax} _{x} f(x)$は，$f(x)$が最大となる$x$を返す．</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>これはただの筆者の気持ちである．&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/kosen-math-diff/><div class=article-details><h2 class=article-title>高専数学と高校数学の違い</h2></div></a></article><article><a href=/my-blog-4/contents/puyo-dqn/><div class=article-details><h2 class=article-title>強化学習でぷよぷよを学習させたかった(願望)</h2></div></a></article><article><a href=/my-blog-4/contents/shiba-ctf-writeup/><div class=article-details><h2 class=article-title>ShibaCTF Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/ricercactf/><div class=article-details><h2 class=article-title>RicercaCTF 2023 Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/rl-0/><div class=article-details><h2 class=article-title>強化学習勉強メモ (目次)</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

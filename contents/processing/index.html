@@ -1,0 +1,746 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="行列を使ってProcessingの2D画面に3Dっぽい描画をします"><title>2D画面になんちゃって3Dを書く</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/processing/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="2D画面になんちゃって3Dを書く"><meta property="og:description" content="行列を使ってProcessingの2D画面に3Dっぽい描画をします"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/processing/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="行列"><meta property="article:published_time" content="2022-12-06T02:00:00+00:00"><meta property="article:modified_time" content="2022-12-06T02:00:00+00:00"><meta name=twitter:title content="2D画面になんちゃって3Dを書く"><meta name=twitter:description content="行列を使ってProcessingの2D画面に3Dっぽい描画をします"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#はじめに>はじめに</a></li><li><a href=#環境>環境</a></li><li><a href=#原理>原理</a><ol><li><a href=#座標系>座標系</a></li><li><a href=#正面から見る>正面から見る</a></li><li><a href=#別の角度から見る>別の角度から見る</a></li><li><a href=#z軸周りの回転>z軸周りの回転</a></li><li><a href=#xy軸周りの回転>x,y軸周りの回転</a></li><li><a href=#行列での表現>行列での表現</a></li><li><a href=#平行移動>平行移動</a></li></ol></li><li><a href=#実装>実装</a></li><li><a href=#遊ぶ>遊ぶ</a></li><li><a href=#余談>余談</a></li><li><a href=#あとがき>あとがき</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/processing/>Processing</a>
+<a href=/my-blog-4/categories/%E6%95%B0%E5%AD%A6/>数学</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/processing/>2D画面になんちゃって3Dを書く</a></h2><h3 class=article-subtitle>行列を使ってProcessingの2D画面に3Dっぽい描画をします</h3></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Dec 06, 2022</time></div></footer></div></header><section class=article-content><p>この記事は<a class=link href=https://zenn.dev/shibak3n/articles/d3d212157e0a0a target=_blank rel=noopener>Zennに投稿したもの</a>と同じです．</p><h2 id=はじめに>はじめに</h2><p>　2Dの画面に3Dを描画することにロマンを感じませんか．私は感じます．描きましょう．
+<img src=https://storage.googleapis.com/zenn-user-upload/5bc40ee83454-20221207.gif loading=lazy>
+なお，「なんちゃって3D」とタイトルにあるのは，遠くのものが小さく見えるような処理がないからです．ガチガチの3Dモデルを描きたい！という方が求めるようなものはない可能性が高いですし，厳密性には欠けるかもしれません．そういうものを求めている方にはごめんなさい．</p><p>また，この記事は<a class=link href=https://qiita.com/advent-calendar/2022/nnct target=_blank rel=noopener>長野高専アドベントカレンダー2022</a>の8日目の記事です．</p><h2 id=環境>環境</h2><p>ジェネラティブアートの作品にしばしば使われる<a class=link href=https://processing.org/ target=_blank rel=noopener>Processing</a>を使います．ProcessingはJavaベースの記法で簡単に図形を描画することができます．ダウンロードしてついてくるexeファイルを実行すればIDEが立ち上がり，すぐにコードを実行できます．</p><p>余談ですが，長野高専の情報技術研究部ではProcessingを用いてプログラミング入門しています．</p><h2 id=原理>原理</h2><h3 id=座標系>座標系</h3><p>今回は，processingの$xy$平面に奥行き$z$を追加した座標系を考えます．すなわち，</p><ul><li>$x$軸の正の方向は右</li><li>$y$軸の正の方向は下</li><li>$z$軸の正の方向は奥</li></ul><p>の座標系の世界で考えます．</p><h3 id=正面から見る>正面から見る</h3><p>画面上で，手前から奥が$z$軸の方向になるわけですが，画面はもちろん平面であり，$z$座標の違いを表現しなければ手前と奥がわかりません．今回はこの違いを表現することを諦めます．
+今回の手法は点$(1,2,3)$を描画したいときは$(1,2)$に点を打ちます．$(1,2,5)$を描画する場合も$(1,2)$に点を打ちます．つまり，<strong>$z$座標は完全に無視</strong>をします．
+もちろん，この方法で描画すると現実ではあり得ないような立体の見え方になってしまいます．$z$座標が全く違う場所に同じ形の立体を置いても，大きさの差が全く現れません．遠近法とかそんなものはありません．なんちゃって3Dだからいいのです<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>．</p><h3 id=別の角度から見る>別の角度から見る</h3><p>各辺が各座標軸と平行な立方体を先程の手法で描画すると，ただの正方形が描かれます．「これは真正面から見た立方体です！3Dです！」と主張するのは無理がありますね．しかし，斜めから見た場合を描画するのは簡単ではないです．そこで，別の角度から見た場合の処理は諦めます．代わりに，立体自身が回転してもらいます．視点が動くのではなく，<strong>見えてる物体が動き，実質視点が動いているように見える</strong>，という状態です．自分が動いているのではない，世界が動いているんだ．</p><h3 id=z軸周りの回転>z軸周りの回転</h3><p>　では，ここから回転をさせる方法を考えていきます．いきなり立方体を回転させるのは難しいので，点を回転させることを考えます．立体図形は点の集まりだと考えれば良いです．立方体であれば，$8$つの頂点があります．これらのそれぞれの点について回転させて，それらの点をつなげることで，回転した立方体が完成します．</p><p>まず，$z$軸中心に点を回転したときの様子を数式で表します．
+$z$軸中心に点を回転させても，その$z$座標が変わらないので，これは$xy$平面の世界の回転だと考えることができます．
+$z$軸周りで$\gamma$だけ回転されると座標$(x_0,y_0)$は次のような座標$(x,y)$に移動します．</p><p>$$
+x = x_0\cos \gamma - y_0\sin \gamma \\\\
+y = x_0\sin \gamma + y_0\cos \gamma
+$$</p><p>なぜこうなるかは，ベクトルの$(x_0,0)$と$(0,y_0)$を回転させることを考えるとわかります．$(x_0,0)$は$\gamma$回転すると$(x_0\cos \gamma,x_0\sin \gamma)$に，$(0,y_0)$は$(-y_0\sin \gamma,y_0\cos \gamma)$に移動します．$(x_0,0)$と$(0,y_0)$を足したベクトル$(x_0,y_0)$を$\gamma$回転させた結果は，$(x_0,0)$と$(0,y_0)$をそれぞれ$\gamma$回転させてから足したものと等しいです．よって上記の式が示せます．</p><h3 id=xy軸周りの回転>x,y軸周りの回転</h3><p>　$z$軸周りのときの$x,y$を$y,z$とか$z,x$に置き換えれば良いです<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>．
+$x$軸周りに$\alpha$回転したときは</p><p>$$
+y = y_0\cos \alpha - z_0\sin \alpha \\\\
+z = y_0\sin \alpha + z_0\cos \alpha
+$$</p><p>$y$軸周りに$\beta$回転したときは</p><p>$$
+z = z_0\cos \beta - x_0\sin \beta \\\\
+x = z_0\sin \beta + x_0\cos \beta
+$$</p><p>で表されます．</p><h3 id=行列での表現>行列での表現</h3><p>　行列で表現しておくと，行列の積によって回転の組み合わせが行えるため，便利です．このような行列を<strong>回転行列</strong>と呼びます．</p><p>$$
+A_x(\alpha) =
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & \cos \alpha & - \sin \alpha \\
+0 & \sin \alpha & \cos \alpha
+\end{pmatrix}
+\\\\
+A_y(\beta) =
+\begin{pmatrix}
+\cos \beta & 0 & \sin \beta \\
+0 & 1 & 0 \\
+-\sin \beta & 0 & \cos \beta
+\end{pmatrix}
+\\\\
+A_z(\gamma) =
+\begin{pmatrix}
+\cos \gamma & - \sin \gamma & 0 \\
+\sin \gamma & \cos \gamma & 0 \\
+0 & 0 & 1
+\end{pmatrix}
+$$</p><p>座標$X=^t(1,2,3)$を$z$軸周りに$90^\circ$回転させたい場合，$A_z(90^\circ)$を$X$の左から掛け算します．具体的には次の計算をします．</p><p>$$
+A_z(90^\circ)X
+=
+\begin{pmatrix}
+\cos 90^\circ & - \sin 90^\circ & 0 \\
+\sin 90^\circ & \cos 90^\circ & 0 \\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+2 \\
+3 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 & -1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+2 \\
+3 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2 \\
+1 \\
+3 \\
+\end{pmatrix}
+$$</p><p>$z$軸周りに$90^\circ$回転させて，さらに$x$軸周りに$30^\circ$回転させた座標は，$A_x(30^\circ)A_z(90^\circ)X$で表されます．左から掛け算されていることに注意です<sup id=fnref:3><a href=#fn:3 class=footnote-ref role=doc-noteref>3</a></sup>．</p><h3 id=平行移動>平行移動</h3><p>　原点から離れた場所に立体を置いてから回転させると，回転の軸が原点を通っているため立体の場所が移動します．これは，その場で回転させたい場合に不便です．その場合は，</p><ol><li>原点中心に立体を配置</li><li>欲しい角度に回転させる</li><li>平行移動させる</li></ol><p>のステップが必要です．面倒ですね．スッキリさせたいです．
+行列の次元数を$1$増やして定数を足すテクニックを使い，次のように平行移動も行列で表現します．</p><p>$$
+\begin{pmatrix}
+1 & 0 & 0 & d_x \\
+0 & 1 & 0 & d_y \\
+0 & 0 & 1 & d_z \\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+x_0 \\
+y_0 \\
+z_0 \\
+1 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x_0 + d_x \\
+y_0 + d_y \\
+z_0 + d_z \\
+1 \\
+\end{pmatrix}
+$$</p><p>$x$軸周りに$\alpha$回転させて$(d_x,d_y,d_z)$だけ平行移動させた座標は次のようになります．</p><p>$$
+\begin{pmatrix}
+1 & 0 & 0 & d_x \\
+0 & 1 & 0 & d_y \\
+0 & 0 & 1 & d_z \\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & \cos \alpha & - \sin \alpha & 0 \\
+0 & \sin \alpha & \cos \alpha & 0 \\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+x_0 \\
+y_0 \\
+z_0 \\
+1 \\
+\end{pmatrix}
+$$
+左の$2$つの行列の積を事前に計算しておくことで，$\alpha$回転させて$(d_x,d_y,d_z)$平行移動させるような行列が得られるため，あとはこれを掛け算するだけで一連の移動が可能になります．頂点が複数ある立体を移動させるときに便利です．</p><p>このように行列の積を扱うことで，平行移動させて回転させて平行移動させて回転させて&mldr;みたいな複雑な座標変換も可能です．複数のオブジェクトを配置したあとに，視点を移動させるためにさらに平行移動と回転を加える，といったことができます．</p><p>このように座標を表すベクトルに行列を掛け算させるて座標を移動させることを<strong>座標変換</strong>といい，その行列のことを<strong>変換行列</strong>と呼びます．また，この掛け算をベクトルに変換行列を<strong>作用させる</strong>，といいます．</p><p>行列の積は交換法則が成り立ちません．行列の掛け算の順序には注意が必要です．</p><p>平行移動をしたあとに回転させた場合と
+<img src=https://storage.googleapis.com/zenn-user-upload/a5075b3e85d4-20221207.gif loading=lazy>
+回転させたあとに平行移動した場合の結果は異なります．
+<img src=https://storage.googleapis.com/zenn-user-upload/e281d377db9a-20221207.gif loading=lazy></p><h2 id=実装>実装</h2><p>$4$次の正方行列に関する次の機能を作ります．行列は$4\times 4$のfloat型の配列で作ります．</p><ul><li>行列の積</li><li>単位行列の生成</li><li>各軸周りの回転行列の生成</li><li>平行移動するための変換行列の生成</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixMul</span><span class=o>(</span><span class=kt>float</span> <span class=n>A</span><span class=o>[][],</span> <span class=kt>float</span> <span class=n>B</span><span class=o>[][])</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>i</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>j</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>j</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>j</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>k</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>k</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>k</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>Mat</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]</span> <span class=o>+=</span> <span class=n>A</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>k</span><span class=o>]*</span><span class=n>B</span><span class=o>[</span><span class=n>k</span><span class=o>][</span><span class=n>j</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>      <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixI</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixRotateX</span><span class=o>(</span><span class=kt>float</span> <span class=n>a</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=o>-</span><span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixRotateY</span><span class=o>(</span><span class=kt>float</span> <span class=n>a</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=o>-</span><span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixRotateZ</span><span class=o>(</span><span class=kt>float</span> <span class=n>a</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=o>-</span><span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixMove</span><span class=o>(</span><span class=n>Vector3D</span> <span class=n>v</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=n>v</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=n>v</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=n>v</span><span class=o>.</span><span class=na>z</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>printMatrix</span><span class=o>(</span><span class=kt>float</span><span class=o>[][]</span> <span class=n>mat</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>i</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>j</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>j</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>j</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>      <span class=n>print</span><span class=o>(</span><span class=n>mat</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]);</span>
+</span></span><span class=line><span class=cl>      <span class=n>print</span><span class=o>(</span><span class=s>&#34;, &#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=o>(</span><span class=s>&#34;\n&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>また，$3$次元の点が扱えるように<code>Vector3D</code>クラスを作ります．行列を作用させた点を返す<code>actMatrix</code>メソッドも作っておきます．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Vector3D</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=n>x</span><span class=o>,</span> <span class=n>y</span><span class=o>,</span> <span class=n>z</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span><span class=o>(</span><span class=kt>float</span> <span class=n>_x</span><span class=o>,</span> <span class=kt>float</span> <span class=n>_y</span><span class=o>,</span> <span class=kt>float</span> <span class=n>_z</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>=</span> <span class=n>_x</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>=</span> <span class=n>_y</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>=</span> <span class=n>_z</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=nf>actMatrix</span><span class=o>(</span><span class=kt>float</span> <span class=n>Mat</span><span class=o>[][])</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(</span><span class=mi>0</span><span class=o>,</span> <span class=mi>0</span><span class=o>,</span> <span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=na>x</span> <span class=o>=</span> <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>+</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>3</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=na>y</span> <span class=o>=</span> <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>+</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>3</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=na>z</span> <span class=o>=</span> <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>+</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>3</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>p</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>グローバル変数として，<code>transformMatrix</code>を用意してます．各描画関数では$3$次元の点を受け取り，この行列<code>transformMatrix</code>を作用させて得られる点を使って描画するようにします．次の例では<code>line3D</code>関数を実装しています．また，時間<code>t</code>もグローバル変数として用意しておきます．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kt>float</span> <span class=n>transformMatrix</span><span class=o>[][]</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl><span class=kt>float</span> <span class=n>t</span> <span class=o>=</span> <span class=mi>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>line3D</span><span class=o>(</span><span class=n>Vector3D</span> <span class=n>p1</span><span class=o>,</span> <span class=n>Vector3D</span> <span class=n>p2</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>a1</span> <span class=o>=</span> <span class=n>p1</span><span class=o>.</span><span class=na>actMatrix</span><span class=o>(</span><span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>a2</span> <span class=o>=</span> <span class=n>p2</span><span class=o>.</span><span class=na>actMatrix</span><span class=o>(</span><span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=c1>//ellipse(a1.x, a1.y, 10, 10); 頂点
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=c1>//ellipse(a2.x, a2.y, 10, 10);
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=n>line</span><span class=o>(</span><span class=n>a1</span><span class=o>.</span><span class=na>x</span><span class=o>,</span> <span class=n>a1</span><span class=o>.</span><span class=na>y</span><span class=o>,</span> <span class=n>a2</span><span class=o>.</span><span class=na>x</span><span class=o>,</span> <span class=n>a2</span><span class=o>.</span><span class=na>y</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>あとは<code>draw</code>関数に適当な内容を書いて完成です．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kt>void</span> <span class=nf>draw</span><span class=o>(){;</span>
+</span></span><span class=line><span class=cl>  <span class=n>t</span> <span class=o>+=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>background</span><span class=o>(</span><span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>translate</span><span class=o>(</span><span class=n>width</span><span class=o>/</span><span class=mi>2</span><span class=o>,</span> <span class=n>height</span><span class=o>/</span><span class=mi>2</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=kt>int</span> <span class=n>s</span> <span class=o>=</span> <span class=mi>50</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>transformMatrix</span> <span class=o>=</span> <span class=n>MatrixI</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=n>mat1</span><span class=o>[][]</span> <span class=o>=</span> <span class=n>MatrixRotateX</span><span class=o>(</span><span class=n>t</span><span class=o>*</span><span class=mf>0.1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=n>mat2</span><span class=o>[][]</span> <span class=o>=</span> <span class=n>MatrixRotateY</span><span class=o>(</span><span class=n>t</span><span class=o>*</span><span class=mf>0.1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>transformMatrix</span> <span class=o>=</span> <span class=n>MatrixMul</span><span class=o>(</span><span class=n>mat2</span><span class=o>,</span> <span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>transformMatrix</span> <span class=o>=</span> <span class=n>MatrixMul</span><span class=o>(</span><span class=n>mat1</span><span class=o>,</span> <span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p1</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(-</span><span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p2</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(-</span><span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p3</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(</span><span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p4</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(</span><span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p5</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(-</span><span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p6</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(-</span><span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p7</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(</span><span class=n>s</span><span class=o>,</span> <span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>p8</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(</span><span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>,</span> <span class=o>-</span><span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>stroke</span><span class=o>(</span><span class=mi>255</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>strokeWeight</span><span class=o>(</span><span class=mi>3</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p1</span><span class=o>,</span> <span class=n>p2</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p2</span><span class=o>,</span> <span class=n>p3</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p3</span><span class=o>,</span> <span class=n>p4</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p4</span><span class=o>,</span> <span class=n>p1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p5</span><span class=o>,</span> <span class=n>p6</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p6</span><span class=o>,</span> <span class=n>p7</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p7</span><span class=o>,</span> <span class=n>p8</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p8</span><span class=o>,</span> <span class=n>p5</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p1</span><span class=o>,</span> <span class=n>p5</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p2</span><span class=o>,</span> <span class=n>p6</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p3</span><span class=o>,</span> <span class=n>p7</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line3D</span><span class=o>(</span><span class=n>p4</span><span class=o>,</span> <span class=n>p8</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src=https://storage.googleapis.com/zenn-user-upload/cdd43b8af535-20221207.gif loading=lazy></p><h2 id=遊ぶ>遊ぶ</h2><p>キーボード(WASD)を押すと正八面体を回転させることができるサンプルです．
+コピペで動きます．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kt>float</span> <span class=n>t</span> <span class=o>=</span> <span class=mi>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=kt>float</span> <span class=n>transformMatrix</span><span class=o>[][]</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl><span class=kt>float</span> <span class=n>alpha</span><span class=o>=</span><span class=mi>0</span><span class=o>,</span> <span class=n>beta</span><span class=o>=</span><span class=mi>0</span><span class=o>,</span> <span class=n>gamma</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixMul</span><span class=o>(</span><span class=kt>float</span> <span class=n>A</span><span class=o>[][],</span> <span class=kt>float</span> <span class=n>B</span><span class=o>[][])</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>i</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>j</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>j</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>j</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>k</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>k</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>k</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>Mat</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]</span> <span class=o>+=</span> <span class=n>A</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>k</span><span class=o>]*</span><span class=n>B</span><span class=o>[</span><span class=n>k</span><span class=o>][</span><span class=n>j</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>      <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixI</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixRotateX</span><span class=o>(</span><span class=kt>float</span> <span class=n>a</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=o>-</span><span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixRotateY</span><span class=o>(</span><span class=kt>float</span> <span class=n>a</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=o>-</span><span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixRotateZ</span><span class=o>(</span><span class=kt>float</span> <span class=n>a</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=o>-</span><span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>sin</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>cos</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>float</span><span class=o>[][]</span> <span class=nf>MatrixMove</span><span class=o>(</span><span class=n>Vector3D</span> <span class=n>v</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=o>[][]</span> <span class=n>Mat</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>float</span> <span class=o>[</span><span class=mi>4</span><span class=o>][</span><span class=mi>4</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>3</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=n>v</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=n>v</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>3</span><span class=o>]</span> <span class=o>=</span> <span class=n>v</span><span class=o>.</span><span class=na>z</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>Mat</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>printMatrix</span><span class=o>(</span><span class=kt>float</span><span class=o>[][]</span> <span class=n>mat</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>i</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>i</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>j</span><span class=o>=</span><span class=mi>0</span><span class=o>;</span> <span class=n>j</span><span class=o>&lt;</span><span class=mi>4</span><span class=o>;</span> <span class=n>j</span><span class=o>++)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>      <span class=n>print</span><span class=o>(</span><span class=n>mat</span><span class=o>[</span><span class=n>i</span><span class=o>][</span><span class=n>j</span><span class=o>]);</span>
+</span></span><span class=line><span class=cl>      <span class=n>print</span><span class=o>(</span><span class=s>&#34;, &#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=o>(</span><span class=s>&#34;\n&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Vector3D</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>float</span> <span class=n>x</span><span class=o>,</span> <span class=n>y</span><span class=o>,</span> <span class=n>z</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span><span class=o>(</span><span class=kt>float</span> <span class=n>_x</span><span class=o>,</span> <span class=kt>float</span> <span class=n>_y</span><span class=o>,</span> <span class=kt>float</span> <span class=n>_z</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>=</span> <span class=n>_x</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>=</span> <span class=n>_y</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>=</span> <span class=n>_z</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=nf>actMatrix</span><span class=o>(</span><span class=kt>float</span> <span class=n>Mat</span><span class=o>[][])</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span><span class=o>(</span><span class=mi>0</span><span class=o>,</span> <span class=mi>0</span><span class=o>,</span> <span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=na>x</span> <span class=o>=</span> <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>+</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=mi>3</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=na>y</span> <span class=o>=</span> <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>+</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=mi>3</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=na>z</span> <span class=o>=</span> <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>0</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>y</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>1</span><span class=o>]</span> <span class=o>+</span> <span class=k>this</span><span class=o>.</span><span class=na>z</span> <span class=o>*</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>2</span><span class=o>]</span> <span class=o>+</span> <span class=n>Mat</span><span class=o>[</span><span class=mi>2</span><span class=o>][</span><span class=mi>3</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>p</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>line3D</span><span class=o>(</span><span class=n>Vector3D</span> <span class=n>p1</span><span class=o>,</span> <span class=n>Vector3D</span> <span class=n>p2</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>a1</span> <span class=o>=</span> <span class=n>p1</span><span class=o>.</span><span class=na>actMatrix</span><span class=o>(</span><span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>a2</span> <span class=o>=</span> <span class=n>p2</span><span class=o>.</span><span class=na>actMatrix</span><span class=o>(</span><span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>ellipse</span><span class=o>(</span><span class=n>a1</span><span class=o>.</span><span class=na>x</span><span class=o>,</span> <span class=n>a1</span><span class=o>.</span><span class=na>y</span><span class=o>,</span> <span class=mi>10</span><span class=o>,</span> <span class=mi>10</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>ellipse</span><span class=o>(</span><span class=n>a2</span><span class=o>.</span><span class=na>x</span><span class=o>,</span> <span class=n>a2</span><span class=o>.</span><span class=na>y</span><span class=o>,</span> <span class=mi>10</span><span class=o>,</span> <span class=mi>10</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>line</span><span class=o>(</span><span class=n>a1</span><span class=o>.</span><span class=na>x</span><span class=o>,</span> <span class=n>a1</span><span class=o>.</span><span class=na>y</span><span class=o>,</span> <span class=n>a2</span><span class=o>.</span><span class=na>x</span><span class=o>,</span> <span class=n>a2</span><span class=o>.</span><span class=na>y</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>ellipse3D</span><span class=o>(</span><span class=n>Vector3D</span> <span class=n>p</span><span class=o>,</span><span class=kt>float</span> <span class=n>r</span><span class=o>){</span>
+</span></span><span class=line><span class=cl>  <span class=n>Vector3D</span> <span class=n>a</span> <span class=o>=</span> <span class=n>p</span><span class=o>.</span><span class=na>actMatrix</span><span class=o>(</span><span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>ellipse</span><span class=o>(</span><span class=n>a</span><span class=o>.</span><span class=na>x</span><span class=o>,</span> <span class=n>a</span><span class=o>.</span><span class=na>y</span><span class=o>,</span> <span class=n>r</span> <span class=o>,</span> <span class=n>r</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>setup</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=n>size</span><span class=o>(</span><span class=mi>500</span><span class=o>,</span> <span class=mi>500</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>frameRate</span><span class=o>(</span><span class=mi>50</span><span class=o>);</span> <span class=c1>// 50fpsでアニメーションする
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>draw</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=n>t</span> <span class=o>+=</span> <span class=mf>0.1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>background</span><span class=o>(</span><span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=n>translate</span><span class=o>(</span><span class=n>width</span><span class=o>/</span><span class=mi>2</span><span class=o>,</span> <span class=n>height</span><span class=o>/</span><span class=mi>2</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=k>for</span><span class=o>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>1</span><span class=o>;</span><span class=n>i</span><span class=o>&lt;=</span><span class=mi>1</span><span class=o>;</span><span class=n>i</span><span class=o>++){</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>s</span> <span class=o>=</span> <span class=mi>70</span> <span class=o>+</span> <span class=n>i</span><span class=o>*</span><span class=mi>50</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>transformMatrix</span> <span class=o>=</span> <span class=n>MatrixI</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>    <span class=kt>float</span> <span class=n>mat1</span><span class=o>[][]</span> <span class=o>=</span> <span class=n>MatrixRotateY</span><span class=o>(</span><span class=n>i</span><span class=o>*</span><span class=n>PI</span><span class=o>/</span><span class=mi>2</span><span class=o>+</span><span class=n>alpha</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=kt>float</span> <span class=n>mat2</span><span class=o>[][]</span> <span class=o>=</span> <span class=n>MatrixRotateX</span><span class=o>(</span><span class=n>beta</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=kt>float</span> <span class=n>mat3</span><span class=o>[][]</span> <span class=o>=</span> <span class=n>MatrixRotateZ</span><span class=o>(</span><span class=n>gamma</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>transformMatrix</span> <span class=o>=</span> <span class=n>MatrixMul</span><span class=o>(</span><span class=n>mat1</span><span class=o>,</span> <span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>transformMatrix</span> <span class=o>=</span> <span class=n>MatrixMul</span><span class=o>(</span><span class=n>mat2</span><span class=o>,</span> <span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>transformMatrix</span> <span class=o>=</span> <span class=n>MatrixMul</span><span class=o>(</span><span class=n>mat3</span><span class=o>,</span> <span class=n>transformMatrix</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stroke</span><span class=o>(</span><span class=mi>255</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p1</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span> <span class=o>(</span><span class=n>s</span><span class=o>,</span><span class=n>s</span><span class=o>,</span><span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p2</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span> <span class=o>(</span><span class=n>s</span><span class=o>,-</span><span class=n>s</span><span class=o>,</span><span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p3</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span> <span class=o>(-</span><span class=n>s</span><span class=o>,-</span><span class=n>s</span><span class=o>,</span><span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p4</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span> <span class=o>(-</span><span class=n>s</span><span class=o>,</span><span class=n>s</span><span class=o>,</span><span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p5</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span> <span class=o>(</span><span class=mi>0</span><span class=o>,</span><span class=mi>0</span><span class=o>,</span><span class=n>sqrt</span><span class=o>(</span><span class=mi>2</span><span class=o>)*</span><span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Vector3D</span> <span class=n>p6</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Vector3D</span> <span class=o>(</span><span class=mi>0</span><span class=o>,</span><span class=mi>0</span><span class=o>,-</span><span class=n>sqrt</span><span class=o>(</span><span class=mi>2</span><span class=o>)*</span><span class=n>s</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p1</span><span class=o>,</span><span class=n>p2</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p2</span><span class=o>,</span><span class=n>p3</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p3</span><span class=o>,</span><span class=n>p4</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p4</span><span class=o>,</span><span class=n>p1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p1</span><span class=o>,</span><span class=n>p5</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p2</span><span class=o>,</span><span class=n>p5</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p3</span><span class=o>,</span><span class=n>p5</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p4</span><span class=o>,</span><span class=n>p5</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p1</span><span class=o>,</span><span class=n>p6</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p2</span><span class=o>,</span><span class=n>p6</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p3</span><span class=o>,</span><span class=n>p6</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>line3D</span><span class=o>(</span><span class=n>p4</span><span class=o>,</span><span class=n>p6</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>      
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>keyPressed</span><span class=o>(){</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span><span class=o>(</span><span class=n>key</span> <span class=o>==</span> <span class=sc>&#39;d&#39;</span><span class=o>){</span>
+</span></span><span class=line><span class=cl>    <span class=n>alpha</span> <span class=o>+=</span> <span class=mf>0.1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span><span class=o>(</span><span class=n>key</span> <span class=o>==</span> <span class=sc>&#39;a&#39;</span><span class=o>){</span>
+</span></span><span class=line><span class=cl>    <span class=n>alpha</span> <span class=o>-=</span> <span class=mf>0.1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span><span class=o>(</span><span class=n>key</span> <span class=o>==</span> <span class=sc>&#39;w&#39;</span><span class=o>){</span>
+</span></span><span class=line><span class=cl>    <span class=n>beta</span> <span class=o>+=</span> <span class=mf>0.1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span><span class=o>(</span><span class=n>key</span> <span class=o>==</span> <span class=sc>&#39;s&#39;</span><span class=o>){</span>
+</span></span><span class=line><span class=cl>    <span class=n>beta</span> <span class=o>-=</span> <span class=mf>0.1</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src=https://storage.googleapis.com/zenn-user-upload/364b04465dc9-20221208.gif loading=lazy></p><h2 id=余談>余談</h2><p>こちらのつぶやきProcessingは回転行列を作用させるような計算をして作りました．
+<a class=link href=https://twitter.com/Shibak33333333n/status/1418192071987400713 target=_blank rel=noopener>https://twitter.com/Shibak33333333n/status/1418192071987400713</a></p><h2 id=あとがき>あとがき</h2><p>3Dで描画できる環境を使えばいい話なのですが，ロマンがありますね．</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>なんちゃって3Dとか書いてしまいましたが，製図の分野などで，キャビネット図や等角図という名前で使われます．&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p>厳密には，どちらが正の方向の回転であるかをよく考える必要がありますが，今回は無視します&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:3><p>$X$を列ベクトルではなく行ベクトルとして用意することで右から行列を掛け算する流派(この場合は回転行列が転置します)も存在します．&#160;<a href=#fnref:3 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-tags><a href=/my-blog-4/tags/%E8%A1%8C%E5%88%97/>行列</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/matrix-pow/><div class=article-details><h2 class=article-title>行列累乗まとめ</h2></div></a></article><article><a href=/my-blog-4/contents/kosen-math-diff/><div class=article-details><h2 class=article-title>高専数学と高校数学の違い</h2></div></a></article><article><a href=/my-blog-4/contents/shiba-ctf-writeup/><div class=article-details><h2 class=article-title>ShibaCTF Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/ricercactf/><div class=article-details><h2 class=article-title>RicercaCTF 2023 Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/fermat/><div class=article-details><h2 class=article-title>フェルマーの小定理に関する暗号の問題まとめ</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

@@ -1,0 +1,248 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="数論でごにょごにょするタイプの問題"><title>フェルマーの小定理に関する暗号の問題まとめ</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/fermat/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="フェルマーの小定理に関する暗号の問題まとめ"><meta property="og:description" content="数論でごにょごにょするタイプの問題"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/fermat/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="フェルマーの小定理"><meta property="article:tag" content="オイラーの定理"><meta property="article:published_time" content="2022-12-19T00:00:00+00:00"><meta property="article:modified_time" content="2022-12-19T00:00:00+00:00"><meta name=twitter:title content="フェルマーの小定理に関する暗号の問題まとめ"><meta name=twitter:description content="数論でごにょごにょするタイプの問題"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#基本>基本</a></li><li><a href=#cakectf2022-frozen-cake-難易度>CakeCTF2022 frozen cake 難易度★★</a><ol><li><a href=#問題>問題</a></li><li><a href=#解法>解法</a></li></ol></li><li><a href=#cakectf2021-together-as-one-難易度>CakeCTF2021 together as one 難易度★★★</a><ol><li><a href=#問題概要>問題概要</a></li><li><a href=#解法-1>解法</a></li></ol></li><li><a href=#imaginaryctf-october-2022-more-pale-難易度>ImaginaryCTF October 2022 More pale 難易度★★</a><ol><li><a href=#問題-1>問題</a></li><li><a href=#解答>解答</a></li></ol></li><li><a href=#続く>続く</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/ctf/>CTF</a>
+<a href=/my-blog-4/categories/crypto/>crypto</a>
+<a href=/my-blog-4/categories/%E6%95%B0%E5%AD%A6/>数学</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/fermat/>フェルマーの小定理に関する暗号の問題まとめ</a></h2><h3 class=article-subtitle>数論でごにょごにょするタイプの問題</h3></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Dec 19, 2022</time></div></footer></div></header><section class=article-content><p>フェルマーの小定理やオイラーの定理を使った問題は，CTFのCrypto問題でよく出ます(当社調べ)(そしてこのタイプの問題が一番楽しい)．
+それらを使った解いた問題の列挙です．難易度は独断と偏見でつけました．</p><h2 id=基本>基本</h2><p>フェルマーの小定理(Fermat&rsquo;s little theorem)は素数$p$，整数$a$で
+$$
+a^p \equiv a \pmod p \quad (pは素数)
+$$
+が成り立つことを言います．
+$a$が$p$と互いに素なことを条件に加えると，両辺を$a$で割った
+$$
+a^{p-1} \equiv 1 \pmod p \quad (pは素数，aはpと互いに素)
+$$
+が成り立ちます．さらに両辺を$a$で割ると
+$$
+a^{p-2} \equiv a^{-1} \pmod p \quad (pは素数，aはpと互いに素)
+$$
+となり，逆元になります．どの形もよく使います．</p><p>オイラーの定理(Euler&rsquo;s theorem)は先程の$p$を合成数$n$に拡張したもので，</p><p>$$
+a^{\phi(n)} \equiv 1 \pmod n \quad (nは合成数，aとnは互いに素)
+$$</p><p>ただし，$\phi(n)$はオイラーのトーシェント関数(Euler&rsquo;s totient function)と呼ばれる関数で，$1$以上$n$以下の数のうち$n$と互いに素な個数を表します．
+式で表すと，合成数$n$の素因数分解が
+$$
+n = \prod_{i=1}^k p_i^{e_i} \\
+$$
+のとき
+$$
+\phi(n) = \prod_{i=1}^k (p_{i}^{e_{i}} - p_{i}^{e_{i}-1})
+$$
+で定義されます．</p><p>なお，注意として，フェルマーの小定理の指数$p-1$やオイラーの定理の$\phi(n)$は$a$を$1$にする最小の数とは限りません．最小の数についてのカーマイケルの定理というものが存在します．</p><p>ちなみに，フェルマーの小定理ですが，フェルマーさんではなくゴットフリート・ライプニッツさんによって証明されたらしいです．
+また，フェルマーの最終定理と区別するために，「小」ついています．</p><h2 id=cakectf2022-frozen-cake-難易度>CakeCTF2022 frozen cake 難易度★★</h2><h3 id=問題>問題</h3><p><a class=link href=https://github.com/theoremoon/cakectf2022-public/tree/master/crypto/frozen_cake/distfiles target=_blank rel=noopener>問題ファイル</a></p><p>素数$p,q$と平文$m$，$n=pq$から次の$a,b,c$の値が与えられる．$n$の値も与えられる．
+$$
+\begin{align}
+a &\equiv m^p \mod n \\
+b &\equiv m^q \mod n \\
+c &\equiv m^n \mod n
+\end{align}
+$$</p><h3 id=解法>解法</h3><p>$px+qy=1 \pmod{\phi(n)}$となるような$x,y$が存在すれば，$m$を復元することができるが，
+$p$と$q$は$\phi(n)$と互いに素ではないため，この手法は使えない．</p><p>$c$を変形してみる．</p><p>$$
+n = (p-1)(q-1) + p+q-1 = \phi(n) + p+q-1 \\
+c \equiv m^n \equiv m^{\phi(n) +p+q-1} \equiv m^{p+q-1} \equiv m^p m^q m^{-1}\pmod n
+$$</p><p>ここで，$m^p,m^q\pmod n$の値はわかっているので，
+$$
+c a^{-1} b^{-1} \equiv m^{-1} \pmod n
+$$
+これで$m^{-1}\mod n$が求まり，これの逆数がフラグである．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=n>inverse</span> <span class=p>,</span> <span class=n>long_to_bytes</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=mi>101205131618457490641888226172378900782027938652382007193297646066245321085334424928920128567827889452079884571045344711457176257019858157287424646000972526730522884040459357134430948940886663606586037466289300864147185085616790054121654786459639161527509024925015109654917697542322418538800304501255357308131</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=mi>38686943509950033726712042913718602015746270494794620817845630744834821038141855935687477445507431250618882887343417719366326751444481151632966047740583539454488232216388308299503129892656814962238386222995387787074530151173515835774172341113153924268653274210010830431617266231895651198976989796620254642528</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=mi>83977895709438322981595417453453058400465353471362634652936475655371158094363869813512319678334779139681172477729044378942906546785697439730712057649619691929500952253818768414839548038664187232924265128952392200845425064991075296143440829148415481807496095010301335416711112897000382336725454278461965303477</span>
+</span></span><span class=line><span class=cl><span class=n>c</span> <span class=o>=</span> <span class=mi>21459707600930866066419234194792759634183685313775248277484460333960658047171300820279668556014320938220170794027117386852057041210320434076253459389230704653466300429747719579911728990434338588576613885658479123772761552010662234507298817973164062457755456249314287213795660922615911433075228241429771610549</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ainv</span> <span class=o>=</span> <span class=n>inverse</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>binv</span> <span class=o>=</span> <span class=n>inverse</span><span class=p>(</span><span class=n>b</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>minv</span> <span class=o>=</span> <span class=p>(</span><span class=n>c</span> <span class=o>*</span> <span class=n>ainv</span> <span class=o>*</span> <span class=n>binv</span><span class=p>)</span><span class=o>%</span><span class=n>n</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>long_to_bytes</span><span class=p>(</span><span class=n>inverse</span><span class=p>(</span><span class=n>minv</span><span class=p>,</span><span class=n>n</span><span class=p>)))</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>CakeCTF{oh_you_got_a_tepid_cake_sorry}
+</span></span></code></pre></td></tr></table></div></div><h2 id=cakectf2021-together-as-one-難易度>CakeCTF2021 together as one 難易度★★★</h2><h3 id=問題概要>問題概要</h3><p><a class=link href=https://github.com/theoremoon/cakectf-2021-public/tree/master/crypto/together_as_one/distfiles target=_blank rel=noopener>問題リンクファイル</a></p><p>素数$p,q,r$があり，$e\equiv65537$，フラグを$m$とし，次の値が与えられる．
+$$
+n \equiv pqr \\
+c \equiv m^e \\
+x \equiv (p+q)^r \mod n \\
+y \equiv (p+qr)^r \mod n
+$$</p><h3 id=解法-1>解法</h3><p>二項定理により，$x$の値について次の計算ができる．
+$n=pqr$であり，$0&lt;x&lt;r$のとき${}_r\textrm{C}_x$が$r$の倍数であることを使っている．
+$$
+\begin{align}
+x &\equiv (p+q)^r \mod n \\
+&\equiv {}_r\textrm{C}_0 p^rq^0 + {}_r\textrm{C}_1 p^{r-1}q^1 + {}_r \textrm{C}_2 p^{r-2}q^2 + \cdots + {}_r\textrm{C}_{r-1} p^1q^{r-1} + {}_r\textrm{C}_{r} p^0q^{r-1} \mod n \\
+&\equiv p^r + q^r \mod n
+\end{align}
+$$
+$y$も同様に，展開をして$n$の倍数になる項を削除する．
+$$
+\begin{align}
+y &\equiv (p+qr)^r \mod n \\
+&\equiv p^r + q^rr^r \mod n
+\end{align}
+$$
+法$q$の世界で考える．すると，
+$$
+\begin{align}
+x &\equiv p^r \mod q\\
+y &\equiv p^r \mod q
+\end{align}
+$$
+よって，整数$k$を用いると次が成り立つ
+$$
+\begin{align}
+x &\equiv y \mod q\\
+x &\equiv y + kq \\
+x - y &\equiv kq
+\end{align}
+$$</p><p>$x-y$は$q$の倍数であり，$n$も素因数$q$を持っているため，$q\equiv\textrm{GCD}(x-y,n)$である．</p><p>次に，$x$と$y$を法$r$で考える．フェルマーの小定理により，$p^r \mod r\equiv p$が成り立つ(他の変数も同様)．</p><p>$$
+\begin{align}
+x \equiv p + q \mod r\\
+y \equiv p \mod r
+\end{align}
+$$
+$q$が邪魔だが既知であるため，$r$について合同な式ができる．
+$$
+\begin{align}
+x - q \equiv y \mod r\\
+\end{align}
+$$
+よって，$r\equiv\textrm{GCD}(x-q-y,n/q)$である．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=n>long_to_bytes</span><span class=p>,</span><span class=n>inverse</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>GCD</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>a</span><span class=o>%</span><span class=n>b</span><span class=o>==</span><span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>b</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>GCD</span><span class=p>(</span><span class=n>b</span><span class=p>,</span><span class=n>a</span><span class=o>%</span><span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>LCM</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>a</span><span class=o>//</span><span class=n>GCD</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>)</span><span class=o>*</span><span class=n>b</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=c1># 長いので省略</span>
+</span></span><span class=line><span class=cl><span class=n>c</span> <span class=o>=</span> 
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> 
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> 
+</span></span><span class=line><span class=cl><span class=n>e</span> <span class=o>=</span> <span class=mh>0x10001</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>q</span> <span class=o>=</span> <span class=n>GCD</span><span class=p>((</span><span class=n>x</span><span class=o>-</span><span class=n>y</span><span class=p>)</span><span class=o>%</span><span class=n>n</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span> <span class=o>=</span> <span class=n>GCD</span><span class=p>((</span><span class=n>x</span><span class=o>-</span><span class=n>y</span><span class=o>-</span><span class=n>q</span><span class=p>)</span><span class=o>%</span><span class=n>n</span><span class=p>,</span><span class=n>n</span><span class=p>)</span><span class=o>//</span><span class=n>q</span>
+</span></span><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=n>n</span><span class=o>//</span><span class=n>r</span><span class=o>//</span><span class=n>q</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>p</span> <span class=si>= :</span><span class=s1>#</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>q</span> <span class=si>= :</span><span class=s1>#</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>r</span> <span class=si>= :</span><span class=s1>#</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span> <span class=n>p</span><span class=o>*</span><span class=n>q</span><span class=o>*</span><span class=n>r</span> <span class=o>==</span> <span class=n>n</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>phi</span> <span class=o>=</span> <span class=p>(</span><span class=n>p</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span><span class=o>*</span><span class=p>(</span><span class=n>q</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span><span class=o>*</span><span class=p>(</span><span class=n>r</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>d</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>(</span><span class=n>e</span><span class=p>,</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span><span class=n>phi</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>m</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=n>d</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>long_to_bytes</span><span class=p>(</span><span class=n>m</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>CakeCTF{This_chall_is_inspired_by_this_music__Check_out!__https://www.youtube.com/watch?v=vLadkYLi8YE_cf49dcb6a31f}
+</span></span></code></pre></td></tr></table></div></div><h2 id=imaginaryctf-october-2022-more-pale-難易度>ImaginaryCTF October 2022 More pale 難易度★★</h2><h3 id=問題-1>問題</h3><p>$N$と互いに素な$g,r$とフラグ$f$を使って$c$が計算される．
+$$
+c = g^f\times r^N \pmod{N^2}
+$$</p><p>ただし，$N$は$32$ビット程度の素数を$32$個掛け算したものである(簡単のため，それぞれの素数は異なると考える)．</p><p>$$
+N = \prod^{32}_{i=1} p_i \quad (p_iは素数)
+$$</p><h3 id=解答>解答</h3><p>$r^N$が邪魔なのでどうにかして消したい．
+$\pmod{N^2}$で$1$にするには，$\phi(N^2)$乗する必要がある．$\phi(N^2)$を計算してみると，$N$が出てくる．</p><p>$$
+\begin{align}
+\phi(N^2) &= \prod^{32}_{i=1} (p_i^2 - p_i) \\
+&= \prod^{32}_{i=1} p_i(p_i-1) \\
+&= \prod^{32}_{i=1} p_i \prod^{32}_{i=1} (p_i -1) \\
+&= N \cdot \phi(N)
+\end{align}
+$$
+そのまま$c$を$\phi(N^2)$乗すると$1$になってしまうが，既に$r$の$N$乗がかかっていることに注目すると，</p><p>$$
+\begin{align}
+c^{\phi(N)} &\equiv g^{f\phi(N)} r^{N\phi(N)} \pmod {N^2} \\
+&\equiv g^{f\phi(N)} r^{\phi(N^2)} \pmod {N^2} \\
+&\equiv g^{f\phi(N)} \pmod {N^2}
+\end{align}
+$$</p><p>これで，あとは$f\phi(N)$が求められれば良いが，これは$N^2$が小さな素数の積であることから，Pohlig–Hellman法が使える．</p><p>以下<code>sage</code>での実装</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>math</span> <span class=kn>import</span> <span class=n>prod</span><span class=p>,</span> <span class=n>gcd</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>N</span> <span class=o>=</span> <span class=mi>11426418812422762280036571700606763567947231773425157536629183225870745966201878199993626829615844927248091186921905998387334803393170756953004161976126607998422555566085789763646344981574364094148009230033109930017512774396115010409334288433850791978891238028784308896039614097042863945347168542666985383</span>
+</span></span><span class=line><span class=cl><span class=n>g</span> <span class=o>=</span> <span class=mi>102370043738570361147512561430113690669375642568113520628837722692535092928991996894608072640673225251693957175347411184948751047776938223584014537703671208333116611432564769157326548350590167502807755716922970968951558696873031064519102939250266955847456094728415069300661910400192469539174495731756070447257875542560705682612568014282820199452851866020583046932239921789544226454615507571093721529079064029065323857243515917042869595396534609090834939823155439780919449771486541020286445222568415793241204876414692960607993360820654693596638939971884431900128125455066876042896836557800131056640691313737106</span>
+</span></span><span class=line><span class=cl><span class=n>c</span> <span class=o>=</span> <span class=mi>103068079671149839873789585083110486503075572741609832823748309905209629934629965848822090939508870383106139073177857845426077799194203506965719179522047046491489575280275678232439148170329359273033661524521427411191787421596981639709353868254044119073231599736765796677163779301047698718070665219409437641669086148533724636988276093326307749151410207387960521848243363050042170628112380019384839142543642612905997234757798225958950399201463485580893790906185150849471016251892565658403504413779544907210377992966457602587448233119477078937422459927927859270682518316711143908453374720529830188577849652582868</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ps</span> <span class=o>=</span> <span class=n>factor</span><span class=p>(</span><span class=n>N</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>phi</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=n>phi2</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>p</span><span class=p>,</span><span class=n>e</span> <span class=ow>in</span> <span class=n>ps</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>phi</span> <span class=o>*=</span> <span class=n>p</span> <span class=o>-</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=n>phi2</span> <span class=o>*=</span> <span class=n>p</span><span class=o>**</span><span class=mi>2</span> <span class=o>-</span> <span class=n>p</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>gf</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=n>phi</span><span class=p>,</span><span class=n>N</span><span class=o>*</span><span class=n>N</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>gf</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>f</span> <span class=o>=</span> <span class=n>discrete_log</span><span class=p>(</span><span class=n>gf</span><span class=p>,</span><span class=n>Mod</span><span class=p>(</span><span class=n>g</span><span class=p>,</span><span class=n>N</span><span class=o>*</span><span class=n>N</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>f</span> <span class=o>=</span> <span class=n>f</span><span class=o>//</span><span class=n>phi</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>long_to_bytes</span><span class=p>(</span><span class=n>f</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=続く>続く</h2><p>良い問題を見つけ次第追加していきます．</p></section><footer class=article-footer><section class=article-tags><a href=/my-blog-4/tags/%E3%83%95%E3%82%A7%E3%83%AB%E3%83%9E%E3%83%BC%E3%81%AE%E5%B0%8F%E5%AE%9A%E7%90%86/>フェルマーの小定理</a>
+<a href=/my-blog-4/tags/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E3%81%AE%E5%AE%9A%E7%90%86/>オイラーの定理</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/shiba-ctf-writeup/><div class=article-details><h2 class=article-title>ShibaCTF Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/luggage/><div class=article-details><h2 class=article-title>LLLを用いてナップザック暗号を解く</h2></div></a></article><article><a href=/my-blog-4/contents/lsb-attack/><div class=article-details><h2 class=article-title>LSB Decryption Oracle Attackの実装</h2></div></a></article><article><a href=/my-blog-4/contents/picoctf/><div class=article-details><h2 class=article-title>picoCTF2022 crypto writeup</h2></div></a></article><article><a href=/my-blog-4/contents/randomness/><div class=article-details><h2 class=article-title>線形合同法のパラメータ推測</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

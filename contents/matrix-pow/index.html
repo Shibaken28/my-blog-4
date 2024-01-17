@@ -1,0 +1,478 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="行列累乗の原理と例をひたすら列挙"><title>行列累乗まとめ</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/matrix-pow/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="行列累乗まとめ"><meta property="og:description" content="行列累乗の原理と例をひたすら列挙"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/matrix-pow/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="行列"><meta property="article:published_time" content="2022-12-06T02:00:00+00:00"><meta property="article:modified_time" content="2022-12-06T02:00:00+00:00"><meta name=twitter:title content="行列累乗まとめ"><meta name=twitter:description content="行列累乗の原理と例をひたすら列挙"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#これはなに>これはなに</a></li><li><a href=#原理フィボナッチ数列の例>原理(フィボナッチ数列の例)</a><ol><li><ol><li><a href=#行列で表現する>行列で表現する</a></li><li><a href=#累乗の高速計算>累乗の高速計算</a></li></ol></li></ol></li><li><a href=#線形漸化式>線形漸化式</a><ol><li><ol><li><a href=#3項の場合>3項の場合</a></li><li><a href=#定数項がある場合>定数項がある場合</a></li></ol></li></ol></li><li><a href=#複数変数の線形漸化式>複数変数の線形漸化式</a><ol><li><ol><li><a href=#平方根を含む数の累乗>平方根を含む数の累乗</a></li><li><a href=#確率>確率</a></li></ol></li></ol></li><li><a href=#グラフのパス数>グラフのパス数</a></li><li><a href=#行列の級数>行列の級数</a></li><li><a href=#半環>半環</a><ol><li><a href=#andとxor>ANDとXOR</a></li><li><a href=#ワーシャルフロイド法>ワーシャルフロイド法</a></li></ol></li><li><a href=#関連問題>関連問題</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/%E7%AB%B6%E3%83%97%E3%83%AD/>競プロ</a>
+<a href=/my-blog-4/categories/%E6%95%B0%E5%AD%A6/>数学</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/matrix-pow/>行列累乗まとめ</a></h2><h3 class=article-subtitle>行列累乗の原理と例をひたすら列挙</h3></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Dec 06, 2022</time></div></footer></div></header><section class=article-content><p>この記事は<a class=link href=https://zenn.dev/shibak3n/articles/f08a8ad67a7d14 target=_blank rel=noopener>Zennに投稿したもの</a>と同じです．</p><h2 id=これはなに>これはなに</h2><p>　行列累乗と呼ばれる競プロのテクニックの概要と，それを用いる例をひたすら挙げていきます．競プロチックな話題ではありますが，行列が役立つ場面の例の紹介として，非競プロerでも楽しめると思います．ただし，数列と行列に関する用語がある程度わかっている人向けです．</p><p>なお，この記事は<a class=link href=https://qiita.com/advent-calendar/2022/nnct target=_blank rel=noopener>長野高専 Advent Calender 2022</a>の2日目の記事です。</p><h2 id=原理フィボナッチ数列の例>原理(フィボナッチ数列の例)</h2><p>次の式で表される数列を考えます．</p><p>$$
+\begin{align}
+F_1 &= 1 \\
+F_2 &= 1 \\
+F_n &= F_{n-1} + F_{n-2} \quad　(n \geq 3)
+\end{align}
+$$</p><p>これはフィボナッチ数列という名で知られている，$F=(1,1,2,3,5,8,13,21,34,\cdots)$という前の$2$項の和が次の項になる数列です．これの第$n$項目をプログラミングで求めることにします．第$1$項目から第$n$項目までを求めるのではなく，第$n$項目のみ求めれば良いことに注意です．それっぽいコードを次に示します．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>//F[i]:=フィボナッチ数列のi項目
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>F</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>F</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>3</span><span class=p>;</span><span class=n>i</span><span class=o>&lt;=</span><span class=n>n</span><span class=p>;</span><span class=n>i</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>	<span class=n>F</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>F</span><span class=p>[</span><span class=n>i</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=n>F</span><span class=p>[</span><span class=n>i</span><span class=o>-</span><span class=mi>2</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>for</code>文を$n$回くらい回すので計算量は$O(n)$です(計算量についてこちら<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>を参照してください)．</p><p>では，$n=10^{15}$項目を求めたい場合はどうでしょうか．このコードでは，実行が終わりません．</p><h4 id=行列で表現する>行列で表現する</h4><p>　ここで，行列です．フィボナッチ数列の定義より，次の式は成り立ちます．</p><p>$$
+\begin{pmatrix}
+F_{n} \\
+F_{n-1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+F_{n-1} \\
+F_{n-2}
+\end{pmatrix}
+$$</p><p>具体的に計算してみます．</p><p>$$
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+$$</p><p>$$
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+$$</p><p>$$
+\begin{pmatrix}
+5 \\
+3
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+$$</p><p>前の$2$項から次の項が生成されていることがわかりますね．
+これらの結果を使って次のような変形を考えます．</p><p>$$
+\begin{align}
+\begin{pmatrix}
+5 \\
+3
+\end{pmatrix}
+&=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+3 \\
+2
+\end{pmatrix}
+\\
+&=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+2 \\
+1
+\end{pmatrix}
+\\
+&=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\\
+&=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+^3
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\end{align}
+$$</p><p>始めの$2$項に同じ行列を$3$回掛け算することで3つ後の項が出てきました．これを繰り返すと次が成り立つことがわかります．</p><p>$$
+\begin{align}
+\begin{pmatrix}
+F_n \\
+F_{n-1}
+\end{pmatrix}
+&=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+^{n-2}
+\begin{pmatrix}
+F_2 \\
+F_1
+\end{pmatrix}
+\end{align}
+$$</p><p>第$10$項目を求めたいときは次のように計算できます．</p><p>$$
+\begin{align}
+\begin{pmatrix}
+F_{10} \\
+F_{9}
+\end{pmatrix}
+&=
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+^{8}
+\begin{pmatrix}
+F_2 \\
+F_1
+\end{pmatrix}
+\\
+&=
+\begin{pmatrix}
+89 & 55 \\
+55 & 34
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\\
+&=
+\begin{pmatrix}
+144 \\
+89
+\end{pmatrix}
+\end{align}
+$$</p><p>フィボナッチ数列は$1,1,2,3,5,8,13,21,34,55,89,144,\cdots$であるため，確かにあっています．
+便利そうな式が行列によって完成しました．漸化式の悪いところは前の項の値がわかっていないと次の項が計算できないことですが，この式は特定の項をダイレクトに表すことに成功しています．行列の$n$乗が高速に計算できればフィボナッチ数列の第$n$項が高速に計算できそうです．</p><h4 id=累乗の高速計算>累乗の高速計算</h4><p>行列$A$の$n$乗である$A^n$を計算するのに，ナイーブな方法だと$n-1$回の行列同士の掛け算が発生します．この行列同士の掛け算の回数が少なくなることを高速化と呼ぶことにします．
+$A^{128}$を考えてみましょう．</p><ul><li>$A$に$A$をかけて$A^2$</li><li>$A^2$に$A$をかけて$A^3$
+$\cdots$</li><li>$A^{127}$に$A$をかけて$A^{128}$</li></ul><p>全部で$127$回の掛け算が必要ですね．では，$128$という特徴的な数に注目して次のように計算したらどうでしょうか．</p><ul><li>$A$に$A$をかけて$A^2$</li><li>$A^2$に$A^2$をかけて$A^4$</li><li>$A^4$に$A^4$をかけて$A^8$</li><li>$A^{8}$に$A^{8}$をかけて$A^{16}$</li><li>$A^{16}$に$A^{16}$をかけて$A^{32}$</li><li>$A^{32}$に$A^{32}$をかけて$A^{64}$</li><li>$A^{64}$に$A^{64}$をかけて$A^{128}$</li></ul><p>全部で，$7$回の掛け算で$A^{128}$が計算できました．$127$回から$7$回という驚異の回数削減です．
+実は，これは$128$のような$2$の冪数に限った話ではありません．先程，$A^1,A^2,A^4,A^8,A^{16},\cdots$を求めましたが，これらを掛け合わせることで任意の$A^n$が計算できます(指数法則$A^aA^b=A^{a+b}$が成り立つことに注意)．</p><ul><li>$A^{12} = A^{8} A^{4}$</li><li>$A^{39} = A^{32} A^{4} A^{2} A^{1}$</li><li>$A^{127} = A^{64}A^{32}A^{16}A^{8}A^{4}A^{2}A^{1}$</li></ul><p>これらは，$Aの(2進数表記したとき，1である位)乗$を掛け算したものになっています．
+上の例では，$12_{(10)}=1100_{(2)}$であり，$1$である位は$4$の位と$8$の位なので$12=8+4$と$12$を$2$の冪数の和で表すことができます．
+このような手法をダブリングや繰り返し二乗法と呼びます．</p><p>それっぽいコードを次に示します．計算量は$O(\log N)$です．$O(N)$に比べて非常に高速です<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// AのB乗の計算結果をCの格納
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>C</span> <span class=o>=</span> <span class=n>I</span> <span class=c1>//Iは単位行列
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>tmp</span> <span class=o>=</span> <span class=n>A</span>
+</span></span><span class=line><span class=cl><span class=k>while</span><span class=p>(</span><span class=n>B</span><span class=o>&gt;</span><span class=mi>0</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span><span class=p>(</span><span class=n>B</span><span class=o>%</span><span class=mi>2</span><span class=o>==</span><span class=mi>1</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>		<span class=n>C</span> <span class=o>=</span> <span class=n>C</span> <span class=o>*</span> <span class=n>tmp</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=n>B</span><span class=o>/=</span><span class=mi>2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>tmp</span> <span class=o>=</span> <span class=n>tmp</span> <span class=o>*</span> <span class=n>tmp</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Pythonでの汚い実装例も示します．</p><h5 id=愚直パターン>愚直パターン</h5><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=mi>10000</span>
+</span></span><span class=line><span class=cl><span class=n>f</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>*</span><span class=p>(</span><span class=n>n</span><span class=o>+</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>f</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=n>f</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>n</span><span class=o>+</span><span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>f</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>f</span><span class=p>[</span><span class=n>i</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=n>f</span><span class=p>[</span><span class=n>i</span><span class=o>-</span><span class=mi>2</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;第</span><span class=si>{</span><span class=n>n</span><span class=si>}</span><span class=s2>項目は</span><span class=si>{</span><span class=n>f</span><span class=p>[</span><span class=n>n</span><span class=p>]</span><span class=si>}</span><span class=s2>です&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><h5 id=高速化>高速化</h5><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>mat_mul</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>)</span> <span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>I</span><span class=p>,</span> <span class=n>J</span><span class=p>,</span> <span class=n>K</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>a</span><span class=p>),</span> <span class=nb>len</span><span class=p>(</span><span class=n>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]),</span> <span class=nb>len</span><span class=p>(</span><span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>c</span> <span class=o>=</span> <span class=p>[[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=n>J</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>I</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>I</span><span class=p>)</span> <span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>J</span><span class=p>)</span> <span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>K</span><span class=p>)</span> <span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>c</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=n>j</span><span class=p>]</span> <span class=o>+=</span> <span class=n>a</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=n>k</span><span class=p>]</span> <span class=o>*</span> <span class=n>b</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>j</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>c</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>mat_pow</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>n</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=p>[[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=nb>len</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>x</span><span class=p>))]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>x</span><span class=p>)):</span>
+</span></span><span class=line><span class=cl>        <span class=n>y</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=n>n</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>n</span> <span class=o>&amp;</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>y</span> <span class=o>=</span> <span class=n>mat_mul</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=n>mat_mul</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>n</span> <span class=o>//=</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>y</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ret</span> <span class=o>=</span> <span class=p>[[</span><span class=mi>1</span><span class=p>],[</span><span class=mi>1</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl><span class=n>mat</span> <span class=o>=</span> <span class=p>[[</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>],[</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=mi>10000</span>
+</span></span><span class=line><span class=cl><span class=n>ret</span> <span class=o>=</span> <span class=n>mat_mul</span><span class=p>(</span><span class=n>mat_pow</span><span class=p>(</span><span class=n>mat</span><span class=p>,</span> <span class=n>n</span><span class=o>-</span><span class=mi>2</span><span class=p>),</span> <span class=n>ret</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;第</span><span class=si>{</span><span class=n>n</span><span class=si>}</span><span class=s2>項目は</span><span class=si>{</span><span class=n>ret</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=si>}</span><span class=s2>です&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=線形漸化式>線形漸化式</h2><p>フィボナッチ数列は$2$項間の漸化式でしたが，$k$項間の線形漸化式でも可能です．</p><h4 id=3項の場合>3項の場合</h4><blockquote><p>次で定義される数列$a$の$n$項目を求めよ．</p></blockquote><p>$$
+\begin{align}
+a_1 &= a_2 = a_3 = 1 \\
+a_n &= 2a_{n-1} - 4a_{n-2} + 3a_{n-3}\quad　(n \geq 4)
+\end{align}
+$$</p><p>この漸化式は次のような行列で表されます．</p><p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+a_{n-1} \\
+a_{n-2}
+\end{pmatrix}
+&=
+\begin{pmatrix}
+2 & -4 & 3\\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{pmatrix}
+^{n-3}
+\begin{pmatrix}
+a_3 \\
+a_2 \\
+a_1
+\end{pmatrix}
+\end{align}
+$$</p><p>実際に行列を計算すると確かに成立していることがわかります．</p><p>一般に，$k+1$項間の漸化式は$k\times k$の行列を使って表され，$k\times k$の行列同士の掛け算は$k^3$回の掛け算が必要であるため，第$n$項を求めるのに$O(k^3\log n)$かかります．</p><p>なお，$k+1$項間の線形漸化式の第$n$項はkitamasa法と呼ばれる手法で$(k^2\log n)$で求めることが可能です．こちらもダブリングを使った手法です．</p><h4 id=定数項がある場合>定数項がある場合</h4><blockquote><p>$a,b,m,x_0$を使って線形合同法で乱数を生成する．このときの$n$番目の乱数$x_n$を求めよ
+ただし，線形合同法とは，</p></blockquote><p>$$
+x_{i+1} = ax_i + b \pmod m
+$$</p><blockquote><p>の漸化式で疑似乱数を生成する手法である．</p></blockquote><p>定数項がある場合は$1$の行を付け足して次のように作ることができます．</p><p>$$
+\begin{align}
+\begin{pmatrix}
+x_n \\
+1 \\
+\end{pmatrix}
+&=
+\begin{pmatrix}
+a & b\\
+0 & 1
+\end{pmatrix}
+^{n}
+\begin{pmatrix}
+x_0 \\
+1
+\end{pmatrix}
+\end{align}
+$$</p><h2 id=複数変数の線形漸化式>複数変数の線形漸化式</h2><p>複数の変数で表される漸化式にも応用できます</p><h4 id=平方根を含む数の累乗>平方根を含む数の累乗</h4><p>次の問題を考えます．</p><blockquote><p>$(2+\sqrt{3})^n$はいくつか？$a+b\sqrt{3}$の形式になるので$a,b$を求めよ．</p></blockquote><p>$n$が大きいと展開が厄介になりそうなことが想像できますね．
+とりあえず，$2+\sqrt{3}$の累乗を次のように文字で置きます．</p><p>$$
+X_n = (a_n + b_n\sqrt{3})
+$$</p><p>$X_n$から$X_{n+1}$を計算してみます．</p><p>$$
+\begin{align}
+X_{n+1} &= X_n (2 + \sqrt{3}) \\
+&= (a_n + b_n \sqrt{3})(2 + \sqrt{3}) \\
+&= 2a_n + a_n \sqrt{3} + 2b_n \sqrt{3} + 3b_n \\
+&= (2a_n + 3b_n) + (a_n + 2b_n)\sqrt{3} \\
+&= a_{n+1} + b_{n+1} \sqrt{3}
+\end{align}
+$$</p><p>最後の二行の係数を比較して，次の漸化式が立ちます．</p><p>$$</p><p>\begin{align}
+a_1&=b_1=1 \\
+a_{n+1} &= 2a_{n} + 3b_n \\
+b_{n+1} &= a_n + 2b_n
+\end{align}</p><p>$$</p><p>これを行列にすると次のようになります．</p><p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+b_n
+\end{pmatrix}
+&=
+\begin{pmatrix}
+2 & 3\\
+1 & 2
+\end{pmatrix}
+^{n-1}
+\begin{pmatrix}
+a_1 \\
+b_1
+\end{pmatrix}
+\end{align}
+$$</p><h4 id=確率>確率</h4><p>次の問題を考えます．</p><blockquote><p>エアコンのスイッチの状態は$OFF$である．遠隔操作を1回行うと確率$p$でエアコンの$ON$と$OFF$が入れ替わる．$n$回遠隔操作をしたときエアコンが$ON$である確率を求めよ．($N\leq 10^{18}$)　出典 <a class=link href=https://atcoder.jp/contests/code-festival-2014-morning-middle/tasks/code_festival_morning_med_c target=_blank rel=noopener>CODE FESTIVAL 2014 Middle C - eject</a></p></blockquote><p>次のように変数を設定します．
+$a_i = i$回目の遠隔操作をしたときにエアコンが$ON$である確率
+$b_i = i$回目の遠隔操作をしたときにエアコンが$OFF$である確率
+漸化式は次のように立ちます．</p><p>$$
+a_i = p b_{i-1} + (1-p)a_{i-1} \\
+b_i = p a_{i-1} + (1-p)b_{i-1} \\
+$$</p><p>行列にします．ただし，$a_0=0,b_0=1$です．</p><p>$$
+\begin{align}
+\begin{pmatrix}
+a_n \\
+b_n
+\end{pmatrix}
+&=
+\begin{pmatrix}
+1-p & p\\
+p & 1-p
+\end{pmatrix}
+^{n}
+\begin{pmatrix}
+a_0 \\
+b_0
+\end{pmatrix}
+\end{align}
+$$</p><p>今までのものは全て，小さな問題の答えから大きな問題の答えを導くdp(dynamic programming:動的計画法)に分類されます．dpの漸化式が立ったときに，それが線形であり，同じ遷移をする場合に行列累乗が有効なことが多いです．</p><h2 id=グラフのパス数>グラフのパス数</h2><p><a class=link href=https://atcoder.jp/contests/dp/tasks/dp_r target=_blank rel=noopener>EDPC R - Walk</a></p><blockquote><p>$N$頂点の単調有効グラフ$G$で，長さ$1$の有向辺が長さ$K$のパスは何通りありますか．ただし同じ頂点を複数回通っても良い</p></blockquote><p>$N$次の正方行列で，頂点$i$から頂点$j$までの有向辺があれば$A_{ij}=1$，なければ$A_{ij}=0$となるような隣接行列を考えます．</p><p>例えば，次の$4$頂点のグラフを隣接行列にすると次のようになります．</p><p><img src=https://storage.googleapis.com/zenn-user-upload/1c6bfa766abe-20221107.png loading=lazy></p><p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+0 &amp;1 &amp;0 &amp;1 \\
+0 &amp;0 &amp;1 &amp;0 \\
+0 &amp;1 &amp;0 &amp;0 \\
+0 &amp;0 &amp;0 &amp;1
+\end{pmatrix}
+\end{align}
+$$</p><p>このとき，頂点$i$から頂点$j$へのパス数は次のように計算できます．</p><p>$$
+(頂点iから頂点jへのパス数) = \sum <em>{k=1}^4 A</em>{ik} A_{kj}
+$$</p><p>これは，行列の積の定義とよく似ていて，$A^2$の$(i,j)$成分は，頂点$i$から頂点$j$への長さ$2$のパス数を表します．よって，$A^n$の$i,j$成分から頂点$i$から$j$までの長さ$n$のパス数を求めることができます．</p><p>なお，無向グラフの場合は双方向に有向辺が張っていると考え，$A_{ij}=A_{ji}$とすることで同様に処理できます．</p><h2 id=行列の級数>行列の級数</h2><blockquote><p>正方行列$A$がある．$A+A^2+A^3+A^4+A^5+\cdots+A^N$を求めよ．</p></blockquote><p>次のように$X_n$を定義します．</p><p>$$
+X_n = A^1 + A^2 + A^3 + \cdots + A^n
+$$</p><p>漸化式は次のように作れます．</p><p>$$
+\begin{align}
+X_1 &= A\\
+X_n &= A+AX_{n-1} \quad (n\geq 2)
+\end{align}
+$$</p><p>よって，</p><p>$$
+\begin{align}
+\begin{pmatrix}
+X_n \\ \hline
+I
+\end{pmatrix}
+&=
+\begin{pmatrix}
+\begin{array}{c|c}
+A & A\\ \hline
+O & I
+\end{array}
+\end{pmatrix}
+^{n-1}
+\begin{pmatrix}
+A \\ \hline
+I
+\end{pmatrix}
+\end{align}
+$$</p><p>です．</p><h2 id=半環>半環</h2><p>普通，行列の掛け算は次のように定義されています．</p><p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11}\cdot b_{11}+a_{12}\cdot b_{21} & a_{11}\cdot b_{12}+a_{12}\cdot b_{22} \\
+a_{21}\cdot b_{11}+a_{22}\cdot b_{21} & a_{21}\cdot b_{12}+a_{22}\cdot b_{22}
+\end{pmatrix}
+\end{align}
+$$</p><p>それぞれ要素の積を計算し，和を計算しています．ここで，「和」と「積」を別のものに置き換えることを考えます．例えば次のように$\max$と$+$に変えるとどうなるでしょうか．ここで，$\max(a_1,a_2,a_3,\cdots)$は，$a_1,a_2,a_3,\cdots$のうちの最大値を表します．</p><p>$$
+A =
+\begin{align}
+\begin{pmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\max(a_{11}+b_{11},a_{12}+b_{21}) & \max(a_{11}+b_{12},a_{12}+b_{22}) \\
+\max(a_{21}+b_{11},a_{22}+b_{21}) & \max(a_{21}+b_{12},a_{22}+b_{22})
+\end{pmatrix}
+\end{align}
+$$</p><p>この$\max,+$で計算される行列ですが，実はこの行列においても高速な行列累乗の計算が可能です．こんな変な演算の世界で行列累乗をしてどうするんだと思いますが，例は後述します．もちろん，演算子を好き勝手変えていいわけではありません．いくつか条件があります．次に示す条件を満たす，集合と加法$+$と乗法 $\cdot$ の$2$つの二項演算，である必要があります．この性質を満たす集合と$+$と$\cdot$の組を半環と言います．また，集合の要素を元と言います．</p><ul><li>加法において，結合法則が成り立ち，可換であり，単位元$0$を持つ．<ul><li>$(a + b) + c = a + (b + c)$</li><li>$a+b = b+a$</li><li>$0 + a = a + 0 = 0$</li></ul></li><li>乗法において，結合法則が成り立ち，単位元$1$を持つ．<ul><li>$(a \cdot b) \cdot c = a \cdot (b \cdot c)$</li><li>$1 \cdot a = a \cdot 1 = a$</li></ul></li><li>分配法則が成り立つ．<ul><li>$a \cdot (b+c) = (a\cdot b) + (a\cdot c)$</li><li>$(a+b)\cdot c = (a\cdot c) + (b\cdot c)$</li></ul></li><li>乗法で，$0$(加法の単位元)と任意の元の積は$0$になる．<ul><li>$0\cdot a = a\cdot 0 = 0$</li></ul></li></ul><p>例えば，有理数の集合を$\mathbb{R}$とすると，$(\mathbb{R},+,\cdot)$は半環をなす，という言い方をします．</p><p>では，先程の$\max$と$+$の例は本当に半環をなしているかを確認してみましょう．この場合の集合も$\mathbb{R}$(有理数全体)としておきます．先述した半環の定義だと，加法が$\max$で，乗法が$+$に対応しています．
+まずは加法$\max$について見ていきます．</p><ul><li>$\max(\max(a,b),c) = \max(a,\max(b,c))$</li><li>$\max(a,b) = \max(b,a)$</li><li>$\max(\infty,a) = \max(a,\infty) = \infty$</li></ul><p>$\max$は単位元を$\infty$にすることで成立します．次に乗法$+$です．</p><ul><li>$(a + b) + c = a + ( b+c)$</li><li>$0 + a = a + 0 = a$</li></ul><p>$+$の単位元は$0$です．
+次に分配法則の確認です．ややこしいですが，次の式が成り立つことがわかります．</p><ul><li>$a+\max(b,c) = \max(a+b,a+c)$</li><li>$\max(a,b)+c = \max(a+c,b+c)$</li></ul><p>最後に加法$\max$の単位元$\infty$を乗算$+$すると$\infty$になることを確認します．</p><ul><li>$\infty +a = a + \infty = \infty$</li></ul><p>以上，厳密性には欠けますが$(\mathbb{R},\max,+)$が半環をなしていることがわかりました．さて，次の節からは，いつもと違う半環の世界での行列累乗の例を見ていきます．</p><h3 id=andとxor>ANDとXOR</h3><p><a class=link href=https://atcoder.jp/contests/abc009/tasks/abc009_4 target=_blank rel=noopener>ABC009 D - 漸化式</a></p><blockquote><p>定数$C_1,C_2,C_3,\cdots,C_K$があり，$K$項間の漸化式が次のように定まる
+$A_i \quad (1\leq i\leq K)$は与えられる．</p></blockquote><p>$$
+A_{K+1} = (C_1 \mathrm{AND} A_{K}) \mathrm{XOR} (C_2 \mathrm{AND} A_{K-1}) \mathrm{XOR} \cdots \mathrm{XOR} (C_K \mathrm{AND} A_{1})
+$$</p><blockquote><p>このとき，$A_N$を求めよ($1\leq M\leq 10^{9}$)．
+なお，$\mathrm{AND}$はビットごとの論理積，$\mathrm{XOR}$はビットごとの排他的論理和を表す．</p></blockquote><p>この問題は$(\mathbb{N},\mathrm{AND},\mathrm{XOR})$が半環をなすことを利用して，ただの線形漸化式と見ることができます．なお，$\mathrm{AND}$と$\mathrm{XOR}$はビットごとで独立した演算であるため，各bitで$\mod 2$の掛け算とたし算をしていると見ることでも解くことができます．</p><h3 id=ワーシャルフロイド法>ワーシャルフロイド法</h3><p>ワーシャルフロイド法は，$(\mathbb{R},\min,+)$の世界での行列累乗だと捉えることができます．</p><p>MojaCoderで類題を見つけました．
+<a class=link href=https://mojacoder.app/users/magurofly/problems/dungeon-attack target=_blank rel=noopener>Dungeon Attack (Hard)</a></p><h2 id=関連問題>関連問題</h2><p>行列累乗がストレートに出ることは珍しく，考察の末に最後の一捻りとして出てくることが多い印象があります．全体的に難しいです．</p><ul><li><a class=link href=https://yukicoder.me/problems/no/526 target=_blank rel=noopener>フィボナッチ数列の第N項をMで割った余りを求める</a></li><li><a class=link href=https://atcoder.jp/contests/abc204/tasks/abc204_f target=_blank rel=noopener>ABC204 F - Hanjo 2</a></li><li><a class=link href=https://atcoder.jp/contests/abc199/tasks/abc199_f target=_blank rel=noopener>ABC199 F - Graph Smoothing</a></li><li><a class=link href=https://atcoder.jp/contests/abc256/tasks/abc256_g target=_blank rel=noopener>ABC256 G - Blakc and Whte Stones</a></li><li><a class=link href=https://atcoder.jp/contests/abc129/tasks/abc129_f target=_blank rel=noopener>ABC129 F - Takahashi&rsquo;s Basics in Education and Learning</a></li><li><a class=link href=https://atcoder.jp/contests/abc271/tasks/abc271_g target=_blank rel=noopener>ABC271 G - Access Counter</a></li><li><a class=link href=https://atcoder.jp/contests/abc212/tasks/abc212_h target=_blank rel=noopener>ABC212 H - Nim Counting</a></li><li><a class=link href=https://atcoder.jp/contests/arc025/tasks/arc025_4 target=_blank rel=noopener>ARC025 D - コンセント</a></li><li><a class=link href=https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b target=_blank rel=noopener>DISCO2020 B - Hawker on Graph</a></li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>APG4b 計算量 <a class=link href=https://atcoder.jp/contests/APG4b/tasks/APG4b_w target=_blank rel=noopener>https://atcoder.jp/contests/APG4b/tasks/APG4b_w</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p>実はこの計算量解析はあまり意味のあるものではありません．なぜなら，フィボナッチ数列は後の項に行けば行くほど桁数が増えるからです．後の項に行くほど，かけ算やたし算の計算コストは上がっていきます．ですので，$O(\log N)$といっても$N=10^7$の時点で結構時間がかかってしまいます．競プロでは$10^9+7$では割ったあまりを求めなさい，のように桁数を気にせずに計算できる場合が多いため，今回は考えないことにしています(競プロに限った話ではなく，大きな数を求めるときに異なる素数で割ったあまりを求めておいて，中国剰余原理で復元する，等の手法が使われる)．&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-tags><a href=/my-blog-4/tags/%E8%A1%8C%E5%88%97/>行列</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/processing/><div class=article-details><h2 class=article-title>2D画面になんちゃって3Dを書く</h2></div></a></article><article><a href=/my-blog-4/contents/kosen-math-diff/><div class=article-details><h2 class=article-title>高専数学と高校数学の違い</h2></div></a></article><article><a href=/my-blog-4/contents/shiba-ctf-writeup/><div class=article-details><h2 class=article-title>ShibaCTF Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/high-typical/><div class=article-details><h2 class=article-title>[WIP]ABCの高度典型を解いてうはうはしたい</h2></div></a></article><article><a href=/my-blog-4/contents/ricercactf/><div class=article-details><h2 class=article-title>RicercaCTF 2023 Writeup</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

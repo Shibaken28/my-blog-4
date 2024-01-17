@@ -1,0 +1,620 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="動的計画法のアルゴリズム 反復方策評価 ベルマン方程式を使って実際に各$s$における状態価値関数$v(s)$の値を正確に求めることは，状態数が増えていくにつれ，計算量の問題により難しくなる．そのため，$v(s)$の値をより正確な値に近づけていくような，値を更新させていくような，別の手法を考える．
+もう一度，式$(1)$の行動価値関数のベルマン方程式を振り返る． $$ \begin{align} v_\pi(s) &amp;amp;= \sum _{a} \sum _{s&amp;rsquo;}\pi(a|s) p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v_\pi(s&amp;rsquo;) \right\} \end{align} $$
+このベルマン方程式を，更新の関数に置き換える． $k$回目の更新を行った状態価値関数$V_{k}$から，$k+1$回目の更新によって得る状態価値関数を$V_{k+1}$とすると，式$(2)$のようになる．
+$$ \begin{align} V_{k+1}(s) &amp;amp;= \sum _{a} \sum _{s&amp;rsquo;}\pi(a|s) p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma V_{k}(s&amp;rsquo;) \right\} \end{align} $$
+ただし，この漸化式は，初期の関数$V_{0}$を与える必要がある．
+方策$\pi$を使い，$V_{0}$をもとにして，$V_{1}$を求め，$V_{1}$をもとにして$V_{2}$を求め，というように，$V_{k}$を求めていく．そして，収束したときにそれが状態価値関数$v_\pi (s)$になる1．この手法を反復方策評価と呼ぶ
+方策反復法 反復方策評価を使うと，方策$\pi$に対する状態価値関数$v_\pi (s)$を求めることができるが，本当に欲しいものは最適な方策$\pi_*$と，その方策に対する状態価値関数$v_*(s)$である． このような，方策を求めるフェーズを方策制御と呼ぶ．
+確率的方策$\pi$から，最適な方策$\pi_*$へ近づける鍵は，決定論的方策に変換することである． 具体的には，$v_\pi (s)$をもとに，$s$における最適な行動$a_*$を選択する． そして，その行動をとる確率を1に，それ以外の行動をとる確率を0にする．これにより，決定論的方策$\mu(s)$に変換される．数式で表すと，次のようになる． $$ \begin{align} \mu(s) &amp;amp;= \text{argmax} _{a} q (s,a) \\ &amp;amp;= \text{argmax} _{a} \sum _{s&amp;rsquo;} p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v (s&amp;rsquo;) \right\} \end{align} $$ $\mu(s)$は，$v(s)$から得られた，貪欲的な方策，greedy policyと呼ばれる．greedy 化と呼ばれることもある． 先程説明した反復方策評価とgreedy化を交互に繰り返すと，greedy化しても方策が変わらなくなる地点に到達する．それが，最適方策となる．このような手法を方策反復法と呼ぶ．"><title>強化学習勉強メモ #3 動的計画法</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/rl-3/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="強化学習勉強メモ #3 動的計画法"><meta property="og:description" content="動的計画法のアルゴリズム 反復方策評価 ベルマン方程式を使って実際に各$s$における状態価値関数$v(s)$の値を正確に求めることは，状態数が増えていくにつれ，計算量の問題により難しくなる．そのため，$v(s)$の値をより正確な値に近づけていくような，値を更新させていくような，別の手法を考える．
+もう一度，式$(1)$の行動価値関数のベルマン方程式を振り返る． $$ \begin{align} v_\pi(s) &amp;amp;= \sum _{a} \sum _{s&amp;rsquo;}\pi(a|s) p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v_\pi(s&amp;rsquo;) \right\} \end{align} $$
+このベルマン方程式を，更新の関数に置き換える． $k$回目の更新を行った状態価値関数$V_{k}$から，$k+1$回目の更新によって得る状態価値関数を$V_{k+1}$とすると，式$(2)$のようになる．
+$$ \begin{align} V_{k+1}(s) &amp;amp;= \sum _{a} \sum _{s&amp;rsquo;}\pi(a|s) p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma V_{k}(s&amp;rsquo;) \right\} \end{align} $$
+ただし，この漸化式は，初期の関数$V_{0}$を与える必要がある．
+方策$\pi$を使い，$V_{0}$をもとにして，$V_{1}$を求め，$V_{1}$をもとにして$V_{2}$を求め，というように，$V_{k}$を求めていく．そして，収束したときにそれが状態価値関数$v_\pi (s)$になる1．この手法を反復方策評価と呼ぶ
+方策反復法 反復方策評価を使うと，方策$\pi$に対する状態価値関数$v_\pi (s)$を求めることができるが，本当に欲しいものは最適な方策$\pi_*$と，その方策に対する状態価値関数$v_*(s)$である． このような，方策を求めるフェーズを方策制御と呼ぶ．
+確率的方策$\pi$から，最適な方策$\pi_*$へ近づける鍵は，決定論的方策に変換することである． 具体的には，$v_\pi (s)$をもとに，$s$における最適な行動$a_*$を選択する． そして，その行動をとる確率を1に，それ以外の行動をとる確率を0にする．これにより，決定論的方策$\mu(s)$に変換される．数式で表すと，次のようになる． $$ \begin{align} \mu(s) &amp;amp;= \text{argmax} _{a} q (s,a) \\ &amp;amp;= \text{argmax} _{a} \sum _{s&amp;rsquo;} p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v (s&amp;rsquo;) \right\} \end{align} $$ $\mu(s)$は，$v(s)$から得られた，貪欲的な方策，greedy policyと呼ばれる．greedy 化と呼ばれることもある． 先程説明した反復方策評価とgreedy化を交互に繰り返すと，greedy化しても方策が変わらなくなる地点に到達する．それが，最適方策となる．このような手法を方策反復法と呼ぶ．"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/rl-3/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2023-01-06T22:01:36+09:00"><meta property="article:modified_time" content="2023-01-06T22:01:36+09:00"><meta name=twitter:title content="強化学習勉強メモ #3 動的計画法"><meta name=twitter:description content="動的計画法のアルゴリズム 反復方策評価 ベルマン方程式を使って実際に各$s$における状態価値関数$v(s)$の値を正確に求めることは，状態数が増えていくにつれ，計算量の問題により難しくなる．そのため，$v(s)$の値をより正確な値に近づけていくような，値を更新させていくような，別の手法を考える．
+もう一度，式$(1)$の行動価値関数のベルマン方程式を振り返る． $$ \begin{align} v_\pi(s) &amp;amp;= \sum _{a} \sum _{s&amp;rsquo;}\pi(a|s) p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v_\pi(s&amp;rsquo;) \right\} \end{align} $$
+このベルマン方程式を，更新の関数に置き換える． $k$回目の更新を行った状態価値関数$V_{k}$から，$k+1$回目の更新によって得る状態価値関数を$V_{k+1}$とすると，式$(2)$のようになる．
+$$ \begin{align} V_{k+1}(s) &amp;amp;= \sum _{a} \sum _{s&amp;rsquo;}\pi(a|s) p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma V_{k}(s&amp;rsquo;) \right\} \end{align} $$
+ただし，この漸化式は，初期の関数$V_{0}$を与える必要がある．
+方策$\pi$を使い，$V_{0}$をもとにして，$V_{1}$を求め，$V_{1}$をもとにして$V_{2}$を求め，というように，$V_{k}$を求めていく．そして，収束したときにそれが状態価値関数$v_\pi (s)$になる1．この手法を反復方策評価と呼ぶ
+方策反復法 反復方策評価を使うと，方策$\pi$に対する状態価値関数$v_\pi (s)$を求めることができるが，本当に欲しいものは最適な方策$\pi_*$と，その方策に対する状態価値関数$v_*(s)$である． このような，方策を求めるフェーズを方策制御と呼ぶ．
+確率的方策$\pi$から，最適な方策$\pi_*$へ近づける鍵は，決定論的方策に変換することである． 具体的には，$v_\pi (s)$をもとに，$s$における最適な行動$a_*$を選択する． そして，その行動をとる確率を1に，それ以外の行動をとる確率を0にする．これにより，決定論的方策$\mu(s)$に変換される．数式で表すと，次のようになる． $$ \begin{align} \mu(s) &amp;amp;= \text{argmax} _{a} q (s,a) \\ &amp;amp;= \text{argmax} _{a} \sum _{s&amp;rsquo;} p(s&amp;rsquo;|s,a) \left\{ r(s,a,s&amp;rsquo;) + \gamma v (s&amp;rsquo;) \right\} \end{align} $$ $\mu(s)$は，$v(s)$から得られた，貪欲的な方策，greedy policyと呼ばれる．greedy 化と呼ばれることもある． 先程説明した反復方策評価とgreedy化を交互に繰り返すと，greedy化しても方策が変わらなくなる地点に到達する．それが，最適方策となる．このような手法を方策反復法と呼ぶ．"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#動的計画法のアルゴリズム>動的計画法のアルゴリズム</a><ol><li><a href=#反復方策評価>反復方策評価</a></li><li><a href=#方策反復法>方策反復法</a></li><li><a href=#価値反復法>価値反復法</a></li></ol></li><li><a href=#三目並べの実装>三目並べの実装</a><ol><li><a href=#ルールの確認>ルールの確認</a></li><li><a href=#アルゴリズムの確認>アルゴリズムの確認</a></li><li><a href=#状態の表現>状態の表現</a></li><li><a href=#盤面の判定>盤面の判定</a></li><li><a href=#盤面の生成>盤面の生成</a></li><li><a href=#学習>学習</a></li><li><a href=#状態価値関数の更新>状態価値関数の更新</a></li><li><a href=#最適方策の取得>最適方策の取得</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/>強化学習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/rl-3/>強化学習勉強メモ #3 動的計画法</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Jan 06, 2023</time></div></footer></div></header><section class=article-content><h2 id=動的計画法のアルゴリズム>動的計画法のアルゴリズム</h2><h3 id=反復方策評価>反復方策評価</h3><p>　ベルマン方程式を使って実際に各$s$における状態価値関数$v(s)$の値を正確に求めることは，状態数が増えていくにつれ，計算量の問題により難しくなる．そのため，$v(s)$の値をより正確な値に近づけていくような，値を<strong>更新</strong>させていくような，別の手法を考える．</p><p>もう一度，式$(1)$の行動価値関数のベルマン方程式を振り返る．
+$$
+\begin{align}
+v_\pi(s)
+&= \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v_\pi(s&rsquo;) \right\}
+\end{align}
+$$</p><p>このベルマン方程式を，更新の関数に置き換える．
+$k$回目の更新を行った状態価値関数$V_{k}$から，$k+1$回目の更新によって得る状態価値関数を$V_{k+1}$とすると，式$(2)$のようになる．</p><p>$$
+\begin{align}
+V_{k+1}(s)
+&= \sum _{a} \sum _{s&rsquo;}\pi(a|s) p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma V_{k}(s&rsquo;) \right\}
+\end{align}
+$$</p><p>ただし，この漸化式は，初期の関数$V_{0}$を与える必要がある．</p><p>　方策$\pi$を使い，$V_{0}$をもとにして，$V_{1}$を求め，$V_{1}$をもとにして$V_{2}$を求め，というように，$V_{k}$を求めていく．そして，収束したときにそれが状態価値関数$v_\pi (s)$になる<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>．この手法を<strong>反復方策評価</strong>と呼ぶ</p><h3 id=方策反復法>方策反復法</h3><p>　反復方策評価を使うと，方策$\pi$に対する状態価値関数$v_\pi (s)$を求めることができるが，本当に欲しいものは<strong>最適な</strong>方策$\pi_*$と，その方策に対する状態価値関数$v_*(s)$である．
+このような，方策を求めるフェーズを<strong>方策制御</strong>と呼ぶ．</p><p>　確率的方策$\pi$から，最適な方策$\pi_*$へ近づける鍵は，決定論的方策に変換することである．
+具体的には，$v_\pi (s)$をもとに，$s$における最適な行動$a_*$を選択する．
+そして，その行動をとる確率を1に，それ以外の行動をとる確率を0にする．これにより，決定論的方策$\mu(s)$に変換される．数式で表すと，次のようになる．
+$$
+\begin{align}
+\mu(s) &= \text{argmax} _{a} q (s,a) \\
+&= \text{argmax} _{a} \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma v (s&rsquo;) \right\}
+\end{align}
+$$
+$\mu(s)$は，$v(s)$から得られた，<strong>貪欲</strong>的な方策，<strong>greedy</strong> policyと呼ばれる．<strong>greedy 化</strong>と呼ばれることもある．
+先程説明した反復方策評価とgreedy化を交互に繰り返すと，greedy化しても方策が変わらなくなる地点に到達する．それが，最適方策となる．このような手法を<strong>方策反復法</strong>と呼ぶ．</p><p>混乱しやすいので箇条書きで同じことを書くと，次のようになる．</p><ol><li>初期の適当な方策$\pi$を決める</li><li>全ての状態$s$に対して$V(s)$を更新する(方策評価)</li><li>greedy化を行い$\pi$を更新する(方策制御)</li><li>$V$を更新したときの差分が十分小さくなっていなければ 2. に戻る</li></ol><h3 id=価値反復法>価値反復法</h3><p>　<strong>価値反復法</strong>は，方策反復法で別々に行っていた反復方策評価とgreedy化を同時に行う手法である．式で表すと，次のようになる．
+$$
+\begin{align}
+V_{k+1}(s) = \max_{a} \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma V_{k} (s&rsquo;) \right\}
+\end{align}
+$$
+これによって更新がストップした時点で，greedy化を行えば最適方策$\mu_*(s)$が得られる．
+今回は，この価値反復法を用いて実装を行う．</p><h2 id=三目並べの実装>三目並べの実装</h2><p>　言語はC++を使う．また，<code>include &lt;hoge></code>や<code>using namespace std;</code>などの記述を省略している．全体のソースコードは<a class=link href=https://gist.github.com/Shibaken28/41d44940567dac6dd8721e549af46d46 target=_blank rel=noopener>gist</a>に公開している．</p><p>コンパイルは，<code>g++ -std=c++17 hoge.cpp</code>で行う．Makefileを適当に作っておくと便利．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># g++ の c++17でコンパイル
+</span></span><span class=line><span class=cl>CXX = g++
+</span></span><span class=line><span class=cl>CXXFLAGS = -std=c++17 -Wall -Wextra -Wpedantic
+</span></span></code></pre></td></tr></table></div></div><h3 id=ルールの確認>ルールの確認</h3><ul><li>盤面は$3\times 3$のマスで構成される</li><li>先手はマル，後手はバツ</li><li>交互に空いているマスに自分の記号を置く</li><li>縦横斜めのいずれかのラインに$3$つ自分の記号が並んだ時点で勝ち</li><li>盤面が埋まっていても勝敗がつかない場合は引き分け</li></ul><p>また，今回は，先手を学習することにする．</p><h3 id=アルゴリズムの確認>アルゴリズムの確認</h3><p>　各変数を三目並べに適用すると，次のようになる．</p><ul><li>環境$s$ : 盤面</li><li>行動$a$ : 手</li><li>報酬$r(s,a,s&rsquo;)$ : 勝敗</li><li>遷移確率$p$ : ?</li></ul><p>状態$s$は，丸かバツか空白の$3$通りが$9$マス分あるので高々$3^9=19683$通りある(この中には全てが丸で埋め尽くされた盤面などが存在し，実際はもっと少ない)．この程度なら，全ての状態の価値をメモリに乗せておくことができる．よって，動的計画法が適用そうである．</p><p>　価値反復法のアルゴリズムを再掲する．</p><ol><li>$V(s)$を初期化する．</li><li>$V(s)$が更新されなくなるまで，全ての$s$について以下を繰り返す．<ol><li>状態$s$から全ての行動$a$を試す</li><li>その中で最も価値の高いものを新しい価値$V(s)$とする．</li></ol></li></ol><h3 id=状態の表現>状態の表現</h3><p>　$3\times 3$の$9$マスの情報を，整数で表現する．具体的には，</p><ul><li>空白 : 0</li><li>マル : 1</li><li>バツ : 2</li></ul><p>とする．
+$3\times 3$の二次元配列に格納するのも良いが，今回は，$1$次元配列に格納することにする．</p><p>手始めに，盤面を表示する関数を作る．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>using</span> <span class=n>Board</span> <span class=o>=</span> <span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>constexpr</span> <span class=kt>int</span> <span class=n>width</span> <span class=o>=</span> <span class=mi>3</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>constexpr</span> <span class=kt>int</span> <span class=n>height</span> <span class=o>=</span> <span class=mi>3</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>constexpr</span> <span class=kt>int</span> <span class=n>cells</span> <span class=o>=</span> <span class=n>width</span> <span class=o>*</span> <span class=n>height</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 盤面を表示
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span> <span class=nf>print_board</span><span class=p>(</span><span class=k>const</span> <span class=n>Board</span> <span class=o>&amp;</span><span class=n>board</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>cells</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>board</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; &#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>board</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>==</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;o&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>board</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>==</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;x&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>i</span> <span class=o>%</span> <span class=n>width</span> <span class=o>==</span> <span class=n>width</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;|&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=盤面の判定>盤面の判定</h3><p>　ゲームの進行状況を判定する関数を作る．
+<code>win</code>という変数に，勝利条件を表す配列を用意しておく(この配列は盤面の<code>width</code>と<code>height</code>を変えたときに一緒に変えなければならない．謝罪)．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=kt>int</span> <span class=nf>judge</span><span class=p>(</span><span class=k>const</span> <span class=n>Board</span> <span class=o>&amp;</span><span class=n>board</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>static</span> <span class=k>const</span> <span class=n>vector</span><span class=o>&lt;</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;&gt;</span> <span class=n>win</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>6</span><span class=p>,</span> <span class=mi>7</span><span class=p>,</span> <span class=mi>8</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>6</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>7</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>2</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>8</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>8</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=mi>2</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>6</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 0: 続行
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 1: oの勝ち
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 2: xの勝ち
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 3: 引き分け
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>for</span> <span class=p>(</span><span class=k>const</span> <span class=k>auto</span> <span class=o>&amp;</span><span class=nl>w</span> <span class=p>:</span> <span class=n>win</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>board</span><span class=p>[</span><span class=n>w</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span> <span class=o>==</span> <span class=n>board</span><span class=p>[</span><span class=n>w</span><span class=p>[</span><span class=mi>1</span><span class=p>]]</span> <span class=o>&amp;&amp;</span> <span class=n>board</span><span class=p>[</span><span class=n>w</span><span class=p>[</span><span class=mi>1</span><span class=p>]]</span> <span class=o>==</span> <span class=n>board</span><span class=p>[</span><span class=n>w</span><span class=p>[</span><span class=mi>2</span><span class=p>]])</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>board</span><span class=p>[</span><span class=n>w</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span> <span class=o>==</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>board</span><span class=p>[</span><span class=n>w</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span> <span class=o>==</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=mi>2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=k>const</span> <span class=kt>int</span> <span class=o>&amp;</span><span class=nl>b</span> <span class=p>:</span> <span class=n>board</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>b</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=mi>0</span><span class=p>;</span> <span class=c1>// 続行
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>1</span><span class=p>;</span> <span class=c1>// 引き分け
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>一緒に報酬を返す関数も作っておく．引き分けでも正の報酬を与える．
+簡単のために，コンピュータはマルのみを打つことにする．ちなみに，コンピュータがバツを打つ場合は，盤面のマルとバツを入れ替えることで同じコードで実装できる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// 報酬
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>double</span> <span class=nf>reward</span><span class=p>(</span><span class=k>const</span> <span class=n>Board</span> <span class=o>&amp;</span><span class=n>board</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=n>judge</span><span class=p>(</span><span class=n>board</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>static</span> <span class=k>const</span> <span class=n>vector</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>r</span> <span class=o>=</span> <span class=p>{</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 0: 続行
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 1: oの勝ち
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 2: xの勝ち
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 3: 引き分け
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>return</span> <span class=n>r</span><span class=p>[</span><span class=n>j</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=盤面の生成>盤面の生成</h3><p>　さて，$3^9$通りの盤面を全て生成すると，全てのマスがマルで埋まっているような盤面であったり，マルとバツが両方揃っているような盤面であったり，そもそも存在しない盤面まで生成されてしまう．そんな盤面を除外するために，<code>is_valid</code>という関数を作る(残しておいても問題がないのかもしれないが，なんとなく)．また，<code>judge(board) != 0</code>のときは，その盤面は終了盤面であるので，その盤面は除外する．
+今回は，先手を学習するため，マルとバツの個数が同じ盤面のみ考える．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// 盤面が有効かどうか
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>bool</span> <span class=nf>isVaild</span><span class=p>(</span><span class=k>const</span> <span class=n>Board</span> <span class=o>&amp;</span><span class=n>board</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>cnt</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=o>&amp;</span><span class=nl>b</span> <span class=p>:</span> <span class=n>board</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>b</span> <span class=o>==</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cnt</span><span class=o>++</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>b</span> <span class=o>==</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cnt</span><span class=o>--</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>cnt</span> <span class=o>==</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>状態価値関数$v$は，<code>std::map</code>を用いて実装する．
+<code>map&lt;Board, double></code>とすると，<code>Board</code>をキーとして，<code>double</code>を値として扱うことができる．全ての有効な状態で，$v(s) = 0$としておく．
+全ての盤面の生成にはカッコよく再帰関数を用いる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=kt>void</span> <span class=nf>initAllBoard</span><span class=p>(</span><span class=n>Board</span> <span class=o>&amp;</span><span class=n>board</span><span class=p>,</span> <span class=n>vector</span><span class=o>&lt;</span><span class=n>Board</span><span class=o>&gt;</span> <span class=o>&amp;</span><span class=n>allBoard</span><span class=p>,</span><span class=kt>int</span> <span class=n>depth</span><span class=o>=</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>depth</span> <span class=o>==</span> <span class=n>cells</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>isVaild</span><span class=p>(</span><span class=n>board</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>allBoard</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>board</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>3</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>board</span><span class=p>[</span><span class=n>depth</span><span class=p>]</span> <span class=o>=</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>initAllBoard</span><span class=p>(</span><span class=n>board</span><span class=p>,</span> <span class=n>allBoard</span><span class=p>,</span> <span class=n>depth</span> <span class=o>+</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>void</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// コンピュータは常にoとする
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//  V[s] := 状態sにおける価値
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>map</span><span class=o>&lt;</span><span class=n>Board</span><span class=p>,</span> <span class=kt>double</span><span class=o>&gt;</span> <span class=n>V</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 全ての状態を生成
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>vector</span><span class=o>&lt;</span><span class=n>Board</span><span class=o>&gt;</span> <span class=n>allBoard</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>Board</span> <span class=n>empty</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=n>initAllBoard</span><span class=p>(</span><span class=n>empty</span><span class=p>,</span> <span class=n>allBoard</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=k>const</span> <span class=k>auto</span> <span class=o>&amp;</span><span class=nl>b</span> <span class=p>:</span> <span class=n>allBoard</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>V</span><span class=p>[</span><span class=n>b</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=学習>学習</h3><p>　学習フェーズの雛形は以下のようになる．完全に値の更新がしなくなるまで回すというのは，浮動小数点型の精度の問題から難しいため，ある程度の差分が出なくなったら終了するということにする．
+式$(6)$の通りに，<code>maxAction</code>関数で，$\sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma V_{k} (s&rsquo;) \right\}$が最大になる行動$a$を選択する．</p><p>$$
+\begin{align}
+V_{k+1}(s) = \max_{a} \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma V_{k} (s&rsquo;) \right\}
+\end{align}
+$$</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl>    <span class=kt>double</span> <span class=n>gamma</span> <span class=o>=</span> <span class=mf>0.8</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=n>threshold</span> <span class=o>=</span> <span class=mf>1e-5</span><span class=p>;</span> <span class=c1>// 閾値;更新したときの差分がこの値以下になったら終了
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>while</span> <span class=p>(</span><span class=nb>true</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=kt>double</span> <span class=n>max_diff</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=cm>/*
+</span></span></span><span class=line><span class=cl><span class=cm>        全ての状態sについて，価値を更新する
+</span></span></span><span class=line><span class=cl><span class=cm>        */</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=o>&amp;</span><span class=p>[</span><span class=n>prevS</span><span class=p>,</span> <span class=n>prevV</span><span class=p>]</span> <span class=o>:</span> <span class=n>V</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>auto</span> <span class=p>[</span><span class=n>act</span><span class=p>,</span> <span class=n>nextV</span><span class=p>]</span> <span class=o>=</span> <span class=n>maxAction</span><span class=p>(</span><span class=n>prevS</span><span class=p>,</span> <span class=n>V</span><span class=p>,</span> <span class=n>gamma</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//maxActionは最も収益の高い行動とそのときの価値を返す
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=kt>double</span> <span class=n>diff</span> <span class=o>=</span> <span class=n>abs</span><span class=p>(</span><span class=n>prevV</span> <span class=o>-</span> <span class=n>nextV</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=n>max_diff</span> <span class=o>=</span> <span class=n>max</span><span class=p>(</span><span class=n>max_diff</span><span class=p>,</span> <span class=n>diff</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=n>V</span><span class=p>[</span><span class=n>prevS</span><span class=p>]</span> <span class=o>=</span> <span class=n>nextV</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>max_diff</span> <span class=o>&lt;</span> <span class=n>threshold</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=状態価値関数の更新>状態価値関数の更新</h3><p>　<code>maxAction</code>関数を作る．ここで，注意するのは，相手の行動を考慮する必要があることである．
+行動$a$を選択し，さらに相手ターンが終了したときの盤面が$s&rsquo;$となる．そこで，相手の行動を全て試して，それらの状態価値の平均を取る．</p><p>少し複雑なので，言語化すると以下のようになる．</p><ol><li>最大の価値とそのときの行動を$v_{max} = -\infty$，$a_{max} = -1$で初期化する．</li><li>現在の状態$s$からできる全ての行動$a$について次を行う．<ol><li>行動$a$を選択したときの盤面を$t$とする．</li><li>$V_{k+1} = 0$と初期化する．</li><li>$t$からできる全ての相手の行動について次を行う．行動の数を$n$とする．<ol><li>相手の行動を選択したときの盤面を$s&rsquo;$とする．</li><li>$V_{k+1}$に$r(s,a,s&rsquo;) + \gamma V(s&rsquo;)$を加算する</li></ol></li><li>$V_{k+1}$を$n$で割って平均にする．</li><li>$V_{k+1}$が$v_{max}$より大きければ$v_{max} = V_{k+1}$，$a_{max} = a$とする．</li></ol></li></ol><p>ただし，相手の置く場所がなかった場合はその時点の状態の報酬をそのまま返す．</p><p>数式で表現すると，<code>maxAction</code>関数は，それぞれ式$(7)(8)$を返していることになる．
+$$
+\begin{align}
+\text{argmax}_{a} \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma V_{k} (s&rsquo;) \right\} \\
+\max_{a} \sum _{s&rsquo;} p(s&rsquo;|s,a) \left\{ r(s,a,s&rsquo;) + \gamma V_{k} (s&rsquo;) \right\}
+\end{align}
+$$</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>pair</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>maxAction</span><span class=p>(</span><span class=k>const</span> <span class=n>Board</span> <span class=o>&amp;</span><span class=n>prevS</span><span class=p>,</span><span class=k>const</span> <span class=n>map</span><span class=o>&lt;</span><span class=n>Board</span><span class=p>,</span> <span class=kt>double</span><span class=o>&gt;</span> <span class=o>&amp;</span><span class=n>V</span><span class=p>,</span><span class=k>const</span> <span class=kt>double</span> <span class=n>gamma</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=n>maxV</span> <span class=o>=</span> <span class=o>-</span><span class=mf>1e9</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>act</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>cells</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>prevS</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span> <span class=k>continue</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 置いたときの盤面
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Board</span> <span class=n>nextS</span> <span class=o>=</span> <span class=n>prevS</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>nextS</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kt>double</span> <span class=n>nextV</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>put</span><span class=p>;</span><span class=c1>//相手の置ける場所
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>j</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span><span class=n>j</span><span class=o>&lt;</span><span class=n>cells</span><span class=p>;</span><span class=n>j</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span><span class=p>(</span><span class=n>nextS</span><span class=p>[</span><span class=n>j</span><span class=p>]</span><span class=o>==</span><span class=mi>0</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>                <span class=n>put</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>j</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span><span class=p>(</span><span class=k>const</span> <span class=k>auto</span> <span class=o>&amp;</span><span class=nl>p</span> <span class=p>:</span> <span class=n>put</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=n>nextS</span><span class=p>[</span><span class=n>p</span><span class=p>]</span> <span class=o>=</span> <span class=mi>2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>nextV</span> <span class=o>+=</span> <span class=n>reward</span><span class=p>(</span><span class=n>nextS</span><span class=p>)</span> <span class=o>+</span> <span class=n>gamma</span> <span class=o>*</span> <span class=n>V</span><span class=p>.</span><span class=n>at</span><span class=p>(</span><span class=n>nextS</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=n>nextS</span><span class=p>[</span><span class=n>p</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=n>put</span><span class=p>.</span><span class=n>empty</span><span class=p>()){</span><span class=c1>//相手の置ける場所がないとき
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=n>nextV</span> <span class=o>=</span> <span class=n>reward</span><span class=p>(</span><span class=n>nextS</span><span class=p>);</span>   
+</span></span><span class=line><span class=cl>        <span class=p>}</span><span class=k>else</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>nextV</span> <span class=o>/=</span> <span class=n>put</span><span class=p>.</span><span class=n>size</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>nextV</span> <span class=o>&gt;</span> <span class=n>maxV</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>maxV</span> <span class=o>=</span> <span class=n>nextV</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>act</span> <span class=o>=</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>{</span><span class=n>act</span><span class=p>,</span><span class=n>maxV</span><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=最適方策の取得>最適方策の取得</h3><p>　以上のプログラムによって，状態価値関数が求まったので，最適方策を取得する．
+これは，<code>maxAction</code>関数の戻り値を使えば実装できる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl>    <span class=n>map</span><span class=o>&lt;</span><span class=n>Board</span><span class=p>,</span> <span class=kt>int</span><span class=o>&gt;</span> <span class=n>mu</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=k>auto</span> <span class=o>&amp;</span><span class=p>[</span><span class=n>prevS</span><span class=p>,</span> <span class=n>prevV</span><span class=p>]</span> <span class=o>:</span> <span class=n>V</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>auto</span> <span class=p>[</span><span class=n>act</span><span class=p>,</span> <span class=n>nextV</span><span class=p>]</span> <span class=o>=</span> <span class=n>maxAction</span><span class=p>(</span><span class=n>prevS</span><span class=p>,</span> <span class=n>V</span><span class=p>,</span> <span class=n>gamma</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>mu</span><span class=p>[</span><span class=n>prevS</span><span class=p>]</span> <span class=o>=</span> <span class=n>act</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>適当なコードで出力してみる．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=k>auto</span> <span class=o>&amp;</span><span class=p>[</span><span class=n>prevS</span><span class=p>,</span> <span class=n>prevV</span><span class=p>]</span> <span class=o>:</span> <span class=n>V</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=n>cout</span><span class=o>&lt;&lt;</span><span class=s>&#34;mu [&#34;</span><span class=o>&lt;&lt;</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>print_board</span><span class=p>(</span><span class=n>prevS</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>cout</span><span class=o>&lt;&lt;</span><span class=s>&#34;] = &#34;</span><span class=o>&lt;&lt;</span><span class=n>mu</span><span class=p>[</span><span class=n>prevS</span><span class=p>]</span><span class=o>&lt;&lt;</span><span class=n>endl</span><span class=o>&lt;&lt;</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>出力結果(抜粋)は以下の通り．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>mu</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>o</span><span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=o>|</span><span class=n>o</span><span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>mu</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>o</span><span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=o>|</span><span class=n>x</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>mu</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>o</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>x</span><span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=p>]</span> <span class=o>=</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>mu</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>o</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=p>]</span> <span class=o>=</span> <span class=mi>3</span>
+</span></span></code></pre></td></tr></table></div></div><p>次に置くべき場所が出力されている．</p><p>こういう感じの，次に相手の置く場所を阻止しないと行けない場合もしっかりと出力されている．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>mu</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>x</span><span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=o>|</span><span class=n>o</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=o>|</span><span class=n>o</span><span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>mu</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>x</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span><span class=n>o</span><span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=p>]</span> <span class=o>=</span> <span class=mi>6</span>
+</span></span></code></pre></td></tr></table></div></div><p>対戦してみると普通に賢い．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=nl>put</span><span class=p>:</span><span class=mi>8</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span> <span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=nl>put</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span><span class=n>x</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span><span class=n>x</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl> <span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=nl>put</span><span class=p>:</span><span class=mi>3</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span><span class=n>x</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=o>|</span> <span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span><span class=n>x</span><span class=o>|</span><span class=n>o</span>
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=o>|</span><span class=n>o</span><span class=o>|</span> 
+</span></span><span class=line><span class=cl><span class=n>o</span><span class=o>|</span> <span class=o>|</span><span class=n>x</span>
+</span></span></code></pre></td></tr></table></div></div><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>証明は省略する．&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/puyo-dqn/><div class=article-details><h2 class=article-title>強化学習でぷよぷよを学習させたかった(願望)</h2></div></a></article><article><a href=/my-blog-4/contents/rl-0/><div class=article-details><h2 class=article-title>強化学習勉強メモ (目次)</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

@@ -1,0 +1,365 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Crypto3問"><title>RicercaCTF 2023 Writeup</title><link rel=canonical href=https://shibaken28.github.io/my-blog-4/contents/ricercactf/><link rel=stylesheet href=/my-blog-4/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="RicercaCTF 2023 Writeup"><meta property="og:description" content="Crypto3問"><meta property="og:url" content="https://shibaken28.github.io/my-blog-4/contents/ricercactf/"><meta property="og:site_name" content="shibak3n's blog"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2023-04-23T01:08:30+09:00"><meta property="article:modified_time" content="2023-04-23T01:08:30+09:00"><meta name=twitter:title content="RicercaCTF 2023 Writeup"><meta name=twitter:description content="Crypto3問"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KXVWMJ76L6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-KXVWMJ76L6")</script><link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel=stylesheet><style>:root{--ja-font-family:"Noto Sans JP",'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;--base-font-family:"Lato", var(--sys-font-family), var(--ja-font-family), sans-serif;--article-font-size:12pt}.article-content .katex-display>.katex{overflow-x:hidden;overflow-y:hidden}</style></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/my-blog-4>shibak3n's blog</a></h1><h2 class=site-description>趣味全般</h2></div></header><ol class=social-menu><li><a href=https://github.com/Shibaken28 target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://steamcommunity.com/profiles/76561199155194438/ target=_blank title=steam rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li><li><a href=https://twitter.com/Shibak33333333n target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/my-blog-4/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/my-blog-4/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/my-blog-4/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/my-blog-4/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>ダークモード</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#revolving-letters>Revolving Letters</a><ol><li><a href=#問題>問題</a></li><li><a href=#解答>解答</a></li><li><a href=#余談>余談</a></li></ol></li><li><a href=#rotated-secret-analysis>Rotated Secret Analysis</a><ol><li><a href=#問題-1>問題</a></li><li><a href=#解答-1>解答</a></li><li><a href=#余談-1>余談</a></li></ol></li><li><a href=#rsalcg>RSALCG</a><ol><li><a href=#問題-2>問題</a></li><li><a href=#解法>解法</a></li><li><a href=#余談-2>余談</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/my-blog-4/categories/ctf/>CTF</a>
+<a href=/my-blog-4/categories/%E6%95%B0%E5%AD%A6/>数学</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/my-blog-4/contents/ricercactf/>RicercaCTF 2023 Writeup</a></h2><h3 class=article-subtitle>Crypto3問</h3></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Apr 23, 2023</time></div></footer></div></header><section class=article-content><h2 id=revolving-letters>Revolving Letters</h2><h3 id=問題>問題</h3><p>問題ファイル</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>LOWER_ALPHABET</span> <span class=o>=</span> <span class=s2>&#34;abcdefghijklmnopqrstuvwxyz&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>encrypt</span><span class=p>(</span><span class=n>secret</span><span class=p>,</span> <span class=n>key</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=k>assert</span> <span class=nb>len</span><span class=p>(</span><span class=n>secret</span><span class=p>)</span> <span class=o>&lt;=</span> <span class=nb>len</span><span class=p>(</span><span class=n>key</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>	<span class=n>result</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>secret</span><span class=p>)):</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=n>secret</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>LOWER_ALPHABET</span><span class=p>:</span> <span class=c1># Don&#39;t encode symbols and capital letters (e.g. &#34;A&#34;, &#34; &#34;, &#34;_&#34;, &#34;!&#34;, &#34;{&#34;, &#34;}&#34;)</span>
+</span></span><span class=line><span class=cl>		<span class=n>result</span> <span class=o>+=</span> <span class=n>secret</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>	<span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    	<span class=n>result</span> <span class=o>+=</span> <span class=n>LOWER_ALPHABET</span><span class=p>[(</span><span class=n>LOWER_ALPHABET</span><span class=o>.</span><span class=n>index</span><span class=p>(</span><span class=n>secret</span><span class=p>[</span><span class=n>i</span><span class=p>])</span> <span class=o>+</span> <span class=n>LOWER_ALPHABET</span><span class=o>.</span><span class=n>index</span><span class=p>(</span><span class=n>key</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span> <span class=o>%</span> <span class=mi>26</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>result</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>flag</span>    <span class=o>=</span> <span class=nb>input</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>key</span>     <span class=o>=</span> <span class=s2>&#34;thequickbrownfoxjumpsoverthelazydog&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>example</span> <span class=o>=</span> <span class=s2>&#34;lorem ipsum dolor sit amet&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>example_encrypted</span> <span class=o>=</span> <span class=n>encrypt</span><span class=p>(</span><span class=n>example</span><span class=p>,</span> <span class=n>key</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>flag_encrypted</span> <span class=o>=</span> <span class=n>encrypt</span><span class=p>(</span><span class=n>flag</span><span class=p>,</span> <span class=n>key</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;</span><span class=si>{</span><span class=n>key</span><span class=si>=}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;</span><span class=si>{</span><span class=n>example</span><span class=si>=}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;encrypt(example, key): </span><span class=si>{</span><span class=n>example_encrypted</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;encrypt(flag, key): </span><span class=si>{</span><span class=n>flag_encrypted</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>出力</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>key=&#39;thequickbrownfoxjumpsoverthelazydog&#39;
+</span></span><span class=line><span class=cl>example=&#39;lorem ipsum dolor sit amet&#39;
+</span></span><span class=line><span class=cl>encrypt(example, key): evvug kztla qtzla exl vqvm
+</span></span><span class=line><span class=cl>encrypt(flag, key): RpgSyk{qsvop_dcr_wmc_rj_rgfxsime!}
+</span></span></code></pre></td></tr></table></div></div><h3 id=解答>解答</h3><p>シーザー暗号の亜種みたいな感じで，「アルファベットの何文字目(ただし<code>a</code>が$0$文字目)か」文字分だけずらしたものを出力している．
+復元するには逆方向にずらせば良い．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>LOWER_ALPHABET</span> <span class=o>=</span> <span class=s2>&#34;abcdefghijklmnopqrstuvwxyz&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>decrypt</span><span class=p>(</span><span class=n>secret</span><span class=p>,</span> <span class=n>key</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=k>assert</span> <span class=nb>len</span><span class=p>(</span><span class=n>secret</span><span class=p>)</span> <span class=o>&lt;=</span> <span class=nb>len</span><span class=p>(</span><span class=n>key</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>result</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>secret</span><span class=p>)):</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=n>secret</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>LOWER_ALPHABET</span><span class=p>:</span> <span class=c1># Don&#39;t encode symbols and capital letters (e.g. &#34;A&#34;, &#34; &#34;, &#34;_&#34;, &#34;!&#34;, &#34;{&#34;, &#34;}&#34;)</span>
+</span></span><span class=line><span class=cl>    	<span class=n>result</span> <span class=o>+=</span> <span class=n>secret</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>	<span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    	<span class=n>result</span> <span class=o>+=</span> <span class=n>LOWER_ALPHABET</span><span class=p>[(</span><span class=n>LOWER_ALPHABET</span><span class=o>.</span><span class=n>index</span><span class=p>(</span><span class=n>secret</span><span class=p>[</span><span class=n>i</span><span class=p>])</span> <span class=o>-</span> <span class=n>LOWER_ALPHABET</span><span class=o>.</span><span class=n>index</span><span class=p>(</span><span class=n>key</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span> <span class=o>%</span> <span class=mi>26</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>result</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ct</span> <span class=o>=</span> <span class=s2>&#34;RpgSyk{qsvop_dcr_wmc_rj_rgfxsime!}&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>key</span> <span class=o>=</span><span class=s2>&#34;thequickbrownfoxjumpsoverthelazydog&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>decrypt</span><span class=p>(</span><span class=n>ct</span><span class=p>,</span> <span class=n>key</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=余談>余談</h3><p>こういうタイプの問題で<code>decrypt</code>関数を作るときは，<code>encrypt</code>関数を流用して少し書き換えると楽に作れることが多い．
+また，各文字ごとに暗号化の処理が独立しているので，わざわざ逆変換を考えずに，各1文字について「<code>encrypt</code>してこの文字になる」ような文字をブルートフォースしても良い．</p><p>ちなみに，<code>example</code>のlorem ipsum&mldr;の文章は，Filler textとかDummy textと呼ばれるもので，文章の埋め込みやデザインの確認などに使われるもの．</p><h2 id=rotated-secret-analysis>Rotated Secret Analysis</h2><h3 id=問題-1>問題</h3><p>$1024$bitの素数$p$と，$p$の上位$512$bitと下位$512$bitを入れ替えた値と等しい素数$q$でRSA暗号を構成している．$e,n,c$が与えられるので，$m$を復号する．</p><h3 id=解答-1>解答</h3><p>$p$の上位$512$bitと下位$512$bitをそれぞれ$x,y$と置く．すると，$p$と$q$は以下のように表せる．
+$$
+\begin{align}
+p &= 2^{512}x + y \\
+q &= 2^{512}y + x
+\end{align}
+$$
+よって，$n$は以下のように表せる．
+$$
+\begin{align}
+n &= pq \\
+&= (2^{512}x + y)(2^{512}y + x) \\
+&= 2^{1024}xy + 2^{512}(x^2+y^2) + xy
+\end{align}
+$$
+$x$と$y$が$512$bitであることに注意すると，</p><ul><li>$n$の下位$512$bitは$xy$の下位$512$bitと等しい</li><li>上位$512$bitは，$xy$の上位$512$bit，または$xy$の上位$512$bitに$1$を足したもの<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>と等しい</li></ul><p>ということがわかる．図(?)にすると以下のような構造になっている．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>|-----------------------------------|
+</span></span><span class=line><span class=cl>| 512bit | 512bit | 512bit | 512bit |
+</span></span><span class=line><span class=cl>|-----------------------------------|
+</span></span><span class=line><span class=cl>|       xy        |        0  	    |
+</span></span><span class=line><span class=cl>|-----------------------------------|
+</span></span><span class=line><span class=cl>|   0    |     x^2+y^2     |   0    |
+</span></span><span class=line><span class=cl>|-----------------------------------|
+</span></span><span class=line><span class=cl>|        0        |       xy        |
+</span></span><span class=line><span class=cl>|===================================|
+</span></span><span class=line><span class=cl>|                 n                 |
+</span></span><span class=line><span class=cl>|-----------------------------------|
+</span></span></code></pre></td></tr></table></div></div><p>$xy$が求まれば，$x^2+y^2$も得られ，$2$つの変数$x,y$に関する$2$つの式が得られ，連立方程式として解ける．</p><p>あるいは，$\phi(n)$は次のように計算できるので，
+$$
+\begin{align}
+\phi(n) &= (p-1)(q-1) \\
+&= (2^{512}x + y - 1)(2^{512}y + x - 1) \\
+&= 2^{1024}xy + 2^{512}(x^2+y^2) + xy - 2^{512}x - 2^{512}y - x - y + 1 \\
+&= n - 2^{512}(x+y) - (x+y) + 1 \\
+\end{align}
+$$
+$x+y=\sqrt{x^2+y^2+2xy}$より$\phi(n)$を直接求めることもできる．ソルバはこちらの方法で実装した．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=n>bytes_to_long</span><span class=p>,</span> <span class=n>getPrime</span><span class=p>,</span> <span class=n>long_to_bytes</span><span class=p>,</span> <span class=n>isPrime</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>gmpy2</span> <span class=kn>import</span> <span class=n>iroot</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>n</span><span class=o>=</span><span class=mi>24456513668907101359271796518022987404822072050667823923658615869713366383971188719969649435049035576669472727127263581903194099017975695864947929128367925596885753443249213201464273639499012909424736149608651744371555837721791748016889531637876303898022555235081004895411069645304985372521003721010862125442095042882100526577024974456438653686633405126923109918116756381929718438800103893677616376097141956262119327549521930637736951686117614349172207432863248304206515910202829219635801301165048124304406561437145821967710958494879876995451567574220240353599402105475654480414974342875582148522218019743166820077511</span>
+</span></span><span class=line><span class=cl><span class=n>e</span><span class=o>=</span><span class=mi>65537</span>
+</span></span><span class=line><span class=cl><span class=n>c</span><span class=o>=</span><span class=mi>18597341961729093099197297749831937867867316311655201999082918827905805371478429928112783157010654738161403312986940377995349388331953112844242407426040120302839420903486499187443737383169223520050969011318937950864196985991944523897440559547618789750180738003138383081085865616976666352985134179471231798760776607911573149993314296253654585181164097972479570867395976653829684069633563438561147707530130563531572708010593487686521808574459865586551335422619675302973576174518308347087901889923892503468385483111040271271572302540992212613766789315482719811321158322571666641755809592299352653626100918299699982602448</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=mi>1</span><span class=o>&lt;&lt;</span><span class=mi>512</span>
+</span></span><span class=line><span class=cl><span class=n>s</span> <span class=o>=</span> <span class=nb>bin</span><span class=p>(</span><span class=n>n</span><span class=p>)[</span><span class=mi>2</span><span class=p>::]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>2</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>up</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>s</span><span class=p>[</span><span class=mi>0</span><span class=p>:</span><span class=mi>512</span><span class=p>],</span><span class=mi>2</span><span class=p>)</span> <span class=o>-</span> <span class=n>i</span> <span class=c1># xyの上位512bit</span>
+</span></span><span class=line><span class=cl>    <span class=n>low</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>s</span><span class=p>[</span><span class=mi>512</span><span class=o>*</span><span class=mi>3</span><span class=p>::],</span><span class=mi>2</span><span class=p>)</span> <span class=c1># xyの下位512bit</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>A</span> <span class=o>=</span> <span class=p>(</span><span class=n>up</span><span class=o>&lt;&lt;</span><span class=mi>512</span><span class=p>)</span> <span class=o>+</span> <span class=n>low</span> <span class=c1># xy</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=nb>bin</span><span class=p>(</span><span class=n>A</span><span class=p>))</span><span class=o>-</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>B</span> <span class=o>=</span> <span class=n>n</span><span class=o>-</span><span class=p>(</span><span class=n>A</span><span class=o>&lt;&lt;</span><span class=mi>1024</span><span class=p>)</span><span class=o>-</span><span class=n>A</span> <span class=c1># x^2+y^2</span>
+</span></span><span class=line><span class=cl>    <span class=n>B</span> <span class=o>=</span> <span class=n>B</span><span class=o>&gt;&gt;</span><span class=mi>512</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>C</span> <span class=o>=</span> <span class=n>B</span> <span class=o>+</span> <span class=mi>2</span><span class=o>*</span><span class=n>A</span> <span class=c1># x^2+y^2 + 2xy = (x+y)^2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>r</span><span class=p>,</span><span class=n>T</span> <span class=o>=</span> <span class=n>iroot</span><span class=p>(</span><span class=n>C</span><span class=p>,</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>T</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>phi</span> <span class=o>=</span> <span class=n>n</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>r</span><span class=p>)</span><span class=o>*</span><span class=p>(</span><span class=o>-</span><span class=n>a</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span><span class=o>+</span><span class=mi>1</span>    
+</span></span><span class=line><span class=cl>        <span class=n>d</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>(</span><span class=n>e</span><span class=p>,</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span><span class=n>phi</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>m</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=n>d</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=n>long_to_bytes</span><span class=p>(</span><span class=n>m</span><span class=p>))</span> 
+</span></span></code></pre></td></tr></table></div></div><h3 id=余談-1>余談</h3><p>ビットを回転させるネタは作問で考えたことがあった．</p><h2 id=rsalcg>RSALCG</h2><h3 id=問題-2>問題</h3><p>次のように線形合同法($z \% n$は$z$を$n$で割ったあまりを表す)で乱数を生成し，それを$e$乗して$n$で割ったあまりを使って暗号化をしている．
+$$
+\begin{align}
+x_2 &= ax_1 + b \pmod n \\
+x_3 &= ax_2 + b \pmod n \\
+r_i &= x_{i}^e \pmod n \quad (i=1,2,3) \\
+\end{align}
+$$
+$r_1$と$r_3$が得られるので$r_2$を求める問題．$a,b,n,e$も既知．</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>from Crypto.Util.number import getPrime, getRandomNBitInteger
+</span></span><span class=line><span class=cl>import os
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>FLAG = os.getenv(&#34;FLAG&#34;, &#34;RicSec{*** REDACTED ***}&#34;).encode()
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def RSALCG(a, b, n):
+</span></span><span class=line><span class=cl>    e = 65537
+</span></span><span class=line><span class=cl>    s = getRandomNBitInteger(1024) % n
+</span></span><span class=line><span class=cl>    while True:
+</span></span><span class=line><span class=cl>        s = (a * s + b) % n
+</span></span><span class=line><span class=cl>        yield pow(s, e, n)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def encrypt(rand, msg):
+</span></span><span class=line><span class=cl>    assert len(msg) &lt; 128
+</span></span><span class=line><span class=cl>    m = int.from_bytes(msg, &#39;big&#39;)
+</span></span><span class=line><span class=cl>    return int.to_bytes(m ^ next(rand), 128, &#39;big&#39;)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>if __name__ == &#39;__main__&#39;:
+</span></span><span class=line><span class=cl>    n = getPrime(512) * getPrime(512)
+</span></span><span class=line><span class=cl>    a = getRandomNBitInteger(1024)
+</span></span><span class=line><span class=cl>    b = getRandomNBitInteger(1024)
+</span></span><span class=line><span class=cl>    rand = RSALCG(a, b, n)
+</span></span><span class=line><span class=cl>    print(f&#34;{a = }&#34;)
+</span></span><span class=line><span class=cl>    print(f&#34;{b = }&#34;)
+</span></span><span class=line><span class=cl>    print(f&#34;{n = }&#34;)
+</span></span><span class=line><span class=cl>    print(encrypt(rand, b&#34;The quick brown fox jumps over the lazy dog&#34;).hex())
+</span></span><span class=line><span class=cl>    print(encrypt(rand, FLAG).hex())
+</span></span><span class=line><span class=cl>    print(encrypt(rand, b&#34;https://translate.google.com/?sl=it&amp;tl=en&amp;text=ricerca&#34;).hex())
+</span></span></code></pre></td></tr></table></div></div><h3 id=解法>解法</h3><p>$x_1$と$x_3$は線形な関係であるので
+$$
+\begin{align}
+x_3 &= ax_2 + b \\
+&= a(ax_1 + b) + b \\
+&= a^2x_1 + ab + b \\
+\end{align}
+$$
+次のような同じ根を持つ多項式が得られ，Franklin-Reiter&rsquo;s Related Message Attackが使える(コードはネットからコピペ)．</p><p>$$
+\begin{align}
+ax_1 + b - r_1 &= 0 \pmod n \\
+a^2x_1 + ab + b - r_3 &= 0 \pmod n \\
+\end{align}
+$$</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=n>bytes_to_long</span><span class=p>,</span> <span class=n>getPrime</span><span class=p>,</span> <span class=n>long_to_bytes</span><span class=p>,</span> <span class=n>isPrime</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>gmpy2</span> <span class=kn>import</span> <span class=n>iroot</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>GCD</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=n>b</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>a</span><span class=p>,</span> <span class=n>b</span> <span class=o>=</span> <span class=n>b</span><span class=p>,</span> <span class=n>a</span> <span class=o>%</span> <span class=n>b</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>a</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>e</span> <span class=o>=</span> <span class=mi>65537</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=mi>104932596701958568145159429432079350581741243925294416012169671604384908382893445168447905864839450402111868722373005467040643335329799448356719960809485814400987619457043584576651627652936429829564657705560266433066823589229257859375942917575729874731586891094997845427952093627170472382405528285663530612106</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=mi>146908709759837063143862302770110984437045635655026319928249954800644806528614554086681623417268963974691959251767647958752898163761641238519061717835899588252518767306816402052353874469376243689011218283173950163484015487529897260943257598915903245695362042234335492571429369281809958738989439275152307290506</span>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=mi>68915438454431862553872087841423255330382510660515857448975005472053459609178709434028465492773792706094321524334359097372292237742328589766664933832084854448986045922250239618283612819975877218019020936022572963433202427817150998352120028655478359887600473211365524707624162292808256010583620102295206287739</span>
+</span></span><span class=line><span class=cl><span class=n>c1</span> <span class=o>=</span> <span class=mh>0x05d7913ff5cd9b6a706249ac05779f2501013ecc05caec697d9270a8a1d3bdaabf898d73410aa0ffbd361a6032adbbfa35386b2e19ec812e9f6bd52e6a2ca1b3760b3076a86ffc94dd6007d74a272e0e3d5326d9e5b01b9211a803338f5899ad6cc29877cc02ca2ff923db79e3ad477bf3820e73596088f54a8cfb187f812201</span>
+</span></span><span class=line><span class=cl><span class=n>c2</span> <span class=o>=</span> <span class=mh>0x1913ba387e6f847dce455dc47092bf83571c34914b7df5875da536f11e68c8a39c78dfe69517ef4b389ea51434e071ce033854fd27c831996aa214cdc02225747a517d44408fbd0232672679bc189f26f6e9b6852a1e68e93ac14e2ce5afc1e050a44733094fe68b0477d4c4b609043e4da4e58390c4f9cf372005653c7f2529</span>
+</span></span><span class=line><span class=cl><span class=n>c3</span> <span class=o>=</span> <span class=mh>0x45054a08d594bd8af1d0fac759ccc799214d0ccce8ae9c5183ef4fba296819bcdf6306f72ee34dcd5d85967fae314d6d3d65a7693b4187adce1d5375dd00c472c0310393cd5bb114602e24d481e276a4926e8886bdcfed96bb8bf9c5812d594f66e46b1737849e8e2f2c3f7b6a45e284c754cf6caf71df34efe143636b5e9079</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>m1</span> <span class=o>=</span> <span class=n>bytes_to_long</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;The quick brown fox jumps over the lazy dog&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>m3</span> <span class=o>=</span> <span class=n>bytes_to_long</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;https://translate.google.com/?sl=it&amp;tl=en&amp;text=ricerca&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>r1</span> <span class=o>=</span> <span class=n>c1</span> <span class=o>^^</span> <span class=n>m1</span>
+</span></span><span class=line><span class=cl><span class=n>r3</span> <span class=o>=</span> <span class=n>c3</span> <span class=o>^^</span> <span class=n>m3</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># https://crypto.stackexchange.com/questions/30884/help-understanding-basic-franklin-reiter-related-message-attack</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>s1</span> <span class=o>=</span> <span class=p>(</span><span class=n>r1</span> <span class=o>*</span> <span class=nb>pow</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>e</span><span class=p>,</span><span class=n>n</span><span class=p>))</span> <span class=o>%</span> <span class=n>n</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>R</span><span class=o>.&lt;</span><span class=n>X</span><span class=o>&gt;</span> <span class=o>=</span> <span class=n>Zmod</span><span class=p>(</span><span class=n>n</span><span class=p>)[]</span>
+</span></span><span class=line><span class=cl><span class=n>f1</span> <span class=o>=</span> <span class=p>(</span><span class=n>X</span> <span class=o>-</span> <span class=n>b</span><span class=p>)</span><span class=o>^</span><span class=n>e</span> <span class=o>-</span> <span class=n>s1</span>
+</span></span><span class=line><span class=cl><span class=n>f2</span> <span class=o>=</span> <span class=p>(</span><span class=n>a</span><span class=o>*</span><span class=n>X</span> <span class=o>+</span> <span class=n>b</span><span class=p>)</span><span class=o>^</span><span class=n>e</span> <span class=o>-</span> <span class=n>r3</span>
+</span></span><span class=line><span class=cl><span class=c1># GCD is not implemented for rings over composite modulus in Sage</span>
+</span></span><span class=line><span class=cl><span class=c1># so we&#39;ll do it ourselves. Might fail in rare cases, but we</span>
+</span></span><span class=line><span class=cl><span class=c1># don&#39;t care.</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>my_gcd</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>):</span> 
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>a</span><span class=o>.</span><span class=n>monic</span><span class=p>()</span> <span class=k>if</span> <span class=n>b</span> <span class=o>==</span> <span class=mi>0</span> <span class=k>else</span> <span class=n>my_gcd</span><span class=p>(</span><span class=n>b</span><span class=p>,</span> <span class=n>a</span> <span class=o>%</span> <span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>x1</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=o>-</span> <span class=n>my_gcd</span><span class=p>(</span><span class=n>f1</span><span class=p>,</span> <span class=n>f2</span><span class=p>)</span><span class=o>.</span><span class=n>coefficients</span><span class=p>()[</span><span class=mi>0</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span> <span class=p>(</span><span class=n>x1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>r2</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>((</span><span class=n>a</span><span class=o>*</span><span class=n>x1</span><span class=o>+</span><span class=n>b</span><span class=p>)</span><span class=o>%</span><span class=n>n</span><span class=p>,</span><span class=n>e</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>m2</span> <span class=o>=</span> <span class=n>c2</span> <span class=o>^^</span> <span class=n>r2</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>long_to_bytes</span><span class=p>(</span><span class=n>m2</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=余談-2>余談</h3><p>$e = 65537$に対して計算量が$O(e^2)$らしく，私のパソコンでは実行に30分くらいかかった．HalfGCDというテクニックを使うことでより高速になるらしい．
+あと，私はFranklin-Reiter&rsquo;s Related Message Attackの中身は全く理解していない！</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>繰り上がりを考慮するため&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js integrity="sha256-InsNdER1b2xUewP+pKCUJpkhiqwHgqiPXDlIk7GzBu4=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI=" crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/my-blog-4/contents/shiba-ctf-writeup/><div class=article-details><h2 class=article-title>ShibaCTF Writeup</h2></div></a></article><article><a href=/my-blog-4/contents/fermat/><div class=article-details><h2 class=article-title>フェルマーの小定理に関する暗号の問題まとめ</h2></div></a></article><article><a href=/my-blog-4/contents/luggage/><div class=article-details><h2 class=article-title>LLLを用いてナップザック暗号を解く</h2></div></a></article><article><a href=/my-blog-4/contents/lsb-attack/><div class=article-details><h2 class=article-title>LSB Decryption Oracle Attackの実装</h2></div></a></article><article><a href=/my-blog-4/contents/picoctf/><div class=article-details><h2 class=article-title>picoCTF2022 crypto writeup</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2022 -
+2024 shibak3n's blog</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.21.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/my-blog-4/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

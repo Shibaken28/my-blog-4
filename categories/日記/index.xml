@@ -1,0 +1,1423 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>日記 on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/categories/%E6%97%A5%E8%A8%98/</link><description>Recent content in 日記 on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Sun, 20 Aug 2023 12:08:30 +0900</lastBuildDate><atom:link href="https://shibaken28.github.io/my-blog-4/categories/%E6%97%A5%E8%A8%98/index.xml" rel="self" type="application/rss+xml"/><item><title>[WIP]ABCの高度典型を解いてうはうはしたい</title><link>https://shibaken28.github.io/my-blog-4/contents/high-typical/</link><pubDate>Sun, 20 Aug 2023 12:08:30 +0900</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/high-typical/</guid><description>&lt;h2 id="謝罪">謝罪&lt;/h2>
+&lt;p>常体と敬体がごっちゃです。ごめんなさい。
+エンタメとしてお楽しみください。&lt;/p>
+&lt;p>解法を書くのに、公式解説、公式解説放送を主に参考にしています。それだけで理解できなかったものは、他の方のブログを参考にしています。その際は、参考にしたブログのリンクを貼っています。&lt;/p>
+&lt;h2 id="abc212-g-power-pair">ABC212-G Power Pair&lt;/h2>
+&lt;h3 id="問題概要">問題概要&lt;/h3>
+&lt;p>素数$P$が与えられ、$x^n \equiv y \pmod{P}$を満たす$n$が存在する$(x,y)$の組$(0\leq x,y\leq P-1)$の個数を求める問題。&lt;/p>
+&lt;p>素数$P$に対する原始根$r$が必ず存在するため、$x=r^a,y=r^b$とか表現すると、
+$$
+x^n \equiv y \pmod{P} \Leftrightarrow r^{an} \equiv r^b \pmod{P} \Leftrightarrow an \equiv b \pmod{P-1}
+$$
+となるので(最後の変換はフェルマーの小定理より)、$an \equiv b \pmod{P-1}$を満たす$(a,b)$の組$(1\leq a,b\leq P-1)$を数えれば良い。&lt;/p>
+&lt;p>さて、ここからどう数えるかだが、&lt;/p>
+&lt;ul>
+&lt;li>$P-1$と$a$の最大公約数が$1$であるような$a$を見つけてきたとき、$n=1,2,\cdots P-1$のとき$b$は$P-1$通りの値を取る。&lt;/li>
+&lt;li>$P-1$と$a$の最大公約数が$2$であるような$a$を見つけてきたとき、$n=1,2,\cdots P-1$のとき$b$は$(P-1)/2$通りの値を取る。&lt;/li>
+&lt;/ul>
+&lt;p>というように、$P-1$と$a$の最大公約数が$g$であるような$a$を見つけてきたとき、$n=1,2,\cdots P-1$のとき$b$は$(P-1)/g$通りの値を取ることがわかる。&lt;/p>
+&lt;p>$a=1,2,\cdots P-1$のそれぞれに対して$P-1$との最大公約数を取るのは$O(P\log P)$かかってしまうので、$GCD(P-1,a)$の値が$g$になるような$a$の個数を数えることにする。これは$g$が大きい順に数えるとうまくいく(説明がめんどいのでコードを貼ってごまかす)。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">mint&lt;/span> &lt;span class="n">ans&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">map&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">mp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="nl">i&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="p">){&lt;/span> &lt;span class="c1">//fはP-1の約数(降順)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// GCD(P-1, x) = iとなるxの個数を求める
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">long&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">P&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="nl">j&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="k">continue&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n&lt;/span> &lt;span class="o">-=&lt;/span> &lt;span class="n">mp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mint&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">P&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mint&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ans&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc212/submissions/44847610" target="_blank" rel="noopener"
+>提出コード&lt;/a>&lt;/p>
+&lt;h3 id="感想">感想&lt;/h3>
+&lt;p>原始根って便利なんですね&lt;/p>
+&lt;h2 id="abc212-h-nim-counting">ABC212-H Nim Counting&lt;/h2>
+&lt;h3 id="問題概要-1">問題概要&lt;/h3>
+&lt;p>長さ$K$の数列$(A_1,A_2,\cdots,A_K)$が与えられ($1\leq A_i\leq 2^{16}$)、ここから$1$個以上$N$個以下の数を選び(重複可能)、それらの選んだ数のXORをとったとき、$0$に&lt;strong>ならない&lt;/strong>ような選び方の個数を求める問題。&lt;/p>
+&lt;p>この問題ではxorの畳み込みという技術を使います。xorの演算子を$\oplus$、xor畳み込みの演算子を$*$とすると、xor畳み込みというのは、&lt;/p>
+&lt;p>$$
+A = (a_1, a_2, \cdots, a_n) \\
+B = (b_1, b_2, \cdots, b_n) \\
+c_i = \sum_{x\oplus y = i} a_x b_y
+$$
+となるようなベクトル$C = A * B = (c_1, c_2, \cdots, c_n)$を求めることで、$O(n\log n)$で行えます。すなわち、これでxor畳み込み後に添え字が0$以外の要素の総和を求めることでこの問題は解けそうです。&lt;/p>
+&lt;h3 id="hadamard変換">Hadamard変換&lt;/h3>
+&lt;p>天下り的ですが、
+$$
+\begin{aligned}
+H_0 &amp;amp;= 1 \\
+H_k &amp;amp;= \begin{pmatrix}
+E_{k-1} &amp;amp; E_{k-1} \\
+E_{k-1} &amp;amp; -E_{k-1} \end{pmatrix}
+\begin{pmatrix}
+H_k &amp;amp; 0 \\\
+0 &amp;amp; H_k
+\end{pmatrix}
+\end{aligned}
+$$
+と行列$H_i$を定義します($E_k$は$k$次の単位行列)。このとき、$H_k$は$2^k$次の行列です。
+$$
+H_k H_k = 2^k E_{2^k}
+$$
+が成り立ちますので、$H_k^{-1} = 2^{-k} H_k$となります。また、
+長さ$2^k$のベクトル$A$と$B$に対して次が成り立ちます。
+$$
+(H_k A) (H_k B) = H_k (A * B)
+$$
+左辺はベクトルの各要素ごとの積を表しています。これを変形すると、
+$$
+A * B = 2^{-k} H_k ((H_k A) (H_k B))
+$$
+が成り立ちます。しかし、これは長さ$2^k$のベクトルと$2^k$次の正方行列の積の計算をする必要がありますので、$n=2^k$として、結局$O(n^2)$かかってしまいます。
+しかし、この行列$H_k$とベクトルの積はうまいことに高速化ができます。&lt;/p>
+&lt;h3 id="高速walsh-hadamard変換">高速Walsh-Hadamard変換&lt;/h3>
+&lt;p>$H_k$を変形します。
+$$
+\begin{aligned}
+H_k &amp;amp;=
+\begin{pmatrix}
+E_{k-1} &amp;amp; E_{k-1} \\
+E_{k-1} &amp;amp; -E_{k-1}
+\end{pmatrix}
+\begin{pmatrix}
+H_k &amp;amp; 0 \\\
+0 &amp;amp; H_k
+\end{pmatrix} \\
+&amp;amp;=
+\begin{pmatrix}
+E_{k-1} &amp;amp; E_{k-1} \\
+E_{k-1} &amp;amp; -E_{k-1}
+\end{pmatrix}
+\begin{pmatrix}
+E_{k-2} &amp;amp; E_{k-2} &amp;amp; 0 &amp;amp; 0 \\
+E_{k-2} &amp;amp; -E_{k-2} &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; E_{k-2} &amp;amp; E_{k-2} \\
+0 &amp;amp; 0 &amp;amp; E_{k-2} &amp;amp; -E_{k-2}
+\end{pmatrix}
+\begin{pmatrix}
+H_{k-2} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; H_{k-2} &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; H_{k-2} &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; H_{k-2}
+\end{pmatrix} \\
+&amp;amp;= \cdots
+\end{aligned}
+$$
+この行列の積への分解は高々$O(\log n)$回で終わります(上記の変形をし続けると最後に$H_0$が対角上に並んだ行列、すなわち単位行列が現れます)。
+そして、各分解された行列をよく見ると、各行で$0$ではない要素は必ず$2$つです。すなわち、この分解された行列単体とベクトルの積は、$O(n)$で行うことができ、行列は$O(\log n)$個しかありませんので、結局$O(n\log n)$で行うことができます。&lt;/p>
+&lt;p>ピンと来ないという私のために、$n=8$のときの$H_3$を分解してみます。
+$$
+\begin{aligned}
+H_3 &amp;amp;=
+\begin{pmatrix}
+E_2 &amp;amp; E_2 \\
+E_2 &amp;amp; -E_2
+\end{pmatrix}
+\begin{pmatrix}
+E_1 &amp;amp; E_1 &amp;amp; 0 &amp;amp; 0 \\
+E_1 &amp;amp; -E_1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; E_1 &amp;amp; E_1 \\
+0 &amp;amp; 0 &amp;amp; E_1 &amp;amp; -E_1
+\end{pmatrix} \\&amp;amp;
+\begin{pmatrix}
+E_0 &amp;amp; E_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+E_0 &amp;amp; -E_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; E_0 &amp;amp; E_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; E_0 &amp;amp; -E_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; E_0 &amp;amp; E_0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; E_0 &amp;amp; -E_0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; E_0 &amp;amp; E_0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; E_0 &amp;amp; -E_0
+\end{pmatrix}
+\begin{pmatrix}
+H_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; H_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; H_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; H_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; H_0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; H_0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; H_0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; H_0
+\end{pmatrix} \\
+&amp;amp;=
+\begin{pmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; -1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; -1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; -1 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; -1
+\end{pmatrix}
+\begin{pmatrix}
+1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+1 &amp;amp; 0 &amp;amp; -1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; -1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 1 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; -1 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; -1
+\end{pmatrix} \\&amp;amp;
+\begin{pmatrix}
+1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+1 &amp;amp; -1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; -1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; -1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 1 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; -1
+\end{pmatrix}
+\end{aligned}
+$$
+これを実装するのにも結構頭を使います。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">template&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">class&lt;/span> &lt;span class="nc">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">Hadamard&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&amp;amp;&lt;/span>&lt;span class="n">A&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 2^k次行列
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">A&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">!=&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">)){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cout&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="s">&amp;#34;A size should be 2^k&amp;#34;&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">res&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">A&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">h&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">tmp&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">+=&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">l&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tmp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tmp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">h&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">res&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">tmp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">template&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">class&lt;/span> &lt;span class="nc">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">xor_convolution&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&amp;amp;&lt;/span>&lt;span class="n">A&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&amp;amp;&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// xor convolution
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// A,Bのサイズは2^k
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Hadamard&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">A&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Hadamard&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">res&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">res&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Hadamard&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">res&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">//これを2^kで割る必要がある
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>このコードは最後に得た値の各要素を$2^k$で割り算してやる必要があるので注意です。&lt;/p>
+&lt;h3 id="問題に戻る">問題に戻る&lt;/h3>
+&lt;p>問題で求めたいのは、$C=(c_1,c_2,\cdots,c_{2^{16}})$($c_i$は$i$個の石がある山の個数)があって、
+$$
+H(H(C)) + H((H(C))^2) + H((H(C))^3) + \cdots + H((H(C))^N)
+$$
+です($C^i$は各要素の$i$乗を取ることを意味します)。Hadamard変換は線形変換なので、次のように変形できます。$D=H(C)$とすると、
+$$
+H( D + D^2 + D^3 + \cdots + D^N)
+$$
+かなりスッキリしました。あとは、等比数列の和の公式を使って、括弧の中身を計算することができます。&lt;/p>
+&lt;p>等比数列の和の公式は
+$$
+\frac{d_i(d_i^N-1)}{d_i-1}
+$$
+です。$d_i=0,1$の場合はこのまま計算すると値がおかしくなるのでそこだけ別処理することに注意します。&lt;/p>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc212/submissions/45251406" target="_blank" rel="noopener"
+>提出コード&lt;/a>&lt;/p>
+&lt;h3 id="参考サイト">参考サイト&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://yamate11.github.io/blog/posts/2021/08-10-xor-conv/" target="_blank" rel="noopener"
+>yamate11のブログ xor畳み込み&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://qiita.com/izu_nori/items/7810fc2bc0423c8d407f" target="_blank" rel="noopener"
+>Qiita xor畳み込みと高速Hadamard変換&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="感想-1">感想&lt;/h3>
+&lt;p>これのAND版やOR版もあるらしい。考えた人天才。&lt;/p>
+&lt;h2 id="abc213-g-connectivity-2">ABC213-G Connectivity 2&lt;/h2>
+&lt;h3 id="問題概要-2">問題概要&lt;/h3>
+&lt;p>$N$頂点$M$辺の単純無向グラフ$G$で、$0$本以上の辺を取り除いて新しいグラフ$H$を作る。各$k=2,3,\cdots,N$に対して、頂点$1$と$k$が$H$で連結になるような辺の取り除き方の個数を求める問題。&lt;/p>
+&lt;h3 id="言い換え">言い換え&lt;/h3>
+&lt;p>問題で求められている「頂点$1$と$k$が連結(ry」の個数を$C(k)$とします。また、次のように$f(S),g(S)$を定義します。&lt;/p>
+&lt;ul>
+&lt;li>$f(S) := $ $S$を頂点集合とする$G$の連結部分グラフの個数&lt;/li>
+&lt;li>$g(S) := $ $S$を頂点集合とする$H$の部分グラフの個数&lt;/li>
+&lt;/ul>
+&lt;p>すると、次のように$C(k)$を表現できます。ちなみに$V$は$G$の頂点集合です。
+$$
+C(k) = \sum_{\lbrace 1,k \rbrace \subset S \subset V} f(S) g(V\setminus S)
+$$
+全ての$f(S),g(S)$が既知ならば、これは$O(N2^N)$で計算できます。&lt;/p>
+&lt;h3 id="gsの計算">g(S)の計算&lt;/h3>
+&lt;p>これは簡単です。
+辺の両端が頂点集合$S$に含まれるような辺の個数を$E(S)$とすれば、$2^{E(S)}$が$g(S)$になります。
+各頂点集合について$M$個の辺がそれぞれ含まれているかどうかを判定するので$O(M2^N)$で計算できます。&lt;/p>
+&lt;h3 id="fsの計算">f(S)の計算&lt;/h3>
+&lt;p>問題はこちらです。$f(S)=g(S)-$(頂点集合が$S$であるような非連結なグラフの個数)です。$g(S)$は既知なので、後者を計算する必要があります。
+連結でないグラフというのは、連結成分が$2$個以上あるグラフのことです。「この$2$個以上の連結成分」というのを、「$1$つの連結成分があって、残りの使ってない頂点たちを好きなようにしてもらう」という数え方をします。&lt;/p>
+&lt;p>$S$に含まれる頂点を$1$つ取ってきて、これを$v$とすると$f(S)$は次のようになります(この$v$がないとカウントが重複してしまいます)。
+$$
+f(S) = g(S) - \sum_{ v \in T \subsetneq S} f(T) g(S\setminus T)
+$$&lt;/p>
+&lt;p>これを$S$についていい感じの順番で計算していくことで、$O(3^N)$で計算できます。&lt;/p>
+&lt;h3 id="部分集合の部分集合の列挙">部分集合の部分集合の列挙&lt;/h3>
+&lt;p>部分集合の$i$の部分集合$j$の列挙は$O(3^N)$でできます。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span> &lt;span class="o">&amp;gt;=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">j&lt;/span> &lt;span class="o">&amp;amp;=&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// (i, j) は条件を満たす
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc213/submissions/45311948" target="_blank" rel="noopener"
+>提出コード&lt;/a>&lt;/p>
+&lt;h3 id="感想-2">感想&lt;/h3>
+&lt;p>$f(S),g(S)$に分けて$g(S)$の計算方法考えるのむずくね？？&lt;/p>
+&lt;h2 id="abc213-h-stroll">ABC213-H Stroll&lt;/h2>
+&lt;h3 id="問題概要-3">問題概要&lt;/h3>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc213/tasks/abc213_h" target="_blank" rel="noopener"
+>問題&lt;/a>&lt;/p>
+&lt;p>DPで解けそうな問題設定だが、時間が間に合わない。&lt;/p>
+&lt;h3 id="dp解">DP解&lt;/h3>
+&lt;p>$d_{s,t}$を$t$キロメートル歩いて地点$s$にいる通り数とすると次のように計算できる。
+$$
+d_{s,t} = \sum _{(s^\prime,i,x)} d_{s^\prime,t-x} \times p_{i,t-x}
+$$&lt;/p>
+&lt;p>ただし、シグマ記号は「$s^\prime$から$s$に向かう$i$番目の長さ$x$の道」を全てのペアについて足し合わせることを意味する。
+これを$t$の小さい方から計算すれば$O(MT^2)$で計算できるがこれだと時間がかかりすぎる。&lt;/p>
+&lt;p>シンプルに$N=2$のときを考えると、
+$$
+d_{1,t} = \sum_u d_{2,u} \times p_{t-u}
+$$
+という式になって、畳み込みっぽい見た目をしている。実際には$d_{2,u}$が&lt;strong>定数ならば&lt;/strong>畳み込みで計算できる。&lt;/p>
+&lt;h3 id="分割統治fft">分割統治FFT&lt;/h3>
+&lt;p>&lt;strong>定数ならば畳み込みができる&lt;/strong>ということで、半分を事前に計算して定数にし、いい感じに再帰的に計算するとなんと$O(T\log^2T)$で計算できてしまうのだ。言葉での説明が難しいので図を用意した。
+図は単純に$1$次元のDPを分割統治FFTで解いたものである。&lt;/p>
+&lt;figure>&lt;img src="./img/ABC213.jpg" width="50%"/>&lt;figcaption>
+&lt;h4>分割統治FFT&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>ただ、計算に使用する数値は全て&lt;strong>確定&lt;/strong>していなければならないので、以下のような順番で計算する必要がある。&lt;/p>
+&lt;figure>&lt;img src="./img/ABC213-2.jpg" width="50%"/>&lt;figcaption>
+&lt;h4>分割統治FFT(計算順序)&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>今回は、頂点ごとにDPの値を持つが、全ての辺について上記の図のような遷移があるので、各遷移を全ての辺ごとに行う。計算量は$O(MT\log^2T)$となる。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">DCFFT&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">l&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">edge&lt;/span>&lt;span class="o">&amp;gt;&amp;amp;&lt;/span>&lt;span class="n">E&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&amp;amp;&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&amp;amp;&lt;/span>&lt;span class="n">dp&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="k">return&lt;/span> &lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">DCFFT&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">E&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">dp&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">E&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">auto&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">u&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">E&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// [m,r)を更新
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="cm">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> 本来だったら
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> for(int i=m;i&amp;lt;r;i++){
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> dp[v][i] += sum_x (dp[u][i-x]*p[v][x]);
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> }
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> をやるが、FFTを使う
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">auto&lt;/span> &lt;span class="n">dp2u&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">u&lt;/span>&lt;span class="p">].&lt;/span>&lt;span class="n">begin&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">u&lt;/span>&lt;span class="p">].&lt;/span>&lt;span class="n">begin&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">auto&lt;/span> &lt;span class="n">p2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">].&lt;/span>&lt;span class="n">begin&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">].&lt;/span>&lt;span class="n">begin&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">auto&lt;/span> &lt;span class="n">dp3u&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">convolution&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dp2u&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">p2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp3u&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">DCFFT&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">E&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">dp&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc213/submissions/45324097" target="_blank" rel="noopener"
+>提出コード&lt;/a>&lt;/p>
+&lt;h3 id="感想-3">感想&lt;/h3>
+&lt;p>添字をミスりまくってめっちゃ時間かかった。
+地味に赤diff初AC。&lt;/p>
+&lt;h2 id="abc214-g-three-permutations">ABC214-G Three Permutations&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://atcoder.jp/contests/abc214/tasks/abc214_g" target="_blank" rel="noopener"
+>問題リンク&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="包除原理">包除原理&lt;/h3>
+&lt;p>条件が扱いづらいので、包除原理を使います。&lt;/p>
+&lt;ul>
+&lt;li>$f(x)$を、$x$個の相異なる添字を選んだときに、その添字で$p_i=r_i$または$q_i=r_i$となるような$r_i$の割り当て方の個数とする。&lt;/li>
+&lt;/ul>
+&lt;p>すると、包除原理により、求める答えは
+$$
+N! + \sum_{x=1}^N (-1)^x f(x) (N-x)!
+$$
+となります。$(N-x)!$は残りの$N-x$個の添字に対する割り当て方の個数です。&lt;/p>
+&lt;p>この数え方にすぐに納得しない私は具体例を考えてみました。&lt;/p>
+&lt;ul>
+&lt;li>$N=3, p=(1,2,3), q=(2,3,1)$のとき
+&lt;ul>
+&lt;li>$r=(3,1,2)$の$1$通りだけであるが、これを上記の計算式で求める。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>$f(1)$について
+&lt;ul>
+&lt;li>$i=1$を被らせるとき、$r_1=1,2$のどちらかで$2$通り
+&lt;ul>
+&lt;li>$(1,3,2),(1,2,3),(2,1,3),(2,3,1)$の$4$通りがある&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>$i=2$を被らせるとき、$r_2=2,3$のどちらかで$2$通り
+&lt;ul>
+&lt;li>$(2,1,3),(2,3,1),(3,1,2),(3,2,1)$の$4$通りがある&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>$i=3$を被らせるとき、$r_3=3,1$のどちらかで$2$通り
+&lt;ul>
+&lt;li>$(3,1,2),(3,2,1),(1,2,3),(1,3,2)$の$4$通りがある&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>$f(1) = 2+2+2$&lt;/li>
+&lt;li>ここで注目したいのが、例えば$(1,2,3)$という順列は$i=1$と$i=2$のパターンの両方に含まれているということである。ここで$2$回取り除かれている順列は、$f(2)$以降で調整されていくのが包除原理である。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>$f(2)$について
+&lt;ul>
+&lt;li>$i=1,2$を被らせるとき$(1,2,3),(1,3,2),(2,3,1)$の$3$通りがある&lt;/li>
+&lt;li>$i=2,3$を被らせるとき$(1,2,3),(3,2,1),(2,3,1)$の$3$通りがある&lt;/li>
+&lt;li>$i=3,1$を被らせるとき$(1,2,3),(2,1,3),(2,3,1)$の$3$通りがある&lt;/li>
+&lt;li>$f(2) = 9$&lt;/li>
+&lt;li>ここで、$(1,2,3),(2,3,1)$のパターンは逆に足しすぎていので、$f(3)$で調整する。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>$f(3)$について
+&lt;ul>
+&lt;li>$i=1,2,3$を被らせるとき$(1,2,3),(2,3,1)$の$2$通りがある&lt;/li>
+&lt;li>$f(3) = 2$&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>よって、$3! - 6\times 2! + 9\times 1! - 2\times 0! = 6 - 12 + 9 - 2 = 1$となり、正しく計算できていることがわかる。&lt;/li>
+&lt;/ul>
+&lt;h3 id="グラフに変換">グラフに変換&lt;/h3>
+&lt;p>グラフを使います。頂点を$N$個用意して、頂点$p_i$と$q_i$を繋ぐ辺を張ります。&lt;/p>
+&lt;p>&lt;figure>&lt;img src="./img/ABC214-1.jpg" width="50%"/>&lt;figcaption>
+&lt;h4>辺を張る&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+ここで注意するべきは、連結成分は必ずサイクルになります。なぜなら、$p,q$はどちらも順列であるので、同じ数がちょうど$2$回出現する$\Leftrightarrow$頂点の次数が$2$であるからです。&lt;/p>
+&lt;p>「各辺は、その両端の頂点番号を使ってはいけない」ことを示します。
+次の画像は被らせる添字とグラフの対応を表したものです(画像には「サイクル」とありますが、「連結成分」と書くべきでした)。&lt;/p>
+&lt;figure>&lt;img src="./img/ABC214-2.jpg" width="50%"/>&lt;figcaption>
+&lt;h4>被らせる添字を選ぶ&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>元のグラフの連結成分ごとに、$k$個の辺を選ぶ(=$k$個の数を被らせる)方法の場合の数をそれぞれ計算すれば、DPによって$f(x)$を計算できます。
+次の節ではそれぞれの連結成分で、$k$個の辺を選ぶ方法の場合の数を計算する方法を説明します。&lt;/p>
+&lt;h3 id="dpで計算">DPで計算&lt;/h3>
+&lt;p>サイクル状の頂点と辺を、$v_1,e_1,v_2,e_2,\cdots,v_y,e_y,v_1$と割り振ります。&lt;/p>
+&lt;ul>
+&lt;li>DP[$i$][$j$] $:=$ $i$番目までの辺を使って、$j$個の辺を選んだときの場合の数&lt;/li>
+&lt;/ul>
+&lt;p>しかし、これだと情報が不十分です。辺$e_1$を選ぶと$v_1,v_2$のどちらかを選べます。$e_1$が$v_2$を選んだ場合、$e_2$は$v_3$を選ぶしかありません。逆に、$e_1$が$v_1$を選んだか、$e_1$を選んでいない場合は、$e_2$は$v_2,v_3$の$2$つの選択肢から選ぶことができます。よって、この情報を追加します。&lt;/p>
+&lt;p>さらに、円環なので、一番初めの頂点$v_1$が使われたという情報によって、$e_y$が$v_1$が選べるかどうかが決まります。よって、この情報も追加します。&lt;/p>
+&lt;ul>
+&lt;li>DP[$i$][$j$][$k$][$l$] $:=$ $i$番目までの辺を使って、$j$個の辺を選んだとき、$i$番目の辺が$v_{i+1}$を選んだ/選んでいない($k=0/1$)、$v_1$を使った/使っていない($l=0/1$)の場合の数&lt;/li>
+&lt;/ul>
+&lt;p>こちらのDPですが、遷移が多いので注意深く実装します。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="n">mint&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">3001&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">3001&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">mint&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">3001&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">3001&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mint&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// nはサイクルの長さ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// dp[i][j][k][l] :=
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// i番目までの辺を見て、j個使ったとき、
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// k=0: 直前を使っていない k=1: 直前を使った
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// l=0: 0を使っていない l=1: 0を使った
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 使わない
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 前を使う
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 後ろを使う
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>&lt;span class="k">else&lt;/span> &lt;span class="nf">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 使わない
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 前を使う
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 後ろを使う
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>&lt;span class="k">else&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 使わない
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 前を使う
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 後ろを使う
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vector&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mint&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">res&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">dp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">res&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc214/submissions/45351007" target="_blank" rel="noopener"
+>提出コード&lt;/a>&lt;/p>
+&lt;h2 id="abc214-h-collecting">ABC214-H Collecting&lt;/h2>
+&lt;h3 id="問題概要-4">問題概要&lt;/h3>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc214/tasks/abc214_h" target="_blank" rel="noopener"
+>問題リンク&lt;/a>&lt;/p>
+&lt;p>$K$人で分担して有向グラフ上の落とし物をできるだけ多く拾う問題。&lt;/p>
+&lt;h3 id="最小費用流問題">最小費用流問題&lt;/h3>
+&lt;p>強連結成分にある落とし物はすべて取るのが最適なので、強連結成分一つをまとめて1つの頂点として考えた新しいグラフを作ります。そのグラフはDAGになります。(このとき、頂点$1$から辿ることができない頂点とその頂点から出てる辺は無視します)。&lt;/p>
+&lt;p>サンプル$1$の場合、次のようなグラフを作り$S$から$T$へ$K=2$だけ流せば最小コストの符号を取ったものが答えとなる。&lt;/p>
+&lt;figure>&lt;img src="./img/ABC214-5.jpg" width="50%"/>&lt;figcaption>
+&lt;h4>最小費用流&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>しかし、負辺があるので、(私が知っている)アルゴリズムが適用できない。&lt;/p>
+&lt;p>負辺を取り除いたものがこちらです。
+&lt;figure>&lt;img src="./img/ABC214-6.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>負辺を取り除く&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;p>SからTまでグラフにそって適当なルートを通ったときに、通った辺のコストが「全体の落とし物のうち拾えなかった個数」を示しています。&lt;/p>
+&lt;p>このようなグラフは、強連結成分分解後に$M$頂点にしてトポロジカル順に頂点番号をつけたグラフについて、次のような操作によって機械的に構築できます。&lt;/p>
+&lt;ul>
+&lt;li>各頂点$u$ごとに$i_u$と$o_u$を用意して、$i_u$から$o_u$に$(1,0)$と$(\infty,X_u)$の辺を張る。$X_u$&lt;/li>
+&lt;li>辺$(u,v)$に対して、$o_u$から$i_v$に$(\infty, X_{u+1}+X_{u+2}+\cdots+X_{v-1})$の辺を張る。&lt;/li>
+&lt;li>$S$から$i_1$に$(K,0)$の辺を張る。&lt;/li>
+&lt;li>各頂点$u$ごとに、$o_u$から$T$に$(\infty,X_{u+1}+X_{u+2}+\cdots +X_M)$の辺を張る。&lt;/li>
+&lt;/ul>
+&lt;p>各頂点について容量が$1$の辺があるのは、一人だけ「$X_u$を拾えなかった」ことを回避できるからです。
+よって、求まったコストを$K\sum_u X_u$から引けば答えになります。&lt;/p>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc214/submissions/45450341" target="_blank" rel="noopener"
+>提出コード&lt;/a>&lt;/p>
+&lt;h3 id="参考サイト-1">参考サイト&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://kmjp.hatenablog.jp/entry/2021/08/16/0930" target="_blank" rel="noopener"
+>kmjp&amp;rsquo;s blog 2021-08-16 AtCoder ABC #214 : H - Collecting&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="感想-4">感想&lt;/h3>
+&lt;p>フローのこういうテクニックは覚えていきたい。&lt;/p>
+&lt;h2 id="abc215-g-colorful-candies-2">ABC215-G Colorful Candies 2&lt;/h2>
+&lt;p>$N$個のキャンディがあり、$i$番目のキャンディの色は$C_i$である。
+$K=1,2,\cdots,N$について、$N$個のうち$K$個のキャンディを選ぶ(同様に確からしい)とき、キャンディの種類数の期待値を求める問題。&lt;/p>
+&lt;h3 id="式を作る">式を作る&lt;/h3>
+&lt;p>とりあえず$K$を固定して考える。確率変数$X_i$を種類$i$のキャンディを$1$以上選ぶとき$1$、選ばないとき$0$とすると、答えは次の式で求められる。
+$$
+E\left[\sum_i X_i\right] = \sum_i E\left[X_i\right]
+$$
+線形性で右辺に変形できる。その種類のキャンディが$m$個あった場合に$1$つ以上選ぶ組み合わせは$_N \text{C} _K - _{N-m} \text{C} _K$通りと二項係数で計算できる。&lt;/p>
+&lt;p>この計算方法だと、各$K$について最大$N$種類の計算をすることになるので、$O(N^2)$かかりそうだが、ちょうど$x$個ある種類のキャンディをまとめて数え上げれば$O(N\sqrt(N))$になる(詳しくはコード、計算量の節を参照)。&lt;/p>
+&lt;p>メインの実装自体はかなり簡潔。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">cin&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">tie&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">sync_with_stdio&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">cin&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Combination&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">mint&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">comb&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">map&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">mp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">cin&lt;/span>&lt;span class="o">&amp;gt;&amp;gt;&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mp&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">map&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">mp2&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="n">mp&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mp2&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">//v個あるキャンディの種類数
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mint&lt;/span> &lt;span class="n">ans&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">auto&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="n">mp2&lt;/span>&lt;span class="p">){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mint&lt;/span> &lt;span class="n">A&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ans&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">comb&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">comb&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="n">comb&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">A&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">ans&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">endl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>map&lt;/code>を使っているため定数倍が重め。&lt;/p>
+&lt;p>&lt;a class="link" href="https://atcoder.jp/contests/abc215/submissions/45464934" target="_blank" rel="noopener"
+>提出コード&lt;/a>&lt;/p>
+&lt;h3 id="計算量について">計算量について&lt;/h3>
+&lt;p>$a_i$を種類$i$の個数だとすると、種類数(キャンディが$1$個以上ある)が$M$個、キャンディの総数が$N$個のとき、次の条件たちを満たす。&lt;/p>
+&lt;ul>
+&lt;li>$a_1+a_2+\cdots+a_M=N$&lt;/li>
+&lt;li>$1 \leq a_i \leq N$&lt;/li>
+&lt;/ul>
+&lt;p>計算量は、$a_i$の種類数を$D$とすると、$O(DN)$である。$D$は高々$O(\sqrt N)$にしかならないというのがミソである。&lt;/p>
+&lt;p>なぜなら、$D$をできるだけ大きくしようとすると、$a_i$はできるだけ小さくするべきなので、
+$a_1 = 1, a_2 = 2, \cdots$と設定していくべきであり、$1+2+3+\cdots+D = O(D^2) = O(N)$となる。&lt;/p>
+&lt;h3 id="感想-5">感想&lt;/h3>
+&lt;p>今回の記事の中ではかなり簡単に見えるが、$X_i$の定義を思いつくところは経験値が必要だと思った。&lt;/p></description></item><item><title>高専→大学編入体験記</title><link>https://shibaken28.github.io/my-blog-4/contents/hennyu_taikenki/</link><pubDate>Mon, 10 Jul 2023 12:08:30 +0900</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/hennyu_taikenki/</guid><description>&lt;h2 id="はじめに">はじめに&lt;/h2>
+&lt;p>受験を終えてテンションがクルクルクロックルなときに執筆したため、文章がフワフワチョコランタです。ご了承ください。
+真面目ver.はお世話になった&lt;a class="link" href="https://www.zenpen-kosen.com/category/hennyu/" target="_blank" rel="noopener"
+>ZENPEN&lt;/a>に投稿する予定です。&lt;/p>
+&lt;p>受験先で遊ぶのはけしからん！勉強しなさい！という思想の方はこの記事を読むことをおすすめしません。&lt;/p>
+&lt;p>書こうと思っていたことと、書きながら思いついたことを全部だらだらと書いたので、めっちゃ長くなりました。蛇々足々です。&lt;/p>
+&lt;h2 id="自己紹介">自己紹介&lt;/h2>
+&lt;ul>
+&lt;li>長野高専 電子情報工学科&lt;/li>
+&lt;/ul>
+&lt;p>情報系の学科です。&lt;/p>
+&lt;h2 id="受けた大学">受けた大学&lt;/h2>
+&lt;p>次の大学を受けました。上から順に志望順です。&lt;/p>
+&lt;ul>
+&lt;li>筑波大学 情報学群 情報科学類 (情報メディア創成学類を併願)&lt;/li>
+&lt;li>東京農工大学 工学部 知能情報システム工学科&lt;/li>
+&lt;li>山梨大学 工学部 コンピュータ理工科&lt;/li>
+&lt;/ul>
+&lt;p>結果は全て合格でした。ありがとうございます。&lt;/p>
+&lt;h2 id="山梨大学">山梨大学&lt;/h2>
+&lt;h3 id="行動">行動&lt;/h3>
+&lt;p>おもいっきり地元です。実家から徒歩で行ける距離にあります。
+最寄り駅は甲府駅です。すぐ近くにヨドバシカメラがありますが、それ以外はマジでなにもないです。
+甲府駅から山梨大学は1.5kmくらいで十分徒歩でも行けますが、登り坂になるのでバスを使うのがいいと思います。30分～1時間ごとに1本出てます。&lt;/p>
+&lt;p>山梨大学に受験する人におすすめなのが、武田神社です。
+名前の通り、戦国武将であるあの武田信玄が祀られている神社です。
+山梨大学から2kmくらい上ったところにあります。&lt;strong>勝運&lt;/strong>を肖りましょう。
+境内自体はかなりコンパクトなのですぐ見終わります。
+あと、近くで売っている信玄ソフトがめっちゃウマいです。
+信玄餅をモチーフにした、きなこと黒蜜とソフトクリームの組み合わせ、マズいわけがない。
+&lt;figure>&lt;img src="./img/temple.jpg"/>&lt;figcaption>
+&lt;h4>不穏なサジェスト&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+なお、甲府盆地は扇状地となっていて、基本的には坂道で甲府駅は海抜280mくらいなのですが、武田神社は340mくらいあります。頑張りましょう。
+あと、盆地は暑いです。受験当日はまだ6月でしたが、ワイシャツが汗でびっしょりになりました。&lt;/p>
+&lt;figure>&lt;img src="./img/DSC_0079.jpg" width="50%"/>&lt;figcaption>
+&lt;h4>*三年次編*入学試験&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>大学すぐ近くにはローソンとセブンイレブンがあります。昼食はそこで済ませました。&lt;/p>
+&lt;h3 id="試験">試験&lt;/h3>
+&lt;h4 id="専門">専門&lt;/h4>
+&lt;p>プログラミング、計算機アーキテクチャ、情報数学のうち2科目を選択します。私はプログラミングと情報数学を選択しました。
+端から計算機アーキテクチャを選択するつもりはありませんでした。&lt;/p>
+&lt;p>山梨大学の過去問は公式ホームページで公開されています。あと、僕が過去問を解きまくった記事が存在します。以下にリンクを貼っておきます。&lt;/p>
+&lt;p>&lt;a class="link" href="https://shibaken28.github.io/my-blog-4/contents/yamanashi_univ/" target="_blank" rel="noopener"
+>山梨大学コンピュータ理工科過去問を解く&lt;/a>&lt;/p>
+&lt;p>傾向とかは上の記事で説明しているので、詳しくは書きませんが、3つの選択問題はどれも出題範囲が広めなため、対策は簡単ではありません。
+例えば、過去問のプログラミングの問題を見ると、次のような問題が出題されています。&lt;/p>
+&lt;p>&lt;figure>&lt;img src="./img/r3-1.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>令和3年度出題&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure>&lt;img src="./img/h29-1.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>平成29年度出題&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;p>このように、アルゴリズムや構文に関する問題の他に、コンパイラの処理やホワイトボックステストについて問われた過去があります。
+「たまたま自分の知らない問題」が出題される可能性に怯えながら試験を迎えるのはとてもに怖いものです。&lt;/p>
+&lt;p>幸い、プログラミングの問題は全部アルゴリズム関連の問題だったので助かりました。でも、プログラミングの問題のソースコードが全てC++で書いてあったのは驚きました(といってもC++特有の書き方は&lt;code>cin,cout&lt;/code>くらいで、&lt;code>vector&lt;/code>とかは使わずにCでも使える配列を使っている。また、過去問ではCとC++の両方で書かれていたので、C++に移行することを暗示していたのかもしれない)。あと、ワーシャルフロイド法が出たので競プロやってて良かった～～～になりました。&lt;/p>
+&lt;p>情報数学は、行列の累乗(対角化)、情報エントロピー、ハフマン符号化、離散確率(ベイズの定理)の問題が出ました。どれも射程圏内でした。
+過去問にはグラフ理論の問題があったのが怖かったのですが、今年度は素直でした。&lt;/p>
+&lt;p>私が受けた年のプログラミングの第1問を以下に再現しておきます(細かい部分はうろ覚えなので少し違うかもしれない)。&lt;/p>
+&lt;blockquote>
+&lt;p>次のプログラムを実行するとどうなるか。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-cpp" data-lang="cpp">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;iostream&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="k">using&lt;/span> &lt;span class="k">namespace&lt;/span> &lt;span class="n">std&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cout&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="s">&amp;#34;/(^o^)&lt;/span>&lt;span class="se">\&amp;#34;&lt;/span>&lt;span class="s"> &amp;lt;&amp;lt; endl;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>(1) &lt;code>/(^o^)\&lt;/code>と出力される。 &lt;br>
+(2) &lt;code>/(^o^)&amp;quot;&lt;/code>と出力される。 &lt;br>
+(3) &lt;code>/(^o^)\&amp;quot;&lt;/code>と出力される。 &lt;br>
+(4) そもそも、コンパイルできない。&lt;/p>
+&lt;/blockquote>
+&lt;p>／^o^＼ﾌｯｼﾞｯｻｰﾝ　ﾌｯｼﾞｯｻｰﾝ&lt;/p>
+&lt;p>＼＼(^o^) ﾀｶｲｿﾞ&lt;/p>
+&lt;p>(^o^)／／　ﾀｶｲｿﾞ&lt;/p>
+&lt;p>／^o^＼ﾌｯｼﾞｯｻｰﾝ&lt;/p>
+&lt;h4 id="面接">面接&lt;/h4>
+&lt;p>面接の順番はおそらく遠い人からです。
+待ち時間が暇なので、たまたま学校から借りていた楕円曲線論入門の本を読もうとしましたが、内容が難しすぎて全然時間が潰せませんでした。そもそもこういうのは本単体で読むものじゃないですね。&lt;/p>
+&lt;figure>&lt;img src="./img/DSC_0131.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>『楕円曲線論入門』&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>3人の面接官がいました。&lt;/p>
+&lt;p>訊かれた内容は&lt;/p>
+&lt;ul>
+&lt;li>志望理由&lt;/li>
+&lt;li>高専の授業で面白かったやつ&lt;/li>
+&lt;li>最近気になったニュース&lt;/li>
+&lt;li>合否には関係ないが、何か私達(大学側)に質問はありますか&lt;/li>
+&lt;/ul>
+&lt;p>でした。10分ほどで終わりました。雰囲気は良かったです。&lt;/p>
+&lt;p>面接の詳しい話は後ろの方で全大学まとめて書きます。&lt;/p>
+&lt;h2 id="東京農工大学">東京農工大学&lt;/h2>
+&lt;ul>
+&lt;li>1日目：午前に数学と英語、午後に理科&lt;/li>
+&lt;li>2日目：午前に専門、午後に面接&lt;/li>
+&lt;/ul>
+&lt;h3 id="行動-1">行動&lt;/h3>
+&lt;p>おちこぼれフルーツタルトの第5話8分52秒あたりに出てくる大学です。&lt;/p>
+&lt;figure>&lt;img src="./img/DSC_00929.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>ほぼ同じ画角で登場する。おしゃれ。&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>最寄りの東小金井駅から徒歩数分でつく駅近大学です。さらに東京なので立地が神がかっています。
+農工大は小金井キャンパスと府中キャンパスの2つありますので間違えないように注意しましょう。&lt;/p>
+&lt;figure>&lt;img src="./img/DSC_0105.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>おちフルOPで映る北口&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure>&lt;img src="./img/DSC_0133.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>おまもり&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>吉祥寺にある東急REIホテルに泊まりました。前泊含め2泊です。ちゃんと部屋が明るくできるタイプのホテルです。&lt;/p>
+&lt;p>&lt;figure>&lt;img src="./img/DSC_0090.jpg" width="30%"/>&lt;figcaption>
+&lt;h4>明るい&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure>&lt;img src="./img/DSC_0091.jpg" width="70%"/>
+&lt;/figure>
+&lt;/p>
+&lt;p>長野→大宮→新宿→吉祥寺というルートで来ました。ところで長野駅さん、Suicaの導入はいつになったらするんですか。&lt;/p>
+&lt;p>&lt;figure>&lt;img src="./img/ro.jpg" width="70%"/>
+&lt;/figure>
+画像は&lt;a class="link" href="https://www.jreast.co.jp/map/" target="_blank" rel="noopener"
+>JR東日本&lt;/a>より。東小金井はJR中央線の駅ですが、通勤快速以上の列車は止まってくれないそうです(止まってくれるのは各駅停車、快速のみ)。&lt;/p>
+&lt;p>ホテルに着いた後はせっかくなので吉祥寺駅周辺をウロウロしました。吉祥寺サンロード商店街というアーケード街があり、20時21時でも人がまあまあいて明るかったです(田舎者並感)。時間感覚が狂います。
+ロフトが入っている建物の地下一階にゲーセンがあったのですが、太鼓の達人が大量にありました。
+&lt;blockquote class="twitter-tweet">&lt;p lang="ja" dir="ltr">📢【吉祥寺店】&lt;br>&lt;br>「プラサカプコン吉祥寺店」に&lt;br>人気アーケードゲーム「太鼓の達人」 &lt;br>が増台しています🎵&lt;br>&lt;br>なんと全部で12台ご用意しました‼️&lt;br>設置台数が日本最大級になります☺️&lt;br>&lt;br>みなさまのご来店お待ちしております😃&lt;a href="https://twitter.com/hashtag/%E3%82%AB%E3%83%97%E3%82%B3%E3%83%B3?src=hash&amp;amp;ref_src=twsrc%5Etfw">#カプコン&lt;/a> &lt;a href="https://twitter.com/hashtag/%E5%90%89%E7%A5%A5%E5%AF%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw">#吉祥寺&lt;/a> &lt;a href="https://twitter.com/hashtag/%E3%83%97%E3%83%A9%E3%82%B5%E3%82%AB%E3%83%97%E3%82%B3%E3%83%B3?src=hash&amp;amp;ref_src=twsrc%5Etfw">#プラサカプコン&lt;/a> &lt;a href="https://twitter.com/hashtag/%E5%A4%AA%E9%BC%93%E3%81%AE%E9%81%94%E4%BA%BA?src=hash&amp;amp;ref_src=twsrc%5Etfw">#太鼓の達人&lt;/a> &lt;a href="https://t.co/Nh8wup2t4g">pic.twitter.com/Nh8wup2t4g&lt;/a>&lt;/p>&amp;mdash; カプコンアミューズメント (@Capcom_amuse) &lt;a href="https://twitter.com/Capcom_amuse/status/1526006622316744705?ref_src=twsrc%5Etfw">May 16, 2022&lt;/a>&lt;/blockquote>
+&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
+あと、同じ場所にルイージマンションの筐体が置いてありました。珍しい。遊んでくればよかった。&lt;/p>
+&lt;p>吉祥寺ラウワンはボルテが4台。ヘッドホンの貸出もしていました。
+&lt;figure>&lt;img src="./img/DSC_0092.jpg" width="70%"/>
+&lt;/figure>
+&lt;figure>&lt;img src="./img/DSC_0093.jpg" width="70%"/>
+&lt;/figure>
+&lt;/p>
+&lt;p>ホテルは朝食付きで、和食か洋食のプレート選択+和洋共通のバイキングでした。ただ、食堂が7時開店で、特に1日目はあんまりゆっくり食べられませんでした。
+&lt;figure>&lt;img src="./img/DSC_0095.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>和食。写真を取るのが下手。&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure>&lt;img src="./img/DSC_0096.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>ごはんと味噌汁。寮食よりうまい。&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure>&lt;img src="./img/DSC_0104.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>洋食。容器の角にパンを乗っけていてマナーが悪い。&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;p>こういう食堂で食べる朝食は、自室で食べるのに比べて人の目に付きますし、しっかり目が覚めて良いですね。&lt;/p>
+&lt;p>親に「宝華」というお店の油そばがめちゃくちゃウマいとおすすめされたのですが、寮の門限という制約と時間が噛み合わずに行けませんでした。悲しい。&lt;/p>
+&lt;figure>&lt;img src="./img/houka.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>宝華も農工大も駅に近い&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h3 id="試験-1">試験&lt;/h3>
+&lt;h4 id="数学">数学&lt;/h4>
+&lt;p>農工大の数学は簡単です。毎年、偏微分、重積分、行列の固有値、微分方程式の基本的な問題が出題されます。
+ほとんどの人が満点を取るであろう科目、計算ミスが非常に怖いです。計算量はそれなりにあるので時間たっぷり使って見直しをしました。&lt;/p>
+&lt;p>以下に検算に使える知識を列挙しておきます(ほぼ自明ですが)。&lt;/p>
+&lt;ul>
+&lt;li>偏微分&amp;hellip;(関数が連続であれば)$\partial^2 f /(\partial x \partial y)$と$\partial^2 f /(\partial y \partial x )$は等しい&lt;/li>
+&lt;li>重積分&amp;hellip;逐次積分とか計算順序変更とか(できないこともあるが)いろんな手法で計算&lt;/li>
+&lt;li>固有値&amp;hellip;単純に固有ベクトルと固有値の性質($A\bm{x}=\lambda \bm{x}$)を満たしているかをチェック。&lt;/li>
+&lt;li>微分方程式&amp;hellip;答えの関数を微分して代入して解になっているかを確かめる。&lt;/li>
+&lt;/ul>
+&lt;p>行基本変形は計算ミスの巣窟ですので変形するたびに2回は見直しました。
+また、&lt;/p>
+&lt;ul>
+&lt;li>行基本変形により各列ベクトルの一次関係は変わらない&lt;/li>
+&lt;/ul>
+&lt;p>という性質は階段行列への変形が合っていたかの確認にとても便利です。&lt;/p>
+&lt;h4 id="英語">英語&lt;/h4>
+&lt;p>長文が2つ(全て選択問題)と、英文の穴埋め出題。
+英文の穴埋めというのは、英検とかの自由英作文の解答例があったとして、その解答の部分部分のフレーズ(数単語)を虫食いにして、そこに入りそうな数単語を書け(唯一の正解は決まっておらず、意味が通れば正解)、というものです。自由英作文の代わりとなるような問題ですが、いつもの英作文に対して自由度が下がるため、「知っている簡単な単語だけでどうにかする」という突破法が使いづらいです。&lt;/p>
+&lt;p>私は英語の対策を全くしておらず、「TOEIC830点パワーで行けるやろ！」と高を括っていたのですが完全敗北しました。
+薄々気づいてはいましたが、TOEICはマジでTOEICでしかなく(そもそも得点はリスニング&amp;gt;リーディングだったし)、受験英語などとは全く違いますね。
+TOEICでは「文章の意味を曖昧でいいからとにかく素早く読む」という方法を取っていたため、かなり細かい違いまで訊かれるT-F問題とか全部Trueに見えました。
+自信を持って答えた問題はなく、体感1～4割くらいです。&lt;/p>
+&lt;h4 id="物理">物理&lt;/h4>
+&lt;p>物理は他の科目の半分の配点しかありません。
+私が受ける大学の中で物理の試験があるのはここだけで、しかも他の科目に比べて半分の配点、加えて力学だけではなく電磁気もある、ということでモチベーションが全然湧きませんでした。物理はあまり好きではないので物理の勉強が一番苦痛でした。&lt;/p>
+&lt;p>力学は剛体で、回転運動と並進運動が両方起こっていて、滑りながら運動している円柱の問題が出題されました。
+こう書くと難しそうに見えますが、結構シンプルな問題で、微分方程式も一次のものしか出てこず、かなりすんなり解けてしまったため逆に怖かったです。
+周りの様子を伺ったところ、他の受験生も同じような感想を持っていたようです。&lt;/p>
+&lt;p>電磁気はクーロン力、電場、電位についての問題でした。
+結局電磁気のソレノイドとかそこらへんがあまりわかっていないまま受験当日になったのですが、運が良かった。
+終盤は、等電位線の方程式を求める数学の二次曲線みたいなの問題が出題され、ちょっと悩みましたが、なんとか解けました。&lt;/p>
+&lt;h4 id="専門-1">専門&lt;/h4>
+&lt;p>時間が120分もあります。要項には、「計算機基礎」「論理回路または電気電子回路から選択」「数理・情報工学または電磁気学から選択」と書いてあります。
+私は、論理回路と数理・情報工学を選択しました。&lt;/p>
+&lt;p>計算機基礎は例年通り基数変換やビット演算について出題されました。あとは確率の平均(期待値)と分散についての問題が出ました。&lt;/p>
+&lt;p>論理回路はフリップフロップを使った回路が出できました。過去問では毎回真理値表を埋めてカルノー図を作る問題が出題されていたのですが、
+急にフリップフロップ、しかもなんか知らない名前がついている回路で問題の意図がさっぱりでした。時間をフルに使って問題の意図なんとか汲み取り、解答欄を埋めました。
+一瞬電気回路に逃げようかと思いましたが、ラプラス変換とか書いてあって意味不明だったのでやめました(電気科の人曰く基本的な問題だったらしい)。&lt;/p>
+&lt;p>「数理・情報工学」=プログラミングはヒープソートの実装について出題されました。ソートのなかでは難しい方ですし、それなりに難易度はあったと思います。&lt;/p>
+&lt;h4 id="面接-1">面接&lt;/h4>
+&lt;p>2日目の最後に面接があります。1日目の帰り際に、「面接を円滑に進めるためのアンケート(Googleforms)」が配れられ、20:00までに回答しろと言われました。
+「回答内容は合否に一切関係がありません」とも言われました(じゃあなんで回答必須なんだ&amp;hellip;)。&lt;/p>
+&lt;p>内容は、&lt;/p>
+&lt;ul>
+&lt;li>志望理由はなんですか。&lt;/li>
+&lt;li>第何希望ですか。併願大学はどこですか。&lt;/li>
+&lt;li>気になる研究室はありますか。&lt;/li>
+&lt;li>修士、博士、どこまで決めてますか。&lt;/li>
+&lt;li>どこで農工大を知りましたか。&lt;/li>
+&lt;li>オープンキャンパスに参加しましたか。&lt;/li>
+&lt;li>webサイトは閲覧しましたか。&lt;/li>
+&lt;li>これまでにハードウェアを作成したことはありますか。&lt;/li>
+&lt;li>これまで100行以上にわたるプログラムを書いたことはありますか。&lt;/li>
+&lt;li>自慢できることを書いてください&lt;/li>
+&lt;/ul>
+&lt;p>などの質問攻めで、合否に関係ないとはいえ、流石に雑な回答をするわけにもいかないので結構時間がかかりました。
+私はパソコンで回答しましたが、スマホしか持っていなかったらかなり厳しかったです。&lt;/p>
+&lt;p>なるほど、ここに書いた内容について、面接管が気になったことを、さらに踏み込んで訊いたりするのかな、と思ったのですが、実際は違いました。
+面接管は事前アンケートに書いてあった内容を、あたかもアンケートの回答を知らない体で質問してくるのです(本当に知らないのかもしれませんが、もしそうだったら円滑に進めるための意味がないじゃないか)。私は完全にアンケートの内容を知っていると思っていたので、困惑してカタコトな受け答えになってしまいました。
+特に意味のあることを話すこともできず、歯切れの悪い会話が続き、最悪の空気で面接が終わり、最悪なテンションで帰りました。&lt;/p>
+&lt;p>そもそも、面接で訊かれる質問が、アンケートという形で&lt;strong>事前に公開された&lt;/strong>というのなら、完全に「合否に一切関係ない」というのはちょっと無理があるのではないかと思いました。フェアな受験のためにも、アンケートの利用方法について明示して欲しかったです。
+受験生目線で言えば、フォーム形式で面接の質問に答えるのは非常にやりやすく、自己アピールもしやすいので、合否に関係あるのであればそれはそれで良いと思います(事前に告知されていないのに合否に関係させるのはアンフェアではないか、という意見もあるとは思うので、そもそもアンケートを実施するべきではないのかもしれない)。&lt;/p>
+&lt;p>面接の順番は遠い順で、長野の私は3番目でした。&lt;/p>
+&lt;h2 id="筑波大学">筑波大学&lt;/h2>
+&lt;h3 id="行動-2">行動&lt;/h3>
+&lt;p>JR新幹線で長野→大宮に来たのですが、野田線こと「東武アーバンパークライン」を探すのに時間がかかりました。
+JRの改札に間違えて入ってしまい、入場料140円を取られました(笑)。東武アーバンパークラインで「流山おおかたの森」までいき、そこからつくばエクスプレス(TX)でつくば駅に行きます。ちなみにどれもICカードが使えます。長野駅さん(以下略)。&lt;/p>
+&lt;p>ところで、「東武アーバンパークライン」って長いですよね。
+そもそも、都会を意味する&lt;em>urban&lt;/em>の発音は&amp;quot;ə́ːrbn&amp;quot;ですし、&amp;ldquo;ə&amp;quot;はアとエの中間みたいな曖昧母音な音なので、「アーバン」というカタカナを認識しずらいんですよね(?)。
+というか、最初に「バンパー」の部分に目が行くので、略して「東武バンパー」と呼ぶことにしました。&lt;/p>
+&lt;p>TXは他の路線より割高と聞きますがどうでしょうか。私が乗った列車では、東武バンパー「大宮→流山」で1時間17分を540円に対し、TX「流山→つくば」で8分を740円です。高すぎやねん！と時間と値段のギャップでツッコみたくなりますが、これは罠で、距離を出すと38.4kmと31.8kmです。東武バンパーで乗ったのは各駅停車で、TXは区間快速ですし、割と妥当とも思えます。&lt;/p>
+&lt;p>&lt;figure>&lt;img src="./img/DSC_0113.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>TX快速で筑波→秋葉原の58.3kmを1210円で45分&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+気軽にアキバに遊びに行ける！&lt;/p>
+&lt;p>つくばと言えば、「学園都市！」「研究所！」みたいなイメージで遊ぶ場所ないんじゃないかとちょっと心配でしたが、駅前にはショッピングモールがありましたし、何よりゲーセンも見つかったので全然問題なさそうです。
+&lt;figure>&lt;img src="./img/1688722055402.jpg" width="70%"/>
+&lt;/figure>
+&lt;/p>
+&lt;p>夕食は24時間営業のラーメン屋で食べました。
+&lt;figure>&lt;img src="./img/DSC_0110.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>写真だと分かりづらいがネギたっぷりのラーメン&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;p>つくばの街の雰囲気ですが、とにかく道路が広くて交通量が多い印象です。自転車や自動車メインの生活で、徒歩での移動は向いてない気がしました。&lt;/p>
+&lt;p>筑波大(春日エリア)から1kmくらい離れたホテルグランド東雲というホテルに泊まりました。
+内装は普通のビジネスホテルですが、部屋がそこまで明るくなりません。本当に寝るためだけというか、作業をするのには向いていません。
+前日ホテルでもガッツリ勉強をしたいという人は、外で明るい勉強場所を見つける必要が出てきます。&lt;/p>
+&lt;h3 id="試験-2">試験&lt;/h3>
+&lt;p>筑波大学は、次の条件を満たす人にとっては非常に有利な入試形態です。&lt;/p>
+&lt;ul>
+&lt;li>数学がまあまあ得意&lt;/li>
+&lt;li>競プロをやっている&lt;/li>
+&lt;li>TOEICで十分高いスコアを取得している&lt;/li>
+&lt;/ul>
+&lt;p>情報科学類の試験内容は、数学、情報基礎、英語の3つで、英語はTOEICのスコア提出が試験の代わりになります。&lt;/p>
+&lt;p>情報基礎はプログラミングで、アルゴリズムの問題が出題されます。
+特に競プロチックな問題が出題されるので、競プロをやっている人はほぼ対策なしで満点が狙えます。&lt;/p>
+&lt;p>試験は数学と専門を同時に120分1発勝負です。専門→数学の順で解きました。&lt;/p>
+&lt;h4 id="専門-2">専門&lt;/h4>
+&lt;p>大問1ではフィボナッチ数列に関する問題が出ました。
+プログラミングではベタな話題ですが、行列を用いて$O(\log N)$まで高速化する問題でした。&lt;/p>
+&lt;p>競プロでは行列累乗と呼ばれるテクニックですが、以前自身でまとめたこともあり、「これAtCoderでやったやつだ！」となりました。&lt;/p>
+&lt;p>以前書いた記事→ &lt;a class="link" href="https://shibaken28.github.io/my-blog-4/contents/matrix-pow/" target="_blank" rel="noopener"
+>行列累乗まとめ&lt;/a>&lt;/p>
+&lt;p>大問2では、グラフの幅優先探索をする問題が出ました。
+これも競プロでinf回書いたコード(データ構造とかは自分で実装していないけど)なのですんなり解けました。&lt;/p>
+&lt;h4 id="数学-1">数学&lt;/h4>
+&lt;p>筑波の数学は難しいです。編入数学過去問特訓(黄色い本)でもC問題で猛威を振るっていました。
+例年微積分と線形代数の2題が出題されていて(変な漸化式の年もあったが)、少なくともどちらかが難問、というイメージです。
+特に、極限をイプシロン-エヌ論法で証明させる問題が少なくとも過去に2回出題されていて、過去問を解くときには数学の先生に何度か質問しに行きました。&lt;/p>
+&lt;p>ということで、過去問で特に苦戦した問題を紹介します。&lt;/p>
+&lt;p>まず、イプシロン-エヌ論法の問題です。数学の先生にききにいったら、「無理だね！」と言われました。
+&lt;figure>&lt;img src="./img/h29.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>平成29年度 数学1(3)&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;p>次は線形代数の問題です。慣れてしまえば基本的な問題なのかもしれませんが、抽象的な問題設定の理解に時間がかかりました。
+&lt;figure>&lt;img src="./img/h31.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>平成31年度 数学2(2)&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;p>これは意味不明な問題です。解答例を読んだのですが、あんまりわかりませんでした。
+&lt;figure>&lt;img src="./img/r4.jpg" width="70%"/>&lt;figcaption>
+&lt;h4>令和4年度 数学1(2)&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+ちなみに同年の数学1の(1)もガウス積分の一般化みたいな難しい問題です。恐ろしいですね。&lt;/p>
+&lt;p>これ以外にも、陰関数の偏微分だったり、2変数関数のテイラー展開を要求してきたり、普通に旧帝大レベルに匹敵する難易度のこともあると思います。&lt;/p>
+&lt;p>そんな中で、恐らく今回はここ数年で最も易化した年だと思います。&lt;/p>
+&lt;ul>
+&lt;li>数学1(1)：$\tan ^{-1} x$の第3次導関数を求めよ&lt;/li>
+&lt;li>数学1(2)：$\tan ^{-1} \frac{1}{2}$を〇〇と近似したときに誤差が△△以下になることを示せ&lt;/li>
+&lt;/ul>
+&lt;p>数学の大問1は、微分に関する問題ですが、(1)は微分するだけ、(2)はマクローリンの定理を使って剰余項に代入とかして不等式で示すと解けます(たぶん)。
+(1)は計算ミスが超怖い。(2)は後回しにしていたら時間がなくなってしまいました(マクローリン展開した結果を書いたところで時間切れ)。&lt;/p>
+&lt;p>数学の大問2は行列の問題で、対角化と行基本変形できますか？みたいな問題でした。最後は係数に文字を含んだ連立方程式を場合分けして解く問題で、ゴリ押しでも解けるとは思いますが、それまでの問題の結果を利用するとちょっと楽になるタイプの問題でした(たぶん)。&lt;/p>
+&lt;p>全体的に計算量で時間を削ってくるタイプの問題で、解くことができても計算ミスがあるかもしれないから安心できない、言い方は悪いですがいやーな問題でした。
+徹底研究とか過去問特訓の問題集を解いているときに、この計算量の問題を本番で解かされるきついな&amp;hellip;みたいな問題に出会うことがありますが、まさにそれを体験しました。&lt;/p>
+&lt;p>正直数学がどれくらい取れたかは未知数です。&lt;/p>
+&lt;h2 id="後輩へのアドバイス">後輩へのアドバイス&lt;/h2>
+&lt;h3 id="編入試験の流れ">編入試験の流れ&lt;/h3>
+&lt;ul>
+&lt;li>ステップ1：大学に願書と成績証明書等を送る
+&lt;ul>
+&lt;li>近年はwebで情報登録+書類郵送という形式もある。&lt;/li>
+&lt;li>願書は大学のwebサイトからダウンロードできる場合、取り寄せが必要な場合がある。&lt;/li>
+&lt;li>成績証明書は学校の学生課(的存在)で発行申請できる。調査書、在学証明書、卒業見込証明書も同様。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ステップ2：大学から受験票が送られてくる
+&lt;ul>
+&lt;li>これで受験番号が割り振られる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ステップ3：試験を受ける
+&lt;ul>
+&lt;li>2日間に渡る場合や、思いっきり平日に試験がある場合もあるので、公欠届けやスケジュール管理に注意。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="大学を調べるときはメモしよう">大学を調べるときはメモしよう&lt;/h3>
+&lt;p>まずはどの大学に行くかを決める必要がありますが、受験をするにあたって重要な要素は以下の通りです。&lt;/p>
+&lt;ul>
+&lt;li>出願期間&lt;/li>
+&lt;li>受験日&lt;/li>
+&lt;li>合格発表日&lt;/li>
+&lt;li>&lt;strong>確約書、入学手続きの日程&lt;/strong>
+&lt;ul>
+&lt;li>日程は、併願を検討する際に非常に重要です。当然、合格直後に入学手続きをしなければならない場合は、それよりあとに合格発表がある大学と併願することができません。よく確認しましょう。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>面接の有無&lt;/li>
+&lt;li>受験科目
+&lt;ul>
+&lt;li>科目やTOEICの有無だけではなく、数学であれば、複素関数や確率統計は出題されるか、専門であれば、選択問題の内容はどのようなものか、なども確認しましょう。勉強を始めるときに必要になります。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>これらはそのときに確認するだけではなく、それをメモとしていつでも一覧で参照できるような状態にしておくべきです。&lt;/p>
+&lt;p>私は大学ごとを行として、上記の情報を列にした表を作りました。ExcelとかGoogleスプレッドシートなどで作ると良いでしょう。友達と共有するのもアリです。
+大学のホームページのURLも保管しておきましょう。要項はダウンロードしましょう。&lt;/p>
+&lt;h3 id="過去問の入手方法">過去問の入手方法&lt;/h3>
+&lt;ul>
+&lt;li>公式で過去問を公開していないか。
+&lt;ul>
+&lt;li>公開している場合、webarchiveを使ってさらに過去の問題を参照できる可能性が高い&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>学校の進路相談室に尋ねる。&lt;/li>
+&lt;li>先輩に尋ねる。&lt;/li>
+&lt;li>編入コミュニティに参加する。&lt;/li>
+&lt;/ul>
+&lt;h3 id="その他">その他&lt;/h3>
+&lt;ul>
+&lt;li>出願したらホテルを予約しよう！1ヶ月以上前とかに予約しよう！&lt;/li>
+&lt;li>TOEICは早いうちから受けておこう&lt;/li>
+&lt;li>成績証明書や調査書の発行には時間がかかる場合があるので、早めに申請しよう！&lt;/li>
+&lt;li>ネットで閲覧できる願書は実はサンプルで、実際は願書の取り寄せが必要な場合があるので要項をちゃんと読もう！&lt;/li>
+&lt;li>面接はワイシャツで行こう！逆にペーパーテストだけであれば私服でも良い(私は筑波は私服で行きました)。&lt;/li>
+&lt;/ul>
+&lt;h3 id="受験生のみなさまへ">受験生のみなさまへ&lt;/h3>
+&lt;p>過去問が欲しいとか、質問等があれば、何かしらの手段で連絡してもらえればできるだけ対応します。編入学は情報が少ないので、少しでも役に立てれば幸いです。&lt;/p>
+&lt;h2 id="面接-2">面接&lt;/h2>
+&lt;ul>
+&lt;li>高専のアルゴリズムとデータ構造という授業の円周率を求める課題で熱中した&lt;/li>
+&lt;li>高専プログラミングコンテストやAtCoderにも積極的に参加した&lt;/li>
+&lt;li>数理技術アルゴリズム系の研究をしたい&lt;/li>
+&lt;li>志望理由は「アルゴリズム関係の行きたい研究室があるから」&lt;/li>
+&lt;/ul>
+&lt;p>というストーリーを用意して、あとはその場のノリとノリで話す予定でした。&lt;/p>
+&lt;p>気になるニュースを訊かれたときは、「AI技術がたくさん出てきているが、ChatGPTによる学校の課題の代行や、画像生成AIによる著作権問題など、技術に時代が追いついていないと感じています」と答えました。&lt;/p>
+&lt;p>「ChatGPTで面接練習をしました」と言ったらウケました。&lt;/p>
+&lt;h2 id="合格発表">合格発表&lt;/h2>
+&lt;ul>
+&lt;li>梨大：一番最初の結果発表だったので緊張しました。&lt;/li>
+&lt;li>農工大：第2希望だったので緊張しました。&lt;/li>
+&lt;li>筑波大：本命だったので緊張しました。&lt;/li>
+&lt;/ul>
+&lt;p>これは大学編入全般に言えることですが、どこも倍率が高い！&lt;/p>
+&lt;p>生々しい話をしますが、合格発表の数字の飛び方がエグくないですか。
+これ受験番号連番で割り当てているよね？？って疑うくらい、数字がバラバラです。
+情報科学類の場合、合格者で最もの数字の大きい人が618584ですが、少なくとも618501から618584までの84人いたってことなんでしょうか？？？しかも百の位が0の人もいますし、更に多くの人がいることになります。見えてる情報だけの単純計算で6.68倍です。えっぐ。
+昨年度は7.26倍(138/19)ですので筑波は今後も人気が続きそうです(&lt;a class="link" href="https://p1.ssl-dl.jp/dl/49719-25a0fcfc84251bdf96348bf49ea063c9" target="_blank" rel="noopener"
+>令和5年度入学試験実施結果&lt;/a>)。&lt;/p>
+&lt;h2 id="感想">感想&lt;/h2>
+&lt;p>執筆疲れた。&lt;/p>
+&lt;p>今は入学手続きがわからないという幸せな悩みがあります。&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>グレーな方法なので、自己責任でお願いします。&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>Sound Voltex お気に入り曲</title><link>https://shibaken28.github.io/my-blog-4/contents/sdvx-fav/</link><pubDate>Sat, 17 Dec 2022 00:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/sdvx-fav/</guid><description>&lt;p>順番は関係ないです．みんな知ってそうな曲は省いています．&lt;/p>
+&lt;h2 id="みたらしプラトニック-feat-nicamoq">みたらしプラトニック (feat. nicamoq)&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/m9QN0HPt2QM"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+この曲が気に入った方は，yunomiさんの他の曲もぜひ聴いてみてください．
+yunomiさんはK-pop(?)を連想させるエレクトロなサウンドと，ボーカルを組み合わせた曲が多いです．ボルテとの相性が最高なのでもっと収録されてほしい．&lt;/p>
+&lt;h2 id="アオアラシ">アオアラシ&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/D7d4Y3myXxs"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+チップチューン$\times$スイングという全人類が好きなジャンルの曲です．
+サビの後にもう1フレーズ挟まったり，2回目のサビ前で音が籠もり静かになったり，「お前らこういうのが好きなんだろ」が詰まっています．&lt;/p>
+&lt;h2 id="fly-like-you">Fly Like You&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/Z4-QwF09V-M"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+三拍子のワルツ曲です．似たテイストのWith It This Heaven?という曲もあります．どちらも解禁曲です．&lt;/p>
+&lt;h2 id="concertino-in-blue">Concertino in Blue&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/zIfUFeWOiaY"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+プログレッシブなギタドラ曲です．ドラムでこれ出来たら楽しいんだろうな．&lt;/p>
+&lt;h2 id="theme-of-ricerca">Theme of Ricerca&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/XRdkNsdty5E"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+ノスタルジアの曲です．異世界の言語を使ったファンタジーな雰囲気のボーカル曲です．
+この作曲者のHuΣeR氏とボーカルのゆきまめ氏のペアの曲は他にも3曲あります&lt;/p>
+&lt;ul>
+&lt;li>Petite Queen (ノスタルジア)&lt;/li>
+&lt;li>HEARTACHE (IIDX)&lt;/li>
+&lt;li>Liar×Girl (jubeat)&lt;/li>
+&lt;/ul>
+&lt;p>もっとたくさんくれ&lt;/p>
+&lt;h2 id="ぱあ">ぱあ&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/BBNmyUI0-IQ"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+教育NHKのEテレで放送されて話題になった曲です．嘘です．&lt;/p>
+&lt;h2 id="キミヱゴサーチ">キミヱゴサーチ&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/HrbqGP3NPuE"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+ひなビタ♪に出てくるここなつの曲です．DNAまで届く美しいハモリが最高です．
+なんと作曲者はsasakure.UKさんです．すげぇ．
+ここなつ曲ですが，他だと&lt;/p>
+&lt;ul>
+&lt;li>メモリーズ&lt;/li>
+&lt;li>ムラサキグルマ&lt;/li>
+&lt;li>コンフェイト＊コンチェルト (&lt;del>こういう感じのエロゲソングありそう&lt;/del>)&lt;/li>
+&lt;/ul>
+&lt;p>あたりがおすすめです．どれもボルテに収録されています．&lt;/p>
+&lt;h2 id="aim-higher">AIM HIGHER&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/bFxPfcoHXnQ"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+不協和音感を感じそうになる不安定なボーカル曲です．アルティメットの課題曲です．&lt;/p>
+&lt;h2 id="afterimage-dautomne">Afterimage d&amp;rsquo;automne&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/r6MvJ9no5CE"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+ノスタルジアの曲です．ネコを片手で撫でながらティーカップに注がれた紅茶を飲み，秋の夕暮れを眺めるような雰囲気の曲です．作曲者の猫又Master氏は似たテイストのFly far bounceという曲も作っています．ノスタルジアではもちろん，ギタドラでも楽しい曲です．&lt;/p>
+&lt;h2 id="フリコドウル">フリコドウル&lt;/h2>
+&lt;p>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/I2H01GVw9h0"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+かっこいいHIMEHINAの曲に，最上位レベルのクオリティの譜面がついています．&lt;/p></description></item><item><title>第32回全国高専プロコン競技部門参戦記と好きなお茶ランキング</title><link>https://shibaken28.github.io/my-blog-4/contents/procon32/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/procon32/</guid><description>&lt;h2 id="これはなに">これはなに&lt;/h2>
+&lt;p>長野高専から競技部門に「高専の応用呪術IIB」 というチーム名で参加しました．それの参戦記です．&lt;/p>
+&lt;p>内容は，アルゴリズムの簡単な説明，当日の様子，感想，お茶の順番です．気になるところだけ読んでください．&lt;/p>
+&lt;p>結果や出題された問題は&lt;a class="link" href="https://www.procon.gr.jp/?p=77963" target="_blank" rel="noopener"
+>公式サイト&lt;/a>から見ることができます．&lt;/p>
+&lt;h2 id="結果">結果&lt;/h2>
+&lt;p>予選(2組目)1位&lt;/p>
+&lt;p>準決勝(2組目)1位&lt;/p>
+&lt;p>決勝4位でした．総合では特別賞を頂きました．ありがとうございます．&lt;!-- raw HTML omitted -->コードが汚いことこの上ないので選ばれないと思っていた．&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>上位3校に圧倒的に差をつけられて完敗でした．3位入賞はかなり技術力を上げないとまず届きそうにないですね&amp;hellip;&amp;hellip;．&lt;/p>
+&lt;p>ほぼ1人参戦については，そもそもチーム戦なのに人を集めなかったのが(実際は集まらなかったのですが，主張が足りなかったのかも)悪いのです．&lt;/p>
+&lt;h2 id="アルゴリズムの説明">アルゴリズムの説明&lt;/h2>
+&lt;p>本番で使用したプログラムは全て私が作りました．第25回のプログラムを参考にしてあり明らかに独創性がありません．様々な解法のソルバを作ったら良かったのですが技量と時間とやる気が足りませんでした．要精進．&lt;/p>
+&lt;p>プログラム自体8月中旬から作りはじめ，9月の中旬頃にはほとんど完成し，あとはパラメータをチューニングするだけの状態でした．&lt;/p>
+&lt;h3 id="画像復元">画像復元&lt;/h3>
+&lt;p>貪欲に，ある断片画像の周りに一番くっつきそうな断片画像を繋げていきます．&lt;/p>
+&lt;p>具体的には，&lt;/p>
+&lt;ol>
+&lt;li>適当な断片画像一つを「確定」させて配置し，その画像の4辺を集合$S$に追加する&lt;/li>
+&lt;li>$S$の各々について，最も親和度が高い断片画像の辺を「候補」として，親和度の値と一緒に集合$E$に追加する．&lt;/li>
+&lt;li>Eのうち最も親和度が高いものを「確定」した断片画像として配置して，追加した断片画像の辺を「候補として」$S$に追加する．2に戻る．&lt;/li>
+&lt;/ol>
+&lt;p>$E$はプライオリティキューで実装しているので追加，検索が高速$\mathrm{O}(\log N)$です．&lt;/p>
+&lt;p>親和度は辺の各ピクセルのRGB値を並べたベクトル同士のcos類似度で計算しました．cos類似度は，ベクトルの内積の等式に出てくる$\cos \theta$の値です(2つのベクトルのなす角)．
+また，事前に全ての辺同士の親和度を計算しておき，いい感じにソートしておくことで高速化します．&lt;/p>
+&lt;p>回転可能という条件が予想以上に厄介で，向きや辺の番号の管理がややこしかったです．結局，向きとか辺を{0,1,2,3}で表して，剰余演算でごにょごにょしました．&lt;/p>
+&lt;p>GUI上では，次の断片画像の確定，任意の確定断片画像の削除，上端下端などの設定，強制的に任意の断片画像を候補から削除する，といった操作が可能です．
+ちなみに，サイズの大きいppmファイルの中身を全てchar型の配列に突っ込んでいるので，読み込みが一番時間かかります．&lt;/p>
+&lt;h3 id="スライドパズル">スライドパズル&lt;/h3>
+&lt;p>端がつながっているルールをうまく使う方法が，案外思いつかないんですこれが．
+だんだん小さな正方形の問題にしていく戦法と迷ったのですが，結局端っこから1列ずつ揃える→3×nのサイズになったら3×(n-1)にしていく戦法になりました．具体的な様子は
+&lt;a class="link" href="https://youtu.be/KetMK80Mxa4?t=7807:title" target="_blank" rel="noopener"
+>youtube&lt;/a>
+をご覧ください(再生開始場所が埋め込んであります)．&lt;/p>
+&lt;p>プログラムは至ってシンプルで，断片画像の揃える順番を決めて，一つの移動させる断片画像を決定したらあとはその断片画像を使って一つずつ断片画像を持って正しい場所へ持って行きます．ここで重要なのは移動経路です．
+移動される断片画像の経路探索は，最短経路のうちのいくつかをランダムで選びました．選ばれた経路それぞれについて次に書いてある経路探索を行い，その中で評価が高いものを採用&lt;!-- raw HTML omitted -->す&lt;!-- raw HTML omitted -->しました．
+移動させる断片画像の経路探索はダイクストラ法を使いました．具体的には，各断片画像をノード，交換可能な画像同士にエッジを張りとし，入れ替えたときに正しい位置に近づくか遠ざかるかでコストをつけます．ここのコストのチューニングが難しい．&lt;/p>
+&lt;p>盤面の評価は単純に正しい場所へのマンハッタン距離の総和になっています．本当は2乗した値のほうがいいことに割と最近気づいたんですが，なんかうまくできませんでした．&lt;/p>
+&lt;p>また，端っこの処理のプログラムが不十分で今でもたまに止まります．その場合は手動で揃えています．&lt;/p>
+&lt;p>結構効果的だったのは乱数要素を入れたことです．もちろんコストが上振れ(コストは低いほうがいい)することがありますが，下振れもします．1回回答を出力するまでに1分もかからないので，何度も探索することで，下振れスコアが出ることを願う作戦です．実は，この下振れがなければ負けてました．&lt;/p>
+&lt;p>この一連のプログラムはどれもSiv3dで作成しました．&lt;/p>
+&lt;p>余談ですがパンフレット見たときにGUIの画像が掲載されている高専が結構あって驚きました．以下GUIのスクショです．
+&lt;img src="https://cdn-ak.f.st-hatena.com/images/fotolife/S/Shibaken_8128/20211010/20211010233432.png"
+loading="lazy"
+>
+&lt;img src="https://cdn-ak.f.st-hatena.com/images/fotolife/S/Shibaken_8128/20211010/20211010233535.png"
+loading="lazy"
+>
+&lt;img src="https://cdn-ak.f.st-hatena.com/images/fotolife/S/Shibaken_8128/20211010/20211010233602.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>内輪向けの話になるのですが，Siv3dで，配布されたppmファイルを読み込もうとするとエラーになってハマりました．自前で用意したppmファイルは正常に読み込むのになんでかなとバイナリを比較すると，0A(改行)の次の0D(復帰)の有無の違いがあり，0Dを削除したら読み込めるようになりました．0Dは改行として扱われることがあるらしくておそらくそれが原因な気がしますが，真相は不明．僕が使用したppmビュアーでは正常に表示できていたので原因を突き止めるのに1e9+7年はかかりました．&lt;/p>
+&lt;p>追記(10/11)
+結構前に&lt;a class="link" href="https://github.com/Siv3D/OpenSiv3D/issues/591" target="_blank" rel="noopener"
+>issue&lt;/a>が出されていてv0.6で修正されたらしいです．&lt;/p>
+&lt;h3 id="その他">その他&lt;/h3>
+&lt;p>課題部門のメンバー(&lt;a class="link" href="https://shunnotion.notion.site/7d5871af1af04de785fc8dd76727c078" target="_blank" rel="noopener"
+>@shun_shobon&lt;/a>)が問題自動生成ツールを作ってくれました．公式で配布される問題が少ないのでめっちゃ役立ちました．ありがとう．&lt;/p>
+&lt;h2 id="本番の様子">本番の様子&lt;/h2>
+&lt;p>緊張で吐きそうでした．お腹痛い．緊張に弱いのどうにかならんの．&lt;/p>
+&lt;h3 id="1日目朝">1日目朝&lt;/h3>
+&lt;p>テストを回してたところ早速バグが発見されました．死にものぐるいで修正しますが一部は修正しきれず．&lt;/p>
+&lt;h3 id="1日目1回戦">1日目1回戦&lt;/h3>
+&lt;p>模擬試合で早速ビビりました．
+&lt;img src="https://cdn-ak.f.st-hatena.com/images/fotolife/S/Shibaken_8128/20211011/20211011001415.png"
+loading="lazy"
+>
+なんだこれは．&lt;/p>
+&lt;p>復元後の画像
+&lt;img src="https://cdn-ak.f.st-hatena.com/images/fotolife/S/Shibaken_8128/20211011/20211011001607.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>画像の周囲の背景色同士でくっついてしまいました．
+しかも，ほぼ水色一色みたいな断片画像もあります．
+用意していた修正機能を駆使してなんとか時間内に提出できましたが，16x16でやられたらまずいと思い，後で新機能を追加することになります．&lt;/p>
+&lt;p>本番の問題は全く問題なくすんなり揃いました．8x8の経路は20秒くらいで求まるので，何度も回すことで乱数ガチャをします．動画を観るとわかりますが1位通過でめちゃくちゃ喜んでます．gif画像にされそう．&lt;/p>
+&lt;h3 id="1日目夜">1日目夜&lt;/h3>
+&lt;p>新機能を追加します．バグ修正する元気がないのと疲れたので素直に寝ました．&lt;/p>
+&lt;h3 id="2日目朝">2日目朝&lt;/h3>
+&lt;p>#procon32のハッシュタグのついたツイートを見ると，「完徹ww」とか「50%削減」などのワードが飛び交っています．うっそだろwwwと思いながら自分のプログラムも改善しなきゃと思い，試行錯誤しますが全くスコアが伸びずちょっと絶望してました．一応準決勝の組の中で，1回戦の成績はトップですが，そんな情報はあてにならなくなります．またもやバグが見つかったので，アドホックな修正をしていきます．そういえば朝ごはん食べてねぇ．&lt;/p>
+&lt;h3 id="2日目準決勝">2日目準決勝&lt;/h3>
+&lt;p>問題がこちらです．
+&lt;img src="https://cdn-ak.f.st-hatena.com/images/fotolife/S/Shibaken_8128/20211011/20211011004042.png"
+loading="lazy"
+>
+面食らいます．けれどすんなり揃いました．正しく揃っていても間違ってるように見える箇所があり疑心暗鬼になりながらもaccepted 0 0(完全一致)の表示を見て一安心．乱数ガチャをし，1回目のコスト5081から，4477まで下げることができました．1位通過です．&lt;/p>
+&lt;h3 id="2日目決勝">2日目決勝&lt;/h3>
+&lt;p>決勝に来れて満足！4位取れたら嬉しい！の気持ちで臨みました．画像復元に急遽実装した新機能が役立ち，4位を取ることができました．&lt;/p>
+&lt;p>後で試したら決勝の花火と模擬試合の画像は人の手を加えずに揃いました．画像が復元できないとその先がどうしよもないシステム，本当に怖いです．&lt;/p>
+&lt;h2 id="本音と感想">本音と感想&lt;/h2>
+&lt;p>正直，もともと競技部門にあまり乗り気ではありませんでした．
+理由としては，&lt;/p>
+&lt;ul>
+&lt;li>アルゴリコンではなくマラソン系であること&lt;/li>
+&lt;li>1つの問題だけで勝敗が決まってしまうのでたまたま相性が悪い問題が出ると悲しくなること&lt;/li>
+&lt;li>制約が緩いので難しいこと&lt;/li>
+&lt;li>まだなんも決まっていないアルゴリズムを書いた予選資料を提出をしなければならないこと&lt;/li>
+&lt;/ul>
+&lt;p>が挙げられます．そんな中，夏休み中になんとなく画像復元プログラムを作りはじめたや否や，そのままコーディングにハマり，数日後に16x16のアジサイが揃ったときの脳汁をエンジンに熱が入り，入賞するぞー！の気持ちになりました．一度書き始めるとノリノリにカタカタするんだけど，書き始めるまでが長い．&lt;/p>
+&lt;p>マラソンコンテストは積極的に出て，ヒューリスティックなアプローチに慣れていきたいなと思います．たぶん．&lt;/p>
+&lt;p>最後に，プロコンの関係者の皆様，観戦に来てくださった先生，応援してくださった方々，本当にありがとうございました．&lt;/p>
+&lt;h2 id="好きなお茶ランキング">好きなお茶ランキング&lt;/h2>
+&lt;p>ところで，お茶は好きですか．私は好きです．Japanese like tea. year.&lt;/p>
+&lt;p>注：価格はスーパーなどで売ってるペットボトルのお茶のことを指しています．&lt;/p>
+&lt;h3 id="1位烏龍茶">1位：烏龍茶&lt;/h3>
+&lt;p>この世で一番うまいお茶です．酔ったとき，気持ち悪いときに飲むと非常にすっきりします．あとだいたい価格がお手頃です．&lt;/p>
+&lt;h3 id="2位緑茶の濃い茶系">2位：緑茶の濃い茶系&lt;/h3>
+&lt;p>体脂肪云々はよくわかりませんが，こちらも気分が悪いときに飲むとすっきりします．こちらは割高なことが多い気がします．&lt;/p>
+&lt;h3 id="3位ほうじ茶">3位：ほうじ茶&lt;/h3>
+&lt;p>烏龍茶と風味の傾向が似ていて(当社比)しばしば比較されますが、私は烏龍茶派です．&lt;/p>
+&lt;h3 id="4位抹茶入り玄米茶">4位：抹茶入り玄米茶&lt;/h3>
+&lt;p>刺身のお供にしたいお茶第1位．某回転寿司のお茶の味と非常に近いです．&lt;/p>
+&lt;h3 id="総括">総括&lt;/h3>
+&lt;p>一般に，お茶は美味しいです．&lt;/p>
+&lt;h2 id="まとめ">まとめ&lt;/h2>
+&lt;p>プロコンのお供は烏龍茶一択ですね．皆さんのおすすめのお茶はなんですか．&lt;/p></description></item></channel></rss>

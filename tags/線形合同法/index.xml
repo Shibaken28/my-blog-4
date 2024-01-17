@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>線形合同法 on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/tags/%E7%B7%9A%E5%BD%A2%E5%90%88%E5%90%8C%E6%B3%95/</link><description>Recent content in 線形合同法 on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><atom:link href="https://shibaken28.github.io/my-blog-4/tags/%E7%B7%9A%E5%BD%A2%E5%90%88%E5%90%8C%E6%B3%95/index.xml" rel="self" type="application/rss+xml"/><item><title>線形合同法のパラメータ推測</title><link>https://shibaken28.github.io/my-blog-4/contents/randomness/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/randomness/</guid><description>&lt;h2 id="問題">問題&lt;/h2>
+&lt;p>線形合同法によって乱数列が生成される．
+生成に使われるパラメータの$a,b,m$の和を求める問題．
+ただし，線形合同法とは，次の漸化式と$x_0$によって計算される値である．&lt;/p>
+&lt;p>$$
+x_{i+1} = ax_i + b \pmod m
+$$&lt;/p>
+&lt;p>ただし，&lt;code>rand&lt;/code>関数にはちょっと小細工が仕込まれていて，$x_i$の次に$x_{i+1}$が生成されるとは限らずに，ランダムに$1$個から$256$個の値がスキップされることがある．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">Crypto.Util.number&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">getPrime&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">secrets&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">randbelow&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">hashlib&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">sha256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">getPrime&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">20&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">randbelow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">randbelow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">randbelow&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">rand&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">rand&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">global&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">x&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">%&lt;/span> &lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">x&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rand&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">&amp;amp;&lt;/span> &lt;span class="mh">0xFF&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rand&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rand&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">&amp;amp;&lt;/span> &lt;span class="mh">0x8&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">yield&lt;/span> &lt;span class="n">rand&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">xor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span> &lt;span class="o">^&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">zip&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">rand&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">rand&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">rand&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="nb">next&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rand&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">20&lt;/span>&lt;span class="p">)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;rand =&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">rand&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;ct =&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">xor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">b&lt;/span>&lt;span class="s1">&amp;#39;ictf&lt;/span>&lt;span class="si">{REDACTED}&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">sha256&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">6&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;big&amp;#39;&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">digest&lt;/span>&lt;span class="p">()))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="解説">解説&lt;/h2>
+&lt;p>線形合同法は，連続した乱数列から各パラメータを求めることができる．
+次のような連続した乱数列が与えられたとする．
+$$
+\begin{align}
+x_1 &amp;amp;= ax_0 + b \pmod m \\
+x_2 &amp;amp;= ax_1 + b \pmod m \\
+x_3 &amp;amp;= ax_2 + b \pmod m \\
+x_4 &amp;amp;= ax_3 + b \pmod m \\
+x_5 &amp;amp;= ax_4 + b \pmod m \\
+x_6 &amp;amp;= ax_5 + b \pmod m
+\end{align}
+$$
+$b$のみがわからない場合は，次のようにして求めることができる．
+$$
+\begin{align}
+x_1 &amp;amp;= ax_0 + b \pmod m \\
+b &amp;amp;= x_1 - ax_0 \pmod m
+\end{align}
+$$
+$a,b$がわからない場合は，次のように逆数を用いてまず$a$を求めることができる．
+$$
+\begin{align}
+x_2 - x_1 &amp;amp;= ax_1 - ax_0 \pmod m \\
+x_2 - x_1 &amp;amp;= a(x_1 - x_0) \pmod m \\
+a &amp;amp;= (x_2 - x_1)(x_1 - x_0)^{-1} \pmod m
+\end{align}
+$$&lt;/p>
+&lt;p>$a,b,m$全てわからない場合，次のような$T_0,T_1,T_2,\cdots$を用意する．&lt;/p>
+&lt;p>$$
+\begin{align}
+T_0 &amp;amp;= x_1 - x_0 \\
+T_1 &amp;amp;= x_2 - x_1 = A(x_1-x_0) = A T_0 \pmod m \\
+T_2 &amp;amp;= x_3 - x_2 = A(x_2-x_1) = A T_1 \pmod m \\
+T_0T_2 - T_1^2 &amp;amp;= A^2T_0^2 - A^2T_0^2 = 0 \pmod m \\
+\end{align}
+$$&lt;/p>
+&lt;p>ここで，$T_0T_2 - T_1^2 = 0 \pmod m$であることから，添字をずらすと次が成り立つ．&lt;/p>
+&lt;p>$$
+\begin{align}
+T_1T_3 - T_2^2 &amp;amp;= 0 \pmod m \\
+T_2T_4 - T_3^2 &amp;amp;= 0 \pmod m \\
+T_3T_5 - T_4^2 &amp;amp;= 0 \pmod m \\
+\vdots \\
+T_{n-1}T_{n+1} - T_n^2 &amp;amp;= 0 \pmod m
+\end{align}
+$$
+こられの数は全て$m$で割ったあまりが$0$であるため，これらの数の最大公約数を求めることができれば，それが$m$である可能性&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>がある．&lt;/p>
+&lt;p>以上のことにより，次のスクリプトによって$a,b,m$を求めることができる．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">Crypto.Util.number&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="o">*&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">hashlib&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">sha256&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">linear_random_crack&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rands&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">rands&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">rands&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rands&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">])&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GCD&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">((&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">])&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">inverse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">],&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">b&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">rands&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">rands&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">])&lt;/span>&lt;span class="o">%&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">xor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span> &lt;span class="o">^&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">zip&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ct&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">b&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\x1b\xc3\xc1&lt;/span>&lt;span class="s1">O&lt;/span>&lt;span class="se">\x7f&lt;/span>&lt;span class="s1">]q&lt;/span>&lt;span class="se">\xb9&lt;/span>&lt;span class="s1">8&lt;/span>&lt;span class="se">\x8d\xb8\xf5\xec\x82\x8c&lt;/span>&lt;span class="s1">g&lt;/span>&lt;span class="se">\xd0\xed\xbb\t&lt;/span>&lt;span class="s1">&amp;lt;G&lt;/span>&lt;span class="se">\xe6\xde\xf7\xb3\x81\xe0&lt;/span>&lt;span class="s1">5&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">r&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mi">830740&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">252348&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">146586&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">407799&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">782171&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">349709&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">751088&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">904092&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">390201&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">909918&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">347514&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">89924&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">7112&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">751221&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">26415&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">299902&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">438982&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">787802&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1081&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">814607&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">l&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">8&lt;/span> &lt;span class="c1"># 必要に応じて小さくする&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">linear_random_crack&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">l&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">xor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ct&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">sha256&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">6&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;big&amp;#39;&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">digest&lt;/span>&lt;span class="p">()))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>出力は次のようになる．&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">963459 253883 977407
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;ictf{n07_50_r4nd0m_4ft3r_4ll}&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">963459 253883 977407
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;ictf{n07_50_r4nd0m_4ft3r_4ll}&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">b&amp;#39;\x03\xa2\xe9\xf0\xf5\x10\x11Rs\xdc\xa8\xdf\x0e G\r\xdbm\xba\x10K\x1f\xc2^\xce\xe9\xc4\xa4a&amp;#39;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>$a=963459,b=253883,m=977407$だとわかり，フラグ&lt;code>ictf{n07_50_r4nd0m_4ft3r_4ll}&lt;/code>が得られる．&lt;/p>
+&lt;h1 id="コメント">コメント&lt;/h1>
+&lt;p>&lt;code>yield&lt;/code>を知らなかった．&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>あくまで可能性であり，いずれも同じ数になってしまうことや，最大公約数が$m$の倍数になってしまうことがある．最大公約数を取るときに使う数が多いければ多いほど$m$が求められる確率が高くなる．&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item></channel></rss>

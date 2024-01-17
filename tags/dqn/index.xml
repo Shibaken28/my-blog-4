@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DQN on shibak3n's blog</title><link>https://shibaken28.github.io/my-blog-4/tags/dqn/</link><description>Recent content in DQN on shibak3n's blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Sat, 02 Dec 2023 12:08:30 +0900</lastBuildDate><atom:link href="https://shibaken28.github.io/my-blog-4/tags/dqn/index.xml" rel="self" type="application/rss+xml"/><item><title>強化学習でぷよぷよを学習させたかった(願望)</title><link>https://shibaken28.github.io/my-blog-4/contents/puyo-dqn/</link><pubDate>Sat, 02 Dec 2023 12:08:30 +0900</pubDate><guid>https://shibaken28.github.io/my-blog-4/contents/puyo-dqn/</guid><description>&lt;h2 id="これは何">これは何&lt;/h2>
+&lt;p>強化学習の手法のうちの一つであるDeep Q-Network (DQN)で、ぷよぷよを学習させるという記事です。本記事はガッツリぷよぷよAIについて研究したとかではなく、こんなことやってみました程度のものです。私自身、強化学習について最近興味を持った素人で、「強化学習ってどのくらいできるもんなのか」という動機でやりました。&lt;/p>
+&lt;p>&lt;strong>結果として、サルより強いAIが完成しました&lt;/strong>&lt;/p>
+&lt;p>また、本記事は&lt;a class="link" href="https://qiita.com/advent-calendar/2023/nnct" target="_blank" rel="noopener"
+>長野高専アドベントカレンダー&lt;/a>の2日目の記事です。&lt;/p>
+&lt;h2 id="dqnとは">DQNとは&lt;/h2>
+&lt;p>Deep Q-Network(DQN)をいきなり説明するのは無理なので、次の順で説明します。&lt;/p>
+&lt;ol>
+&lt;li>用語&lt;/li>
+&lt;li>Q学習&lt;/li>
+&lt;li>ニューラルネットワーク&lt;/li>
+&lt;/ol>
+&lt;h3 id="用語">用語&lt;/h3>
+&lt;p>強化学習特有の用語をいくつか説明します。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">用語&lt;/th>
+&lt;th style="text-align:left">説明&lt;/th>
+&lt;th style="text-align:left">ぷよぷよでの例&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">エージェント&lt;/td>
+&lt;td style="text-align:left">学習する本人のこと&lt;/td>
+&lt;td style="text-align:left">ぷよぷよを操作する人&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">状態&lt;/td>
+&lt;td style="text-align:left">エージェントに与える状況&lt;/td>
+&lt;td style="text-align:left">盤面の状態&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">行動&lt;/td>
+&lt;td style="text-align:left">エージェントが取れる行動&lt;/td>
+&lt;td style="text-align:left">ぷよを置く場所と向き&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">報酬&lt;/td>
+&lt;td style="text-align:left">エージェントが行動を取ったときに与えられる値&lt;/td>
+&lt;td style="text-align:left">ぷよを消した数など&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>エージェントは、報酬の総和(正確には、総和ではないこともある)を最大化するように行動を選択します。ですので、学習の目的によって報酬の付け方が変わります。&lt;/p>
+&lt;p>報酬は、各行動を一回行うごとに与えられます。つまり、次のサイクルで学習が行われます。&lt;/p>
+&lt;ol>
+&lt;li>エージェントが状態を観測する&lt;/li>
+&lt;li>エージェントが行動を選択する&lt;/li>
+&lt;li>エージェントが行動を実行し、状態が遷移する&lt;/li>
+&lt;li>エージェントが報酬を受け取る&lt;/li>
+&lt;li>1に戻る&lt;/li>
+&lt;/ol>
+&lt;p>また、報酬は負の値にすることも可能です。例えば、ゲームオーバーになってしまった場合には報酬$-1$を与える、ということもできます。&lt;/p>
+&lt;h3 id="q学習">Q学習&lt;/h3>
+&lt;h4 id="定義">定義&lt;/h4>
+&lt;p>$Q$学習は$Q$関数を用います。$Q$関数は次のように定義されます。&lt;/p>
+&lt;p>$$
+Q(s,a) = (状態sで行動aを取ったときの評価値)
+$$&lt;/p>
+&lt;p>シンプルな定義です。「評価値」は大きければ大きいほど、その先で得られる報酬が大きいということを表します。&lt;/p>
+&lt;p>もし、完全な$Q$関数が完成していたとしましょう。このときは、次の手順で最適な行動ができます。&lt;/p>
+&lt;ol>
+&lt;li>現在の状態$s$で行える全ての行動$a_1,a_2,\dots,a_n$について、$Q(s,a_i)$を計算する&lt;/li>
+&lt;li>$Q(s,a_i)$が最大となる行動$a_i$を選択する&lt;/li>
+&lt;/ol>
+&lt;h4 id="q関数の作り方">Q関数の作り方&lt;/h4>
+&lt;p>ランダムに行動して、その結果得られた報酬を$Q$関数に反映させることで、$Q$関数の各値を求めます。&lt;/p>
+&lt;p>ある状態$s$で行動$a$を取ったときに、状態$s^\prime$に遷移し、報酬$r$を得たとします。このとき、$Q$関数の値を次のように更新します。&lt;/p>
+&lt;p>$$
+Q(s,a) \leftarrow Q(s,a) + \alpha(r + \gamma \max_{a^\prime}Q(s^\prime,a^\prime) - Q(s,a))
+$$&lt;/p>
+&lt;p>ここで、$\alpha$は学習率、$\gamma$は割引率と呼ばれる値です(ただし$0\leq \alpha,\gamma \leq 1$)。&lt;/p>
+&lt;p>この式は実はそんなに難しいことは言っていないのですが、説明するのが面倒なので省略します。&lt;/p>
+&lt;p>理屈はさておき、この更新式を使って、ランダムに動くことを繰り返して$Q$関数を求めることはできます。しかし、状態$s$の場合の数が非常に大きいな場合、$Q$関数を求めるのに時間がかかってしまいます。例えば、ぷよぷよの盤面の場合、縦$12$横$6$の計$72$マスがあり、各マスは$4$色のぷよか、空白のいずれかであるため、$5^{72}$通りの状態があります&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。これは約$10^{50}$通りであり、現時点で世界に存在するコンピューターで計算するのは不可能なオーダーです。&lt;/p>
+&lt;p>そこで、ニューラルネットワークの出番です。&lt;/p>
+&lt;h3 id="ニューラルネットワーク">ニューラルネットワーク&lt;/h3>
+&lt;p>簡単に説明すると関数を予測する構造を持ちます。例えるならば、グラフに点をプロットしていくと、その点を通るような関数を予測してくれます。ニューラルネットワークの中では、偏微分やら何やらを使って(誤差逆伝播法やBackPropagationで調べると出てきます)、誤差が小さくなるようにパラメータが調節されます。&lt;/p>
+&lt;figure>&lt;img src="./img/net.jpg" width="80%"/>&lt;figcaption>
+&lt;h4>ニューラルネットワークのイメージ&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>ちなみにこの図ですが、卒研の中間発表の際に使ったものを持ったきたものです。中間発表は良い思い出ではないので、あまりこの図を見たくありません。&lt;/p>
+&lt;p>これを使うことで、全パターンの状態を試さなくても、$Q$関数の値を予測してくれるんじゃないか、というのがDeep Q-Network(DQN)のアイデアです。&lt;/p>
+&lt;h2 id="ぷよぷよの実装">ぷよぷよの実装&lt;/h2>
+&lt;p>ぷよぷよを学習させるためにはぷよぷよのシステムを作らなければなりません。作りました。&lt;/p>
+&lt;p>DQNにおいて必要なのは「行動を与えたときに、次の状態と報酬を返すメソッド」です。これさえあればDQNに突っ込めば学習ができます。&lt;a class="link" href="https://www.gymlibrary.dev/" target="_blank" rel="noopener"
+>OpenAIGym&lt;/a>に倣って、そのゲームの「環境」クラスをインスタンス化して使えるようにします。&lt;/p>
+&lt;p>以下は主要部分だけ抜粋したものです。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">step&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">action&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reward&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">done&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">False&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">win&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">False&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">prev_action&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">action&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">puyo&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">puyo_list&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">turn&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">turn&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">isDropped&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">drop_puyo&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">action&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">puyo&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">isDropped&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 落とせなかったら負け&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">done&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reward&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_dis&lt;/span> &lt;span class="p">,&lt;/span> &lt;span class="n">_chain&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">process&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">turn&lt;/span> &lt;span class="o">&amp;gt;=&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">turn_max&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 全ターン経過で勝ち&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">done&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">win&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reward&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># print(self.board)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">states&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">reward&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">done&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">win&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>step()&lt;/code>が「行動を与えたときに次の状態と報酬を返す」メソッドです。&lt;/p>
+&lt;h2 id="学習方法">学習方法&lt;/h2>
+&lt;p>&lt;a class="link" href="https://github.com/oreilly-japan/deep-learning-from-scratch-4/blob/master/pytorch/dqn.py" target="_blank" rel="noopener"
+>『ゼロから作るDeep Learning ❹ 強化学習編』(オライリー・ジャパン)のサポートサイトのコード&lt;/a>をベースに書きました。機械学習ライブラリのPyTorchを使っています。&lt;/p>
+&lt;h3 id="状態">状態&lt;/h3>
+&lt;p>状態としてエージェントに与えたい要素は次の通りです。&lt;/p>
+&lt;ul>
+&lt;li>盤面の状態&lt;/li>
+&lt;li>次に落とすぷよ$3$つ&lt;/li>
+&lt;/ul>
+&lt;p>これをもとに状態を返すメソッドを書きます。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">states&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 現在の盤面の状態&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">state&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">row&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">height&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">col&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">width&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">state&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">board&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">row&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">col&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 次の3ターンで降るぷよの色&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">state&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">puyo_list&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">turn&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">state&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">puyo_list&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">turn&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># print(state)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">assert&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">state&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">STATE_SPACE&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># dtypeをfloat32に変換&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">state&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tensor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">state&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">dtype&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">float32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">state&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>これらをすべて1次元ベクトルとして入力にします。$2$次元の盤面をどう$1$次元に変換させるのかというと、単純に各行を横につなげただけです。&lt;/p>
+&lt;h3 id="epsilon-greedy法">epsilon-greedy法&lt;/h3>
+&lt;p>epsilon-greedy法は学習テクニックの一つで、学習初期にはランダムに行動を選択し、学習が進むにつれてランダムに行動を選択する確率を下げていく方法です。これを使うことで、学習初期にはランダムに行動を選択することで、より多くの状態を試し、偏りなく学習させることが期待されます。&lt;/p>
+&lt;h2 id="学習">学習&lt;/h2>
+&lt;p>ソースコードは&lt;a class="link" href="https://gist.github.com/Shibaken28/5b794fc0ad75ed42e5402b6a8a8135ef" target="_blank" rel="noopener"
+>Gist&lt;/a>に置いてあります。&lt;/p>
+&lt;h3 id="実験a-生き残れるか">実験A 生き残れるか&lt;/h3>
+&lt;h4 id="条件">条件&lt;/h4>
+&lt;p>次の条件で学習させます。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>盤面の大きさは縦$8$横$6$の計$48$マス&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>$30$回ぷよを落とすことができればゲームクリア&lt;/p>
+&lt;ul>
+&lt;li>少なくとも、$30\times 2=60$個のうち$60-48=12$個は消さなければならない&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>ゲームクリアの場合報酬$1$、ゲームオーバーの場合報酬$-1$を与える&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="結果">結果&lt;/h4>
+&lt;p>$2000$回の試行を行ったところ、最終的には$4$から$6$割程度の成功率となりました。
+&lt;figure>&lt;img src="./img/servive.png" width="60%"/>&lt;figcaption>
+&lt;h4>実験Aの直近100回の成功率&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+なお、$1000$回らへんで急激に成功率が上がっているのは、epsilon-greedy法の影響です。学習初期にはランダムに行動を選択する確率が高いため、成功率が極端に低くなっています。&lt;/p>
+&lt;p>学習の効果が出ているのかを確かめるため、試しに全てランダムに行動させてみました。すると、成功率は$1$割にも満たない結果となりました。
+よって、精度はともかく、少なくとも学習はできていると言えます。サルより強い。
+&lt;figure>&lt;img src="./img/servive-saru.png" width="60%"/>&lt;figcaption>
+&lt;h4>実験Aの直近100回の成功率(ランダム)&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;h3 id="実験b-2連鎖以上を起こせるか">実験B 2連鎖以上を起こせるか&lt;/h3>
+&lt;h4 id="条件-1">条件&lt;/h4>
+&lt;p>次の条件で学習させます。&lt;/p>
+&lt;ul>
+&lt;li>盤面の大きさは縦$8$横$6$の計$48$マス&lt;/li>
+&lt;li>$2$連鎖以上を起こした時点でゲームクリア&lt;/li>
+&lt;li>ただし、$30$回ぷよを落とした時点で$2$連鎖以上が起こっていなかった場合ゲームオーバー&lt;/li>
+&lt;li>ゲームクリアの場合報酬$1$、ゲームオーバーの場合報酬$-1$を与える&lt;/li>
+&lt;/ul>
+&lt;h4 id="結果-1">結果&lt;/h4>
+&lt;p>成功率は案外伸びずに2割程度でした。
+&lt;figure>&lt;img src="./img/2.png" width="60%"/>&lt;figcaption>
+&lt;h4>実験Bの直近100回の成功率&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+一応ランダムの場合は成功率が1割未満なため、学習自体はできているようです。
+&lt;figure>&lt;img src="./img/2-saru.png" width="60%"/>&lt;figcaption>
+&lt;h4>実験Bの直近100回の成功率(ランダム)&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;h3 id="実験c-ばよえん">実験C ばよえ～～ん&lt;/h3>
+&lt;h4 id="条件-2">条件&lt;/h4>
+&lt;p>次の条件で学習させます。&lt;/p>
+&lt;ul>
+&lt;li>盤面の大きさは縦$12$横$6$の計$96$マス&lt;/li>
+&lt;li>$7$連鎖を起こした時点でゲームクリア&lt;/li>
+&lt;li>ただし、$100$回ぷよを落とした時点で$7$連鎖以上が起こっていなかった場合ゲームオーバー&lt;/li>
+&lt;li>報酬は、起こした連鎖数の$2$乗
+&lt;ul>
+&lt;li>これにより、「$1$連鎖$2$回」よりも「$2$連鎖$1$回」の方が良く評価される&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>要するに&lt;a class="link" href="https://dic.nicovideo.jp/a/%E3%81%B0%E3%82%88%E3%81%88%E3%80%9C%E3%82%93" target="_blank" rel="noopener"
+>ばよえ～ん&lt;/a>を唱えられればクリアです&lt;/p>
+&lt;h4 id="結果-2">結果&lt;/h4>
+&lt;p>$5000$回の試行のうち、$11$回成功しました。成功率は非常に低いです。&lt;/p>
+&lt;p>$1600$回目の試行で$7$連鎖を起こすことができました。&lt;/p>
+&lt;iframe src="https://www.pndsng.com/puyo/view.html?a11dadedbdbdbceadecbeadcdebae2dbcacdb2cabcdcdaecb2cd2ecbedc2bec2bceb2d" width="256" height="540" frameborder="0" scrolling="no" style="transform:scale(2.0);-o-transform:scale(2.0);-webkit-transform:scale(2.0);-moz-transform:scale(2.0);-ms-transform:scale(2.0);transform-origin:0 0;-o-transform-origin:0 0;-webkit-transform-origin:0 0;-moz-transform-origin:0 0;-ms-transform-origin:0 0;">&lt;/iframe>
+&lt;p>別のパターン($2593$回目)。※ゲームオーバーの判定は原作と少し違い、「盤面の1番上の行にぷよが既に存在していて、さらにその上に置こうとするとゲームオーバー」となっています。&lt;/p>
+&lt;iframe src="https://www.pndsng.com/puyo/view.html?a7d2a2dae3aea2cdaea2ce2ba2dbdca2ececa2ecbeaeb2dcabd2edac2edead2ecd2e2dec" width="256" height="540" frameborder="0" scrolling="no" style="transform:scale(2.0);-o-transform:scale(2.0);-webkit-transform:scale(2.0);-moz-transform:scale(2.0);-ms-transform:scale(2.0);transform-origin:0 0;-o-transform-origin:0 0;-webkit-transform-origin:0 0;-moz-transform-origin:0 0;-ms-transform-origin:0 0;">&lt;/iframe>
+&lt;p>$4905$回目の試行。こちらは$8$連鎖起こっていますし、残ったぷよの数が少なめです。&lt;/p>
+&lt;iframe src="https://www.pndsng.com/puyo/view.html?a6baeba2caeda4deba3bcea2ecbca2cdecabcecdbecedebd3ce2bc2ecb2d2b2de2dc2e" width="256" height="540" frameborder="0" scrolling="no" style="transform:scale(2.0);-o-transform:scale(2.0);-webkit-transform:scale(2.0);-moz-transform:scale(2.0);-ms-transform:scale(2.0);transform-origin:0 0;-o-transform-origin:0 0;-webkit-transform-origin:0 0;-moz-transform-origin:0 0;-ms-transform-origin:0 0;">&lt;/iframe>
+&lt;p>報酬の総和の平均は次のようになりました。
+&lt;figure>&lt;img src="./img/7.png" width="60%"/>&lt;figcaption>
+&lt;h4>実験Bの直近100回の報酬の総和の平均&lt;/h4>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;h2 id="考察">考察&lt;/h2>
+&lt;p>成功率がそこまで高くならないものの、ランダムの場合よりは良い結果が得られているのは確かではあります。ただ、ぷよぷよというゲームの性質上、次のような行動をすれば案外連鎖を起こせてしまいます。&lt;/p>
+&lt;ul>
+&lt;li>盤面から溢れない程度にぷよを積んでおく&lt;/li>
+&lt;li>盤面がほとんどぷよでいっぱいで、ゲームオーバーになりそうな場合は適当なぷよを消す&lt;/li>
+&lt;li>すると、それなりに連鎖が起こる場合がある&lt;/li>
+&lt;/ul>
+&lt;p>いわゆる「カエル積み」です。強化学習によって、「盤面から溢れない程度に置く」「満杯になったら適当に消す」ことが良いと認識され、「カエル積み」が生まれているのではないか、という考えです。&lt;/p>
+&lt;p>実験Cではカエル積みが何度も試行され、試行回数を大量に重ねた結果、$7$連鎖を起こすことができたと考えます。&lt;/p>
+&lt;h2 id="感想と謝罪文と言い訳">感想と謝罪文と言い訳&lt;/h2>
+&lt;p>遅れてしまいました。ごめんなさい！！！！&lt;/p>
+&lt;p>元々この記事はZennに投稿する予定だったのですが、学習の結果があんまりぱっとしなかったことや、強化学習への理解が足りないことなどの理由から、記事のクオリティが低くなりそうだったので、個人ブログに投げることにしました。個人ブログは何をやっても許されるので便利ですね。&lt;/p>
+&lt;p>感想ですが、機械学習は難しいですね。私が普段触れている競プロやアルゴリズムは、厳密さや再現性が重要視される分野であることに対し、機械学習は「ニューラルネットワークを使うとなんかうまくいく」とか、「パラメータを調節すると学習率が上がる」みたいな、どこかふんわりとした印象があります。手元で調整したパラメータが、直接結果に現れるのではなく、「ニューラルネットワーク」という得体の知れないものを通して出てくる、謎の仲介者がいる、直接やり取りしたいのに、という気持ちになります。そこがかなりとっつきづく、私はまだまだ機械学習について理解が足りないと感じました。&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>空白の上にぷよが置かれる場合が含まれてしまっているため、正確にはもうちょっと少ないですが、大きい数であることには間違いないです。&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item></channel></rss>
